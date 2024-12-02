@@ -1,0 +1,297 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DriftCell &mdash; DT Pattern Recognition package 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/general_styles.css" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Layer" href="layer.html" />
+    <link rel="prev" title="geometry" href="main.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            DT Pattern Recognition package
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../base/main.html">base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../particles/main.html">particles</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="main.html">geometry</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">DriftCell</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dtpr.geometry.drift_cell.DriftCell"><code class="docutils literal notranslate"><span class="pre">DriftCell</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.drift_cell.DriftCell.__dict__"><code class="docutils literal notranslate"><span class="pre">DriftCell.__dict__</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.drift_cell.DriftCell.__init__"><code class="docutils literal notranslate"><span class="pre">DriftCell.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.drift_cell.DriftCell.__module__"><code class="docutils literal notranslate"><span class="pre">DriftCell.__module__</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.drift_cell.DriftCell.__weakref__"><code class="docutils literal notranslate"><span class="pre">DriftCell.__weakref__</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.drift_cell.DriftCell.driftTime"><code class="docutils literal notranslate"><span class="pre">DriftCell.driftTime</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.drift_cell.DriftCell.global_center"><code class="docutils literal notranslate"><span class="pre">DriftCell.global_center</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.drift_cell.DriftCell.global_position_at_min"><code class="docutils literal notranslate"><span class="pre">DriftCell.global_position_at_min</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.drift_cell.DriftCell.height"><code class="docutils literal notranslate"><span class="pre">DriftCell.height</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.drift_cell.DriftCell.id"><code class="docutils literal notranslate"><span class="pre">DriftCell.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.drift_cell.DriftCell.local_center"><code class="docutils literal notranslate"><span class="pre">DriftCell.local_center</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.drift_cell.DriftCell.local_position_at_min"><code class="docutils literal notranslate"><span class="pre">DriftCell.local_position_at_min</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.drift_cell.DriftCell.width"><code class="docutils literal notranslate"><span class="pre">DriftCell.width</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="layer.html">Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="super_layer.html">SuperLayer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="station.html">Station</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dt_geometry.html">DTGeometry</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../patches/main.html">patches</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DT Pattern Recognition package</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="main.html">geometry</a></li>
+      <li class="breadcrumb-item active">DriftCell</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/src/geometry/drift_cell.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="driftcell">
+<h1>DriftCell<a class="headerlink" href="#driftcell" title="Link to this heading"></a></h1>
+<p>SOME DESCRIPTION HERE…</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="dtpr.geometry.drift_cell.DriftCell">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dtpr.geometry.drift_cell.</span></span><span class="sig-name descname"><span class="pre">DriftCell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/geometry/drift_cell.html#DriftCell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.geometry.drift_cell.DriftCell" title="Link to this definition"></a></dt>
+<dd><p>Class representing a Drift Cell.</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>id<span class="classifier">int</span></dt><dd><p>Identifier of the drift cell.</p>
+</dd>
+<dt>local_center<span class="classifier">tuple</span></dt><dd><p>Local center coordinates of the drift cell.</p>
+</dd>
+<dt>global_center<span class="classifier">tuple</span></dt><dd><p>Global center coordinates of the drift cell.</p>
+</dd>
+<dt>driftTime<span class="classifier">float</span></dt><dd><p>Drift time of the drift cell.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dtpr.geometry.drift_cell.DriftCell.__dict__">
+<span class="sig-name descname"><span class="pre">__dict__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">mappingproxy({'__module__':</span> <span class="pre">'dtpr.geometry.drift_cell',</span> <span class="pre">'__doc__':</span> <span class="pre">'\n</span>&#160;&#160;&#160; <span class="pre">Class</span> <span class="pre">representing</span> <span class="pre">a</span> <span class="pre">Drift</span> <span class="pre">Cell.\n\n</span>&#160;&#160;&#160; <span class="pre">Attributes\n</span>&#160;&#160;&#160; <span class="pre">----------\n</span>&#160;&#160;&#160; <span class="pre">id</span> <span class="pre">:</span> <span class="pre">int\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">Identifier</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">drift</span> <span class="pre">cell.\n</span>&#160;&#160;&#160; <span class="pre">local_center</span> <span class="pre">:</span> <span class="pre">tuple\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">Local</span> <span class="pre">center</span> <span class="pre">coordinates</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">drift</span> <span class="pre">cell.\n</span>&#160;&#160;&#160; <span class="pre">global_center</span> <span class="pre">:</span> <span class="pre">tuple\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">Global</span> <span class="pre">center</span> <span class="pre">coordinates</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">drift</span> <span class="pre">cell.\n</span>&#160;&#160;&#160; <span class="pre">driftTime</span> <span class="pre">:</span> <span class="pre">float\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">Drift</span> <span class="pre">time</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">drift</span> <span class="pre">cell.\n</span>&#160;&#160;&#160; <span class="pre">',</span> <span class="pre">'_height':</span> <span class="pre">1.29999995,</span> <span class="pre">'_width':</span> <span class="pre">4.19999981,</span> <span class="pre">'_length':</span> <span class="pre">234.800003,</span> <span class="pre">'__init__':</span> <span class="pre">&lt;function</span> <span class="pre">DriftCell.__init__&gt;,</span> <span class="pre">'id':</span> <span class="pre">&lt;property</span> <span class="pre">object&gt;,</span> <span class="pre">'width':</span> <span class="pre">&lt;property</span> <span class="pre">object&gt;,</span> <span class="pre">'height':</span> <span class="pre">&lt;property</span> <span class="pre">object&gt;,</span> <span class="pre">'local_center':</span> <span class="pre">&lt;property</span> <span class="pre">object&gt;,</span> <span class="pre">'global_center':</span> <span class="pre">&lt;property</span> <span class="pre">object&gt;,</span> <span class="pre">'local_position_at_min':</span> <span class="pre">&lt;property</span> <span class="pre">object&gt;,</span> <span class="pre">'global_position_at_min':</span> <span class="pre">&lt;property</span> <span class="pre">object&gt;,</span> <span class="pre">'driftTime':</span> <span class="pre">&lt;property</span> <span class="pre">object&gt;,</span> <span class="pre">'_DriftCell__correct_cords':</span> <span class="pre">&lt;function</span> <span class="pre">DriftCell.__correct_cords&gt;,</span> <span class="pre">'__dict__':</span> <span class="pre">&lt;attribute</span> <span class="pre">'__dict__'</span> <span class="pre">of</span> <span class="pre">'DriftCell'</span> <span class="pre">objects&gt;,</span> <span class="pre">'__weakref__':</span> <span class="pre">&lt;attribute</span> <span class="pre">'__weakref__'</span> <span class="pre">of</span> <span class="pre">'DriftCell'</span> <span class="pre">objects&gt;,</span> <span class="pre">'__annotations__':</span> <span class="pre">{}})</span></em><a class="headerlink" href="#dtpr.geometry.drift_cell.DriftCell.__dict__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dtpr.geometry.drift_cell.DriftCell.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/geometry/drift_cell.html#DriftCell.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.geometry.drift_cell.DriftCell.__init__" title="Link to this definition"></a></dt>
+<dd><p>Constructor for DriftCell.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>id</strong> (<em>int</em><em>, </em><em>optional</em>) – Identifier of the drift cell (default is -1).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dtpr.geometry.drift_cell.DriftCell.__module__">
+<span class="sig-name descname"><span class="pre">__module__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'dtpr.geometry.drift_cell'</span></em><a class="headerlink" href="#dtpr.geometry.drift_cell.DriftCell.__module__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dtpr.geometry.drift_cell.DriftCell.__weakref__">
+<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#dtpr.geometry.drift_cell.DriftCell.__weakref__" title="Link to this definition"></a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.drift_cell.DriftCell.driftTime">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">driftTime</span></span><a class="headerlink" href="#dtpr.geometry.drift_cell.DriftCell.driftTime" title="Link to this definition"></a></dt>
+<dd><p>Drift time of the drift cell.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Drift time.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.drift_cell.DriftCell.global_center">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">global_center</span></span><a class="headerlink" href="#dtpr.geometry.drift_cell.DriftCell.global_center" title="Link to this definition"></a></dt>
+<dd><p>Global center coordinates of the drift cell.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Global center coordinates (x, y, z).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.drift_cell.DriftCell.global_position_at_min">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">global_position_at_min</span></span><a class="headerlink" href="#dtpr.geometry.drift_cell.DriftCell.global_position_at_min" title="Link to this definition"></a></dt>
+<dd><p>Global position at the minimum coordinates of the drift cell.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Global position at minimum coordinates (x, y, z).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.drift_cell.DriftCell.height">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">height</span></span><a class="headerlink" href="#dtpr.geometry.drift_cell.DriftCell.height" title="Link to this definition"></a></dt>
+<dd><p>Height of the drift cell.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Height of the drift cell.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.drift_cell.DriftCell.id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#dtpr.geometry.drift_cell.DriftCell.id" title="Link to this definition"></a></dt>
+<dd><p>Identifier of the drift cell.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Identifier of the drift cell.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.drift_cell.DriftCell.local_center">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">local_center</span></span><a class="headerlink" href="#dtpr.geometry.drift_cell.DriftCell.local_center" title="Link to this definition"></a></dt>
+<dd><p>Local center coordinates of the drift cell.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Local center coordinates (x, y, z).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.drift_cell.DriftCell.local_position_at_min">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">local_position_at_min</span></span><a class="headerlink" href="#dtpr.geometry.drift_cell.DriftCell.local_position_at_min" title="Link to this definition"></a></dt>
+<dd><p>Local position at the minimum coordinates of the drift cell.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Local position at minimum coordinates (x, y, z).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.drift_cell.DriftCell.width">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">width</span></span><a class="headerlink" href="#dtpr.geometry.drift_cell.DriftCell.width" title="Link to this definition"></a></dt>
+<dd><p>Width of the drift cell.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Width of the drift cell.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="main.html" class="btn btn-neutral float-left" title="geometry" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="layer.html" class="btn btn-neutral float-right" title="Layer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Daniel Estrada.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

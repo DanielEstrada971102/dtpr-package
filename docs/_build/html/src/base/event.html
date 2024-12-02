@@ -1,0 +1,307 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Event &mdash; DT Pattern Recognition package 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/general_styles.css" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="DtNtuple" href="dtntuple.html" />
+    <link rel="prev" title="base" href="main.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            DT Pattern Recognition package
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="main.html">base</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Event</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dtpr.base.event.Event"><code class="docutils literal notranslate"><span class="pre">Event</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.base.event.Event.__init__"><code class="docutils literal notranslate"><span class="pre">Event.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.base.event.Event.__str__"><code class="docutils literal notranslate"><span class="pre">Event.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.base.event.Event.build_particles"><code class="docutils literal notranslate"><span class="pre">Event.build_particles()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.base.event.Event.filter_particles"><code class="docutils literal notranslate"><span class="pre">Event.filter_particles()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.base.event.Event.iev"><code class="docutils literal notranslate"><span class="pre">Event.iev</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.base.event.Event.particles"><code class="docutils literal notranslate"><span class="pre">Event.particles</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dtntuple.html">DtNtuple</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../particles/main.html">particles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../geometry/main.html">geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../patches/main.html">patches</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DT Pattern Recognition package</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="main.html">base</a></li>
+      <li class="breadcrumb-item active">Event</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/src/base/event.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="event">
+<h1>Event<a class="headerlink" href="#event" title="Link to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">Event</span></code> class is designed to represent an event entry from a root DT Ntuple, facilitating access
+to information by abstracting info into instances of Python objects (<strong>particles</strong>). There are a set
+of already defined particles in the <code class="docutils literal notranslate"><span class="pre">dtpr.particles</span></code> module. Each instance of the <code class="docutils literal notranslate"><span class="pre">Event</span></code>
+class provides specific methods to comfortably access those CMS DT objects such as offline segments,
+generation-level muons, simulation digis, showers, and more.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Event</span></code> class can dynamically build particle instances based on the root event’s entry information if
+specified through a run configuration file. This configuration file contains information about the types
+of particles and how to build them, allowing for flexible and customizable event processing.</p>
+<p>To illustrate the dynamic particle building feature, consider the <code class="docutils literal notranslate"><span class="pre">GenMuon</span></code> class from the
+<code class="docutils literal notranslate"><span class="pre">dtpr.particles.gen_muon</span></code> module. Suppose we want to create instances of <code class="docutils literal notranslate"><span class="pre">GenMuon</span></code> based
+on the root event’s entry when an event is instantiated. This requires specifying the following in a <code class="docutils literal notranslate"><span class="pre">YAML</span></code>
+configuration file under the <code class="docutils literal notranslate"><span class="pre">particle_types</span></code> section:</p>
+<p class="rubric">config.yaml</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">particle_types</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">genmuons</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">class</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;dtpr.particles.gen_muon.GenMuon&#39;</span>
+<span class="w">        </span><span class="nt">n_branch_name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;gen_nGenParts&#39;</span>
+<span class="w">        </span><span class="nt">conditioner</span><span class="p">:</span><span class="w"> </span><span class="c1"># optional</span>
+<span class="w">            </span><span class="nt">property</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;gen_pdgId&#39;</span>
+<span class="w">            </span><span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;==13&quot;</span>
+<span class="w">        </span><span class="nt">sorter</span><span class="p">:</span><span class="w"> </span><span class="c1"># optional</span>
+<span class="w">            </span><span class="nt">by</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;pt&#39;</span>
+<span class="w">            </span><span class="nt">reverse</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Event</span></code> class will create <strong>n</strong> instances of the <code class="docutils literal notranslate"><span class="pre">GenMuon</span></code> class based on the value of the <code class="docutils literal notranslate"><span class="pre">gen_nGenParts</span></code>
+branch. The <code class="docutils literal notranslate"><span class="pre">conditioner</span></code> and <code class="docutils literal notranslate"><span class="pre">sorter</span></code> are optional. The <code class="docutils literal notranslate"><span class="pre">conditioner</span></code> filters the root event’s
+entry information based on specified conditions, and the <code class="docutils literal notranslate"><span class="pre">sorter</span></code> orders the created particles. Ensure
+that the information required to build the particles is present in the root event’s entry. The way to
+create an event instance should be like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ROOT</span> <span class="kn">import</span> <span class="n">TFile</span>
+<span class="kn">from</span> <span class="nn">dtpr.base.event</span> <span class="kn">import</span> <span class="n">Event</span>
+<span class="kn">from</span> <span class="nn">dtpr.utils.config</span> <span class="kn">import</span> <span class="n">RUN_CONFIG</span>
+
+<span class="c1"># First, you need to change the configuration file path. If not,</span>
+<span class="c1"># it will work with the default one dtpr/utils/templates/config_run_template.yaml.</span>
+<span class="c1"># You can also use the latter to define your own configuration file.</span>
+<span class="n">RUN_CONFIG</span><span class="o">.</span><span class="n">change_config</span><span class="p">(</span><span class="n">config_path</span><span class="o">=</span><span class="s2">&quot;path/to/config.yaml&quot;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">TFile</span><span class="p">(</span><span class="s2">&quot;DTDPGNtuple_12_4_2_Phase2Concentrator_Simulation_101.root&quot;</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ntuple</span><span class="p">:</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">ntuple</span><span class="p">[</span><span class="s2">&quot;dtNtupleProducer/DTTREE;1&quot;</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">iev</span><span class="p">,</span> <span class="n">ev</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tree</span><span class="p">):</span>
+        <span class="n">event</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="n">ev</span><span class="p">,</span> <span class="n">iev</span><span class="o">=</span><span class="n">iev</span><span class="p">)</span>
+        <span class="c1"># Print the event summary</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">iev</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="k">break</span> <span class="c1"># Just to show the first two events</span>
+</pre></div>
+</div>
+<p class="rubric">Output</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt;&gt; ------ Event 0 info ------
++ Genmuons
+    * Number of genmuons: 1
+    * Muon 0
+    --&gt; GenPart Idx: 0
+    --&gt; pT: 1953.97 GeV
+    --&gt; Eta: 1.39
+    --&gt; Phi: 0.35
+    --&gt; Matched segments indices: []
+    --&gt; Matched segments location: []
+    --&gt; Stations traversed: []
+    --&gt; Not showered
+&gt;&gt; ------ Event 1 info ------
++ Genmuons
+    * Number of genmuons: 1
+    * Muon 0
+    --&gt; GenPart Idx: 0
+    --&gt; pT: 1797.72 GeV
+    --&gt; Eta: -0.54
+    --&gt; Phi: -0.28
+    --&gt; Matched segments indices: []
+    --&gt; Matched segments location: []
+    --&gt; Stations traversed: []
+    --&gt; Not showered
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Event</span></code> class is not limited to using DT Ntuple information. It can be used in standalone mode
+just like a container by manually adding any type of attribute that you consider necessary. A simple
+example of this is, for instance, adding customized showers to the event. For practice, let us take
+the class <code class="docutils literal notranslate"><span class="pre">Shower</span></code> from the <code class="docutils literal notranslate"><span class="pre">dtpr.particles.shower</span></code> module just to illustrate how to add
+objects to the event:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dtpr.base.event</span> <span class="kn">import</span> <span class="n">Event</span>
+<span class="kn">from</span> <span class="nn">dtpr.particles.shower</span> <span class="kn">import</span> <span class="n">Shower</span>
+
+<span class="n">event</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="n">iev</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">showers</span> <span class="o">=</span> <span class="p">[</span><span class="n">Shower</span><span class="p">(</span><span class="n">iShower</span><span class="o">=</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)]</span>
+<span class="n">event</span><span class="o">.</span><span class="n">showers</span> <span class="o">=</span> <span class="n">showers</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">showers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+<p class="rubric">Output</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt;&gt; ------ Event 0 info ------
++ Showers
+    * Number of showers: 5
+&gt;&gt; ------ Shower 4 info ------
++ Wh: None, Sc: None, St: None, Bx: None, Ndigis: 0, Avg_pos: None, Avg_time: None, Eq2emulator: False
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="dtpr.base.event.Event">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dtpr.base.event.</span></span><span class="sig-name descname"><span class="pre">Event</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_ev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/base/event.html#Event"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.base.event.Event" title="Link to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="dtpr.base.event.Event.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_ev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/base/event.html#Event.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.base.event.Event.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize an Event instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>root_ev</strong> – The Ntuple root entry containing event data.</p></li>
+<li><p><strong>iev</strong> – The event index.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dtpr.base.event.Event.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indentLevel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/base/event.html#Event.__str__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.base.event.Event.__str__" title="Link to this definition"></a></dt>
+<dd><p>Generate a string representation of the event summary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>indentLevel</strong> – The indentation level for the summary.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The event summary.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dtpr.base.event.Event.build_particles">
+<span class="sig-name descname"><span class="pre">build_particles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_ev</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ptype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pinfo</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/base/event.html#Event.build_particles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.base.event.Event.build_particles" title="Link to this definition"></a></dt>
+<dd><p>Build particles of a specific type based on the information provided in the root event entry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>root_ev</strong> – The Ntuple root entry containing event data.</p></li>
+<li><p><strong>ptype</strong> – The type of particles to build. It will be the name of the attribute in the Event instance.</p></li>
+<li><p><strong>pinfo</strong> – The information dictionary for the particle type builder. It should contain the class builder path, the name of the branch to infer the number of particles, and optional conditions and sorting parameters.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dtpr.base.event.Event.filter_particles">
+<span class="sig-name descname"><span class="pre">filter_particles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">particle_type</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/base/event.html#Event.filter_particles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.base.event.Event.filter_particles" title="Link to this definition"></a></dt>
+<dd><p>Filter all particles of a specific type that satisfy given attributes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>particle_type</strong> – The type of particles to filter (e.g., ‘digis’, ‘segments’, ‘tps’).</p></li>
+<li><p><strong>kwargs</strong> – Key-value pairs of attributes to filter by (e.g., wh=1, sc=2, st=3).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of filtered particles. If no particles are found, an empty list is returned.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If invalid keys are provided for filtering.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dtpr.base.event.Event.iev">
+<span class="sig-name descname"><span class="pre">iev</span></span><a class="headerlink" href="#dtpr.base.event.Event.iev" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dtpr.base.event.Event.particles">
+<span class="sig-name descname"><span class="pre">particles</span></span><a class="headerlink" href="#dtpr.base.event.Event.particles" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="main.html" class="btn btn-neutral float-left" title="base" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dtntuple.html" class="btn btn-neutral float-right" title="DtNtuple" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Daniel Estrada.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
