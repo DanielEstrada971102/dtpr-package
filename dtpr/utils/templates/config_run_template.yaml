@@ -1,0 +1,25 @@
+# List of particle types
+particle_types:
+  digis:
+    class: 'dtpr.particles.digi.Digi'
+    n_branch_name: 'digi_nDigis'
+    sorter:
+      by: 'BX'
+  segments:
+    class: 'dtpr.particles.segment.Segment'
+    n_branch_name: 'seg_nSegments'
+  tps:
+    class: 'dtpr.particles.ph2tp.Ph2tp'
+    n_branch_name: 'ph2TpgPhiEmuAm_nTrigs'
+  genmuons:
+    class: 'dtpr.particles.gen_muon.GenMuon'
+    n_branch_name: 'gen_nGenParts'
+    conditioner: 
+      property: 'gen_pdgId'
+      condition: "==13"
+    sorter:
+      by: 'pt'
+      reverse: True
+  emushowers:
+    class: 'dtpr.particles.shower.Shower'
+    n_branch_name: 'ph2Shower_station'
