@@ -7,3 +7,4 @@ results*
 *ROOT*
 *.vscode*
 *test*
+*_build*
