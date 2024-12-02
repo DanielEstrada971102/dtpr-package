@@ -1,0 +1,220 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dtpr.particles.ph2tp &mdash; DT Pattern Recognition package 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/general_styles.css" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../src/index.html" class="icon icon-home">
+            DT Pattern Recognition package
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/base/main.html">base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/particles/main.html">particles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/geometry/main.html">geometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/patches/main.html">patches</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../src/index.html">DT Pattern Recognition package</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../src/index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">dtpr.particles.ph2tp</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for dtpr.particles.ph2tp</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">dtpr.utils.functions</span> <span class="kn">import</span> <span class="n">color_msg</span>
+
+<div class="viewcode-block" id="Ph2tp">
+<a class="viewcode-back" href="../../../src/particles/ph2tp.html#dtpr.particles.ph2tp.Ph2tp">[docs]</a>
+<span class="k">class</span> <span class="nc">Ph2tp</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="s2">&quot;wh&quot;</span><span class="p">,</span> <span class="s2">&quot;sc&quot;</span><span class="p">,</span> <span class="s2">&quot;st&quot;</span><span class="p">,</span> <span class="s2">&quot;phi&quot;</span><span class="p">,</span> <span class="s2">&quot;phiB&quot;</span><span class="p">,</span> <span class="s2">&quot;BX&quot;</span><span class="p">,</span> <span class="s2">&quot;quality&quot;</span><span class="p">,</span> <span class="s2">&quot;rpcFlag&quot;</span><span class="p">,</span> <span class="s2">&quot;phires_conv&quot;</span><span class="p">,</span> <span class="s2">&quot;matches&quot;</span><span class="p">,</span> <span class="s2">&quot;matches_with_segment&quot;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Ph2tp.__init__">
+<a class="viewcode-back" href="../../../src/particles/ph2tp.html#dtpr.particles.ph2tp.Ph2tp.__init__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">itp</span><span class="p">,</span> <span class="n">ev</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wh</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sc</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">st</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">phiB</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">BX</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">quality</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rpcFlag</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a Phase2 Trigger Primitive (Ph2tp) instance.</span>
+
+<span class="sd">        A Phase2 Trigger Primitive can be initialized either by providing the root event entry (`ev`) or by passing each parameter individually.</span>
+
+<span class="sd">        :param itp: The index of the trigger primitive.</span>
+<span class="sd">        :type itp: int</span>
+<span class="sd">        :param ev: The root event object containing event data.</span>
+<span class="sd">        :param wh: The wheel number.</span>
+<span class="sd">        :type wh: int, optional</span>
+<span class="sd">        :param sc: The sector number.</span>
+<span class="sd">        :type sc: int, optional</span>
+<span class="sd">        :param st: The station number.</span>
+<span class="sd">        :type st: int, optional</span>
+<span class="sd">        :param phi: The phi position.</span>
+<span class="sd">        :type phi: float, optional</span>
+<span class="sd">        :param phiB: The phi bending angle.</span>
+<span class="sd">        :type phiB: float, optional</span>
+<span class="sd">        :param BX: The bunch crossing number.</span>
+<span class="sd">        :type BX: int, optional</span>
+<span class="sd">        :param quality: The quality of the trigger primitive.</span>
+<span class="sd">        :type quality: int, optional</span>
+<span class="sd">        :param rpcFlag: The RPC flag.</span>
+<span class="sd">        :type rpcFlag: int, optional</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">itp</span>
+        <span class="k">if</span> <span class="n">ev</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wh</span> <span class="o">=</span> <span class="n">ev</span><span class="o">.</span><span class="n">ph2TpgPhiEmuAm_wheel</span><span class="p">[</span><span class="n">itp</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sc</span> <span class="o">=</span> <span class="n">ev</span><span class="o">.</span><span class="n">ph2TpgPhiEmuAm_sector</span><span class="p">[</span><span class="n">itp</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">st</span> <span class="o">=</span> <span class="n">ev</span><span class="o">.</span><span class="n">ph2TpgPhiEmuAm_station</span><span class="p">[</span><span class="n">itp</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">ev</span><span class="o">.</span><span class="n">ph2TpgPhiEmuAm_phi</span><span class="p">[</span><span class="n">itp</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">phiB</span> <span class="o">=</span> <span class="n">ev</span><span class="o">.</span><span class="n">ph2TpgPhiEmuAm_phiB</span><span class="p">[</span><span class="n">itp</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">BX</span> <span class="o">=</span> <span class="n">ev</span><span class="o">.</span><span class="n">ph2TpgPhiEmuAm_BX</span><span class="p">[</span><span class="n">itp</span><span class="p">]</span> <span class="o">-</span> <span class="mi">20</span>  <span class="c1"># Correct to center BX at 0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">quality</span> <span class="o">=</span> <span class="n">ev</span><span class="o">.</span><span class="n">ph2TpgPhiEmuAm_quality</span><span class="p">[</span><span class="n">itp</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rpcFlag</span> <span class="o">=</span> <span class="n">ev</span><span class="o">.</span><span class="n">ph2TpgPhiEmuAm_rpcFlag</span><span class="p">[</span><span class="n">itp</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wh</span> <span class="o">=</span> <span class="n">wh</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sc</span> <span class="o">=</span> <span class="n">sc</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">st</span> <span class="o">=</span> <span class="n">st</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">phi</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">phiB</span> <span class="o">=</span> <span class="n">phiB</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">BX</span> <span class="o">=</span> <span class="n">BX</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">quality</span> <span class="o">=</span> <span class="n">quality</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rpcFlag</span> <span class="o">=</span> <span class="n">rpcFlag</span>
+
+        <span class="c1"># Constants</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phires_conv</span> <span class="o">=</span> <span class="mf">65536.</span> <span class="o">/</span> <span class="mf">0.5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">matches</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">matches_with_segment</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">return</span></div>
+
+    
+<div class="viewcode-block" id="Ph2tp.to_dict">
+<a class="viewcode-back" href="../../../src/particles/ph2tp.html#dtpr.particles.ph2tp.Ph2tp.to_dict">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert the Phase2 Trigger Primitive (Ph2tp) instance to a dictionary.</span>
+
+<span class="sd">        :return: A dictionary representation of the Ph2tp instance.</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">attr</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__slots__</span><span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="Ph2tp.__str__">
+<a class="viewcode-back" href="../../../src/particles/ph2tp.html#dtpr.particles.ph2tp.Ph2tp.__str__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indentLevel</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate a string representation of the Phase2 Trigger Primitive (Ph2tp) instance.</span>
+
+<span class="sd">        :param indentLevel: The indentation level for the summary.</span>
+<span class="sd">        :type indentLevel: int</span>
+<span class="sd">        :return: The trigger primitive summary.</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">summary</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">color_msg</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;------ ph2tpg </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="si">}</span><span class="s2"> info ------&quot;</span><span class="p">,</span>
+                <span class="n">color</span><span class="o">=</span><span class="s2">&quot;yellow&quot;</span><span class="p">,</span>
+                <span class="n">indentLevel</span><span class="o">=</span><span class="n">indentLevel</span><span class="p">,</span>
+                <span class="n">return_str</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">]</span>
+
+        <span class="n">summary</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="n">color_msg</span><span class="p">(</span>
+                <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                    <span class="p">[</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">attr</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="w"> </span><span class="n">attr</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__slots__</span>
+                        <span class="k">if</span> <span class="n">attr</span> <span class="o">!=</span> <span class="s2">&quot;index&quot;</span>
+                    <span class="p">]</span>
+                <span class="p">),</span>
+                <span class="n">indentLevel</span><span class="o">=</span><span class="n">indentLevel</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="n">return_str</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">summary</span><span class="p">)</span></div>
+</div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">ph2tpg</span> <span class="o">=</span> <span class="n">Ph2tp</span><span class="p">(</span><span class="n">wh</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sc</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">st</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">phiB</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">BX</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">quality</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">rpcFlag</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">ph2tpg</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Daniel Estrada.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
