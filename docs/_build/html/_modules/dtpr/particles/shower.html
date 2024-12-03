@@ -76,14 +76,36 @@
 <span></span><span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">from</span> <span class="nn">dtpr.utils.functions</span> <span class="kn">import</span> <span class="n">color_msg</span>
 
+
 <div class="viewcode-block" id="Shower">
 <a class="viewcode-back" href="../../../src/particles/shower.html#dtpr.particles.shower.Shower">[docs]</a>
 <span class="k">class</span> <span class="nc">Shower</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="s2">&quot;wh&quot;</span><span class="p">,</span> <span class="s2">&quot;sc&quot;</span><span class="p">,</span> <span class="s2">&quot;st&quot;</span><span class="p">,</span> <span class="s2">&quot;BX&quot;</span><span class="p">,</span> <span class="s2">&quot;nDigis&quot;</span><span class="p">,</span> <span class="s2">&quot;avg_pos&quot;</span><span class="p">,</span> <span class="s2">&quot;avg_time&quot;</span><span class="p">,</span> <span class="s2">&quot;eq2Emulator&quot;</span><span class="p">]</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;index&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;wh&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sc&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;st&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;BX&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;nDigis&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;avg_pos&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;avg_time&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;eq2Emulator&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
 
 <div class="viewcode-block" id="Shower.__init__">
 <a class="viewcode-back" href="../../../src/particles/shower.html#dtpr.particles.shower.Shower.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iShower</span><span class="p">,</span> <span class="n">ev</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wh</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sc</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">st</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">BX</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nDigis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">avg_pos</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">avg_time</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">iShower</span><span class="p">,</span>
+        <span class="n">ev</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">wh</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">sc</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">st</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">BX</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">nDigis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">avg_pos</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">avg_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize a Shower instance.</span>
 
@@ -108,7 +130,7 @@
 <span class="sd">        :type avg_time: float, optional</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">iShower</span>
-        <span class="k">if</span> <span class="n">ev</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> <span class="c1"># constructor with root_event info</span>
+        <span class="k">if</span> <span class="n">ev</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># constructor with root_event info</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">wh</span> <span class="o">=</span> <span class="n">ev</span><span class="o">.</span><span class="n">ph2Shower_wheel</span><span class="p">[</span><span class="n">iShower</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sc</span> <span class="o">=</span> <span class="n">ev</span><span class="o">.</span><span class="n">ph2Shower_sector</span><span class="p">[</span><span class="n">iShower</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">st</span> <span class="o">=</span> <span class="n">ev</span><span class="o">.</span><span class="n">ph2Shower_station</span><span class="p">[</span><span class="n">iShower</span><span class="p">]</span>
@@ -117,7 +139,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">avg_pos</span> <span class="o">=</span> <span class="n">ev</span><span class="o">.</span><span class="n">ph2Shower_avg_pos</span><span class="p">[</span><span class="n">iShower</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">avg_time</span> <span class="o">=</span> <span class="n">ev</span><span class="o">.</span><span class="n">ph2Shower_avg_time</span><span class="p">[</span><span class="n">iShower</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">eq2Emulator</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">else</span><span class="p">:</span> <span class="c1"># constructor with explicit info</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># constructor with explicit info</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">wh</span> <span class="o">=</span> <span class="n">wh</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sc</span> <span class="o">=</span> <span class="n">sc</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">st</span> <span class="o">=</span> <span class="n">st</span>
