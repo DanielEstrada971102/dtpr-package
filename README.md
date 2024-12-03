@@ -37,7 +37,7 @@ pip show dtpr
 
 ## Usage
 
-Web documentation is going to be produced. At the moment, you can see it locally by opening the index file from `docs/_build/html/src/index.html`.
+Visit de documentation on [dtpr-package documentation](https://danielestrada971102.github.io/dtpr-package/).
 
 [contributing]: CONTRIBUTING.md
 [developers]: DEVELOPERS.md

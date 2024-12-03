@@ -29,18 +29,20 @@ You can check and fix your code formatting through the usage of `Black`:
 black --check -l 100 dtpr
 ```
 
-### Documentation writing
+### Documentation Writing
 
-We use the [sphinx](https://www.sphinx-doc.org/en/master/usage/quickstart.html) with read-the-docs theme for `python` code documentation.
+We use [Sphinx](https://www.sphinx-doc.org/en/master/usage/quickstart.html) with the Read the Docs theme for Python code documentation.
 
-Complete as necesary the documentation in `docs/src` and generate it using the command:
+To update the documentation, edit the files in the `docs/src` directory. To preview your changes, build the source files by running:
 
 ```shell
-cd /docs
-make html 
+cd docs
+make html
 ```
 
-Generated files are placed in `docs/_build` and main `index.html` can be found in `docs/_build/index.html`.
+The generated files will be placed in the `docs/_build` directory. You can view the main `index.html` file at `docs/_build/html/index.html`.
+
+Once your changes are ready, commit and push them. The updates will be automatically deployed to the online documentation via GitHub Actions when the main branch is updated.
 
 ## Tips
 ...

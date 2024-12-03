@@ -29,7 +29,8 @@ class dtpatch(object):
         self.axes = axes
         self.view = view
 
-        self.local = True  # local At the moment global is not working
+        # self.local = True  # local At the moment global is not working
+        self.local = local
 
         self.setup_canvas()
 
@@ -147,25 +148,25 @@ if __name__ == "__main__":
     import matplotlib.pyplot as plt
     from dtpr.geometry.station import Station
 
-    local = True
-    # local = False
+    # local = True
+    local = False
     fig, axs = plt.subplots(1, 1, figsize=(60, 50))
-    dt_chamber = Station(wheel=2, sector=1, station=1)
+    dt_chamber = Station(wheel=-2, sector=12, station=1)
     dt_patch = dtpatch(
         MB=dt_chamber,
-        dt_info=[
-            {"sl": 1, "l": 1, "w": 1, "time": 300},
-            {"sl": 1, "l": 1, "w": 2, "time": 400},
-            {"sl": 1, "l": 2, "w": 1, "time": 500},
-            {"sl": 1, "l": 2, "w": 2, "time": 600},
-            {"sl": 2, "l": 1, "w": 1, "time": 700},
-            {"sl": 2, "l": 1, "w": 2, "time": 800},
-            {"sl": 2, "l": 2, "w": 1, "time": 900},
-            {"sl": 3, "l": 1, "w": 1, "time": 700},
-            {"sl": 3, "l": 1, "w": 2, "time": 800},
-            {"sl": 3, "l": 2, "w": 1, "time": 900},
-            {"sl": 3, "l": 2, "w": 2, "time": 1000},
-        ],
+        # dt_info=[
+        #     {"sl": 1, "l": 1, "w": 1, "time": 300},
+        #     {"sl": 1, "l": 1, "w": 2, "time": 400},
+        #     {"sl": 1, "l": 2, "w": 1, "time": 500},
+        #     {"sl": 1, "l": 2, "w": 2, "time": 600},
+        #     {"sl": 2, "l": 1, "w": 1, "time": 700},
+        #     {"sl": 2, "l": 1, "w": 2, "time": 800},
+        #     {"sl": 2, "l": 2, "w": 1, "time": 900},
+        #     {"sl": 3, "l": 1, "w": 1, "time": 700},
+        #     {"sl": 3, "l": 1, "w": 2, "time": 800},
+        #     {"sl": 3, "l": 2, "w": 1, "time": 900},
+        #     {"sl": 3, "l": 2, "w": 2, "time": 1000},
+        # ],
         fig=fig,
         axes=axs,
         local=local,
@@ -184,6 +185,10 @@ if __name__ == "__main__":
             axs.scatter(x, y, color="orange", s=10)
             x_c, y_c, _ = l.cells[0].local_center if local else l.cells[0].global_center
             axs.scatter(x_c, y_c, color="purple", s=10)
+
+    if not local:
+        axs.set_xlim(-750, 750)
+        axs.set_ylim(-750, 750)
 
     # fig.savefig("test.svg")
     plt.show()

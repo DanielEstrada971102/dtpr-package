@@ -44,7 +44,7 @@ To check if the package was installed successfully, run:
    :maxdepth: 2
    :caption: Contents:
 
-   base/main
-   particles/main
-   geometry/main
-   patches/main
+   src/base/main
+   src/particles/main
+   src/geometry/main
+   src/patches/main
