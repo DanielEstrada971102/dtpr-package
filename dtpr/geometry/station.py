@@ -1,6 +1,7 @@
 from dtpr.geometry.dt_geometry import DTGEOMETRY
 from dtpr.geometry.super_layer import SuperLayer
 
+
 class Station(object):
     """
     Class representing a Drift Station.
@@ -122,7 +123,9 @@ class Station(object):
         :return: Super layer with the specified number.
         :rtype: SuperLayer
         """
-        return next((sl for sl in self.super_layers if sl.number == super_layer_number), None)
+        return next(
+            (sl for sl in self.super_layers if sl.number == super_layer_number), None
+        )
 
     @property
     def local_center(self):
@@ -251,9 +254,9 @@ class Station(object):
 
     def _correct_cords(self, x, y, z):
         """
-        Correct the coordinates of the station. Bear in mind that the station reference 
+        Correct the coordinates of the station. Bear in mind that the station reference
         frame is rotated pi/2 with respect to the CMS frame along x direction:
-        
+
         CMS -> x: right, y: up, z: forward, Station -> x: right, y: forward, z: down
 
         :param x: x coordinate.
@@ -277,18 +280,29 @@ class Station(object):
 
 
 if __name__ == "__main__":
-    local=False
+    local = False
     st = Station(wheel=-2, sector=1, station=4)
     print("Local: ", local)
     print("Station center:", st.local_center if local else st.global_center)
     print("Station direction:", st.direction)
     for sl in st.super_layers:
-        print(f">Super Layer {sl.number} center:", sl.local_center if local else sl.global_center)
+        print(
+            f">Super Layer {sl.number} center:",
+            sl.local_center if local else sl.global_center,
+        )
         for l in sl.layers:
-            print(f"->Layer {l.number} center:", l.local_center if local else l.global_center)
-            print(f"---First Cell center:", l.cells[0].local_center if local else l.cells[0].global_center)
-            print(f"---Last Cell center:", l.cells[-1].local_center if local else l.cells[-1].global_center)
-
+            print(
+                f"->Layer {l.number} center:",
+                l.local_center if local else l.global_center,
+            )
+            print(
+                f"---First Cell center:",
+                l.cells[0].local_center if local else l.cells[0].global_center,
+            )
+            print(
+                f"---Last Cell center:",
+                l.cells[-1].local_center if local else l.cells[-1].global_center,
+            )
 
     # print(st.center)
     # print(st.super_layers)

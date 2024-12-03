@@ -1,10 +1,36 @@
 import math
 from dtpr.utils.functions import color_msg
 
-class Ph2tp(object):
-    __slots__ = ["index", "wh", "sc", "st", "phi", "phiB", "BX", "quality", "rpcFlag", "phires_conv", "matches", "matches_with_segment"]
 
-    def __init__(self, itp, ev=None, wh=None, sc=None, st=None, phi=None, phiB=None, BX=None, quality=None, rpcFlag=None):
+class Ph2tp(object):
+    __slots__ = [
+        "index",
+        "wh",
+        "sc",
+        "st",
+        "phi",
+        "phiB",
+        "BX",
+        "quality",
+        "rpcFlag",
+        "phires_conv",
+        "matches",
+        "matches_with_segment",
+    ]
+
+    def __init__(
+        self,
+        itp,
+        ev=None,
+        wh=None,
+        sc=None,
+        st=None,
+        phi=None,
+        phiB=None,
+        BX=None,
+        quality=None,
+        rpcFlag=None,
+    ):
         """
         Initialize a Phase2 Trigger Primitive (Ph2tp) instance.
 
@@ -51,11 +77,11 @@ class Ph2tp(object):
             self.rpcFlag = rpcFlag
 
         # Constants
-        self.phires_conv = 65536. / 0.5
+        self.phires_conv = 65536.0 / 0.5
         self.matches = []
         self.matches_with_segment = False
         return
-    
+
     def to_dict(self):
         """
         Convert the Phase2 Trigger Primitive (Ph2tp) instance to a dictionary.
@@ -97,6 +123,7 @@ class Ph2tp(object):
             )
         )
         return "\n".join(summary)
+
 
 if __name__ == "__main__":
     ph2tpg = Ph2tp(wh=1, sc=1, st=1, phi=1, phiB=1, BX=1, quality=1, rpcFlag=1)

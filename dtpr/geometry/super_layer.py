@@ -2,6 +2,7 @@ from dtpr.geometry.layer import Layer
 from dtpr.geometry.dt_geometry import DTGeometry
 from dtpr.geometry.dt_geometry import DTGEOMETRY
 
+
 class SuperLayer(object):
     """
     Class representing a SuperLayer.
@@ -19,7 +20,7 @@ class SuperLayer(object):
     layers : list
         List of layers in the super layer.
     """
-    
+
     def __init__(self, rawId, parent=None):
         """
         Constructor
@@ -30,9 +31,9 @@ class SuperLayer(object):
         self.parent = parent
         self._layers = []
         self.id = rawId
-        self.number = int(DTGEOMETRY.get('superLayerNumber', rawId=rawId))
-        self.global_center = DTGEOMETRY.get('GlobalPosition', rawId=rawId)
-        self.local_center = DTGEOMETRY.get('LocalPosition', rawId=rawId)
+        self.number = int(DTGEOMETRY.get("superLayerNumber", rawId=rawId))
+        self.global_center = DTGEOMETRY.get("GlobalPosition", rawId=rawId)
+        self.local_center = DTGEOMETRY.get("LocalPosition", rawId=rawId)
 
         self._build_super_layer()
 
@@ -151,12 +152,12 @@ class SuperLayer(object):
 
     def __correct_cords(self, x, y, z):
         """
-        Correct the coordinates of the super layer. Bear in mind that the station reference 
+        Correct the coordinates of the super layer. Bear in mind that the station reference
         frame is rotated pi/2 with respect to the CMS frame depending on the super layer number:
-        
+
         if SL == 1 or 3:
             CMS -> x: right, y: up, z: forward, SuperLayer -> x: right, y: forward, z: down
-        
+
         if SL == 2:
             CMS -> x: right, y: up, z: forward, SuperLayer -> x: backward, y: right, z: down
 
@@ -179,7 +180,8 @@ class SuperLayer(object):
         Ensemble a DT super layer.
         """
         for layer in DTGEOMETRY.get(rawId=self.id).iter("Layer"):
-            self.add_layer(Layer(layer.get('rawId'), parent=self))
+            self.add_layer(Layer(layer.get("rawId"), parent=self))
+
 
 # Example usage
 if __name__ == "__main__":

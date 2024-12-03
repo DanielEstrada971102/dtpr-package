@@ -15,6 +15,7 @@
 import numpy as np
 from dtpr.geometry.dt_geometry import DTGEOMETRY
 
+
 class DriftCell(object):
     """
     Class representing a Drift Cell.
@@ -108,9 +109,9 @@ class DriftCell(object):
         :return: Local position at minimum coordinates (x, y, z).
         :rtype: tuple
         """
-        x = self._x_local - self._width/2
-        y = self._y_local - self._height/2
-        z = self._z_local - self._length/2
+        x = self._x_local - self._width / 2
+        y = self._y_local - self._height / 2
+        z = self._z_local - self._length / 2
         return x, y, z
 
     @property
@@ -121,9 +122,9 @@ class DriftCell(object):
         :return: Global position at minimum coordinates (x, y, z).
         :rtype: tuple
         """
-        x = self._x_global - self._width/2
-        y = self._y_global - self._height/2
-        z = self._z_global - self._length/2
+        x = self._x_global - self._width / 2
+        y = self._y_global - self._height / 2
+        z = self._z_global - self._length / 2
         return x, y, z
 
     @property
@@ -195,16 +196,16 @@ class DriftCell(object):
         :param time: Drift time.
         :type time: float
         """
-        self._driftTime=time
+        self._driftTime = time
 
     def __correct_cords(self, x, y, z):
         """
-        Correct the coordinates of the DriftCell. Bear in mind that the station reference 
+        Correct the coordinates of the DriftCell. Bear in mind that the station reference
         frame is rotated pi/2 with respect to the CMS frame depending on the super layer number:
-        
+
         if cell lives in SL == 1 or 3:
             CMS -> x: right, y: up, z: forward, SuperLayer -> x: right, y: forward, z: down
-        
+
         if cell lives in SL == 2:
             CMS -> x: right, y: up, z: forward, SuperLayer -> x: backward, y: right, z: down
 
@@ -225,4 +226,3 @@ class DriftCell(object):
         # else:
         #     return x, y, z
         return x, y, z
-

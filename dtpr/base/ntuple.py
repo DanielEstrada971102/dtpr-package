@@ -3,6 +3,7 @@ import os
 from dtpr.base.event import Event
 from dtpr.utils.functions import color_msg
 
+
 class NTuple(object):
     def __init__(self, inputFolder, selectors, maxfiles=-1, tree_name="/TTREE"):
         """
@@ -25,7 +26,11 @@ class NTuple(object):
 
         # Prepare input
         self.load_tree(inputFolder)
-        self.events = (ev for iev, root_ev in enumerate(self.tree) if (ev := self.run(Event(root_ev, iev))))
+        self.events = (
+            ev
+            for iev, root_ev in enumerate(self.tree)
+            if (ev := self.run(Event(root_ev, iev)))
+        )
 
     def run(self, ev: Event):
         """
@@ -65,7 +70,11 @@ class NTuple(object):
         else:
             color_msg(f"Opening input files from {inpath}", "blue", 1)
             allFiles = os.listdir(inpath)
-            nFiles = len(allFiles) if self.maxfiles == -1 else min(len(allFiles), self.maxfiles)
+            nFiles = (
+                len(allFiles)
+                if self.maxfiles == -1
+                else min(len(allFiles), self.maxfiles)
+            )
             self.maxfiles = nFiles
 
             for iF in range(nFiles):

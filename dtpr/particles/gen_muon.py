@@ -1,8 +1,18 @@
 import math
 from dtpr.utils.functions import color_msg, phiConv
 
+
 class GenMuon(object):
-    __slots__ = ["index", "pt", "eta", "phi", "charge", "matches", "matched_segments_stations", "showered"]
+    __slots__ = [
+        "index",
+        "pt",
+        "eta",
+        "phi",
+        "charge",
+        "matches",
+        "matched_segments_stations",
+        "showered",
+    ]
 
     def __init__(self, igm, ev=None, pt=None, eta=None, phi=None, charge=None):
         """
@@ -22,17 +32,17 @@ class GenMuon(object):
         :type charge: int, optional
         """
         self.index = igm
-        if ev is not None: # constructor with root_event info
+        if ev is not None:  # constructor with root_event info
             self.pt = ev.gen_pt[igm]
             self.eta = ev.gen_eta[igm]
             self.phi = ev.gen_phi[igm]
             self.charge = ev.gen_charge[igm]
-        else: # constructor with explicit info
+        else:  # constructor with explicit info
             self.pt = pt
             self.eta = eta
             self.phi = phi
-            self.charge = charge 
-        
+            self.charge = charge
+
         # Attributes
         self.matches = []
         self.matched_segments_stations = []
@@ -55,8 +65,9 @@ class GenMuon(object):
         :param seg: The segment to add.
         :type seg: Segment
         """
-        if seg not in self.matches: self.matches.append(seg)
-        location = (seg.st, seg.sc, seg.wh) 
+        if seg not in self.matches:
+            self.matches.append(seg)
+        location = (seg.st, seg.sc, seg.wh)
         self.matched_segments_stations.append(location)
 
     def match_segment(self, seg, max_dPhi, max_dEta):
@@ -71,13 +82,18 @@ class GenMuon(object):
         :type max_dEta: float
         """
         st = seg.st
-        isMB4 = (st == 4)            
+        isMB4 = st == 4
         dphi = abs(math.acos(math.cos(self.phi - seg.phi)))
-        deta = abs(self.eta - seg.eta)            
-        matches = (dphi < max_dPhi) and (deta < max_dEta) and seg.nHits_phi >= 4 and (seg.nHits_z >= 4 or isMB4)
-        if matches: 
+        deta = abs(self.eta - seg.eta)
+        matches = (
+            (dphi < max_dPhi)
+            and (deta < max_dEta)
+            and seg.nHits_phi >= 4
+            and (seg.nHits_z >= 4 or isMB4)
+        )
+        if matches:
             self.add_match(seg)
-    
+
     def get_max_dphi(self):
         """
         Compute the maximum dPhi of the segments that match to the generator muon.
@@ -85,10 +101,12 @@ class GenMuon(object):
         :return: The maximum dPhi.
         :rtype: float
         """
-        if self.matches == []: 
+        if self.matches == []:
             return -99
-        return max([abs(math.acos(math.cos(self.phi - seg.phi))) for seg in self.matches])
-    
+        return max(
+            [abs(math.acos(math.cos(self.phi - seg.phi))) for seg in self.matches]
+        )
+
     def get_dphimax_segments(self):
         """
         Compute the maximum dPhi of the segments of two adjacent stations that match to the generator muon.
@@ -96,20 +114,21 @@ class GenMuon(object):
         :return: The maximum dPhi.
         :rtype: float
         """
-        if self.matches == []: 
+        if self.matches == []:
             return -99
-        
+
         dphi = []
         for seg1 in self.matches:
-            for seg2 in self.matches: 
+            for seg2 in self.matches:
                 # ignore the same segment or any segment on the same chamber
-                if seg1.st == seg2.st: continue 
+                if seg1.st == seg2.st:
+                    continue
                 dphi.append(abs(math.acos(math.cos(seg1.phi - seg2.phi))))
-        if dphi == []: 
+        if dphi == []:
             return -99
-        else:               
-            return max(dphi) 
-        
+        else:
+            return max(dphi)
+
     def get_dphimax_tp(self):
         """
         Compute the maximum dPhi of the TPs of two adjacent stations that match to the generator muon.
@@ -117,25 +136,36 @@ class GenMuon(object):
         :return: The maximum dPhi.
         :rtype: float
         """
-        if self.matches == []: 
+        if self.matches == []:
             return -99
-        
+
         dphi = []
         for seg1 in self.matches:
             phi_tp1 = [tp.phi for tp in seg1.matches]
-            for seg2 in self.matches: 
+            for seg2 in self.matches:
                 # ignore the same segment or any segment on the same chamber
-                if seg1.st == seg2.st: continue
-                if seg1.sc != seg2.sc: continue
+                if seg1.st == seg2.st:
+                    continue
+                if seg1.sc != seg2.sc:
+                    continue
                 phi_tp2 = [tp.phi for tp in seg2.matches]
-                if phi_tp1 == [] or phi_tp2 == []: continue
-                dphi.append(max([abs(math.acos(math.cos(phiConv(phi1) - phiConv(phi2)))) for phi1 in phi_tp1 for phi2 in phi_tp2]))
+                if phi_tp1 == [] or phi_tp2 == []:
+                    continue
+                dphi.append(
+                    max(
+                        [
+                            abs(math.acos(math.cos(phiConv(phi1) - phiConv(phi2))))
+                            for phi1 in phi_tp1
+                            for phi2 in phi_tp2
+                        ]
+                    )
+                )
 
-        if dphi == []: 
+        if dphi == []:
             return -99
-        else:               
+        else:
             return dphi
-    
+
     def get_dphi_segments(self):
         """
         Compute the dPhi of the segments of two adjacent stations that match to the generator muon.
@@ -143,21 +173,22 @@ class GenMuon(object):
         :return: A list of dPhi values.
         :rtype: list
         """
-        if self.matches == []: 
+        if self.matches == []:
             return -99
-        
+
         dphi = []
         for seg1 in self.matches:
-            for seg2 in self.matches: 
+            for seg2 in self.matches:
                 # ignore the same segment or any segment on the same chamber
-                if seg1.st == seg2.st: continue 
+                if seg1.st == seg2.st:
+                    continue
                 dphi.append(abs(math.acos(math.cos(seg1.phi - seg2.phi))))
-        
-        if dphi == []: 
+
+        if dphi == []:
             return -99
-        else:               
+        else:
             return dphi
-        
+
     def get_dphi_tp(self):
         """
         Compute the dPhi of the TPs of two adjacent stations that match to the generator muon.
@@ -165,23 +196,32 @@ class GenMuon(object):
         :return: A list of dPhi values.
         :rtype: list
         """
-        if self.matches == []: 
+        if self.matches == []:
             return -99
-        
+
         dphi = []
         for seg1 in self.matches:
             phi_tp1 = [tp.phi for tp in seg1.matches]
-            for seg2 in self.matches: 
+            for seg2 in self.matches:
                 # ignore the same segment or any segment on the same chamber
-                if seg1.st == seg2.st: continue
-                if seg1.sc != seg2.sc: continue
+                if seg1.st == seg2.st:
+                    continue
+                if seg1.sc != seg2.sc:
+                    continue
                 phi_tp2 = [tp.phi for tp in seg2.matches]
-                if phi_tp1 == [] or phi_tp2 == []: continue
-                dphi.append([abs(math.acos(math.cos(phiConv(phi1) - phiConv(phi2)))) for phi1 in phi_tp1 for phi2 in phi_tp2])
+                if phi_tp1 == [] or phi_tp2 == []:
+                    continue
+                dphi.append(
+                    [
+                        abs(math.acos(math.cos(phiConv(phi1) - phiConv(phi2))))
+                        for phi1 in phi_tp1
+                        for phi2 in phi_tp2
+                    ]
+                )
 
-        if dphi == []: 
+        if dphi == []:
             return -99
-        else:               
+        else:
             return dphi
 
     def get_max_deta(self):
@@ -191,10 +231,10 @@ class GenMuon(object):
         :return: The maximum dEta.
         :rtype: float
         """
-        if self.matches == []: 
+        if self.matches == []:
             return -99
         return max([abs(self.eta - seg.eta) for seg in self.matches])
-    
+
     def did_shower(self):
         """
         Check if the muon showered.
@@ -203,7 +243,7 @@ class GenMuon(object):
         :rtype: bool
         """
         return self.showered
-        
+
     def __str__(self, indentLevel=0):
         """
         Generate a string representation of the Generator Level Muon instance.
@@ -214,15 +254,58 @@ class GenMuon(object):
         :rtype: str
         """
         summary = []
-        summary.append(color_msg(f"GenPart Idx: {self.index}", indentLevel=indentLevel, return_str=True))
-        summary.append(color_msg(f"pT: {self.pt:.2f} GeV", indentLevel=indentLevel, return_str=True))
-        summary.append(color_msg(f"Eta: {self.eta:.2f}", indentLevel=indentLevel, return_str=True))
-        summary.append(color_msg(f"Phi: {self.phi:.2f}", indentLevel=indentLevel, return_str=True))
-        summary.append(color_msg(f"Matched segments indices: {[seg.index for seg in self.matches]}", indentLevel=indentLevel, return_str=True))
-        summary.append(color_msg(f"Matched segments location: {[(seg.st, seg.sc, seg.wh) for seg in self.matches]}", indentLevel=indentLevel, return_str=True))
-        summary.append(color_msg(f"Stations traversed: {self.matched_segments_stations}", indentLevel=indentLevel, return_str=True))
+        summary.append(
+            color_msg(
+                f"GenPart Idx: {self.index}", indentLevel=indentLevel, return_str=True
+            )
+        )
+        summary.append(
+            color_msg(
+                f"pT: {self.pt:.2f} GeV", indentLevel=indentLevel, return_str=True
+            )
+        )
+        summary.append(
+            color_msg(f"Eta: {self.eta:.2f}", indentLevel=indentLevel, return_str=True)
+        )
+        summary.append(
+            color_msg(f"Phi: {self.phi:.2f}", indentLevel=indentLevel, return_str=True)
+        )
+        summary.append(
+            color_msg(
+                f"Matched segments indices: {[seg.index for seg in self.matches]}",
+                indentLevel=indentLevel,
+                return_str=True,
+            )
+        )
+        summary.append(
+            color_msg(
+                f"Matched segments location: {[(seg.st, seg.sc, seg.wh) for seg in self.matches]}",
+                indentLevel=indentLevel,
+                return_str=True,
+            )
+        )
+        summary.append(
+            color_msg(
+                f"Stations traversed: {self.matched_segments_stations}",
+                indentLevel=indentLevel,
+                return_str=True,
+            )
+        )
         if self.showered:
-            summary.append(color_msg(f"Showered", color="red", indentLevel=indentLevel, return_str=True,))
+            summary.append(
+                color_msg(
+                    f"Showered",
+                    color="red",
+                    indentLevel=indentLevel,
+                    return_str=True,
+                )
+            )
         else:
-            summary.append(color_msg(f"Not showered", indentLevel=indentLevel, return_str=True,))
+            summary.append(
+                color_msg(
+                    f"Not showered",
+                    indentLevel=indentLevel,
+                    return_str=True,
+                )
+            )
         return "\n".join(summary)
