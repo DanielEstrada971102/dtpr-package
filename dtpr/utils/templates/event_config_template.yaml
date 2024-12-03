@@ -1,4 +1,6 @@
 # List of particle types
+# Add or delete the particle types as needed
+
 particle_types:
   digis:
     class: 'dtpr.particles.digi.Digi'

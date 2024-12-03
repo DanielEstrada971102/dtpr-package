@@ -4,7 +4,7 @@
 import os
 import warnings
 from importlib import import_module
-from dtpr.utils.config import RUN_CONFIG
+from dtpr.utils.config import EVENT_CONFIG
 from dtpr.utils.functions import color_msg
 
 class Event:
@@ -22,8 +22,8 @@ class Event:
         self.particles = {}  # Initialize an empty dictionary for particles
 
         if root_ev is not None:
-            if RUN_CONFIG.particle_types:
-                for ptype, pinfo in RUN_CONFIG.particle_types.items():
+            if EVENT_CONFIG.particle_types:
+                for ptype, pinfo in EVENT_CONFIG.particle_types.items():
                     self.build_particles(root_ev, ptype, pinfo)
             else:
                 warnings.warn("No particle types defined in the configuration file. Initializing an empty Event instance.")
