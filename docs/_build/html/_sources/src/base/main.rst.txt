@@ -2,7 +2,7 @@ base
 ====
 
 The ``dtpr.base`` module provides a set of classes designed to offer simple and versatile methods 
-for manipulating Event information derived from root DT Ntuples. These classes facilitate the 
+for manipulating Event information derived from root Ntuples. These classes facilitate the 
 extraction, transformation, and analysis of event data. Each class is equipped with methods tailored
 to handle specific aspects of event data processing, ensuring efficient and effective data manipulation.
 
@@ -11,7 +11,7 @@ to handle specific aspects of event data processing, ensuring efficient and effe
    :caption: Classes:
 
    event
-   dtntuple
+   ntuple
 
 
 

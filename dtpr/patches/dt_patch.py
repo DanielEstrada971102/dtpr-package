@@ -21,14 +21,15 @@ cmap = plt.get_cmap("viridis").copy()
 cmap.set_under("w")
 norm = Normalize(vmin=299, vmax=1000, clip=False)
 
+
 class dtpatch(object):
-    def __init__(self, MB: Station, fig, axes, view ="phi", dt_info=None, local=True):
+    def __init__(self, MB: Station, fig, axes, view="phi", dt_info=None, local=True):
         self.current_DT = MB
         self.fig = fig
         self.axes = axes
         self.view = view
 
-        self.local = True #local At the moment global is not working
+        self.local = True  # local At the moment global is not working
 
         self.setup_canvas()
 
@@ -41,7 +42,7 @@ class dtpatch(object):
             self.cell_patches,
             cmap=cmap,
             norm=norm,
-            edgecolors='k',
+            edgecolors="k",
             linewidth=1,
         )
         collection.set_array(cell_times)
@@ -49,66 +50,76 @@ class dtpatch(object):
         self.axes.add_collection(collection)
         # add circle
         if not self.local:
-            axs.add_patch(plt.Circle((0, 0), 750, alpha=1, edgecolor='black', facecolor='none'))
+            axs.add_patch(
+                plt.Circle((0, 0), 750, alpha=1, edgecolor="black", facecolor="none")
+            )
         # add colorbar
         self.fig.colorbar(collection, label="time [ns]")
-        
-
 
     def setup_canvas(self):
-        width, height, length = self.current_DT.bounds 
-        x, y, z = self.current_DT.global_center if not self.local else self.current_DT.local_center
+        width, height, length = self.current_DT.bounds
+        x, y, z = (
+            self.current_DT.global_center
+            if not self.local
+            else self.current_DT.local_center
+        )
 
         # print(f"Setting limits: x = {x}, y = {y}, width = {width}, height = {height}")
         # print("xlims: ", x - (width * 0.5) - 5, x + (width * 0.5) + 5)
-        
-        if not  self.local or self.view == "phi":
+
+        if not self.local or self.view == "phi":
             self.axes.set_xlabel("x[cm]")
             self.axes.set_ylabel("y[cm]")
-            self.axes.set_xlim( x - (width * 0.5) - 5 , x + (width * 0.5) + 5)
-            self.axes.set_ylim( y - (height * 0.5) - 5, y + (height * 0.5) + 5)
+            self.axes.set_xlim(x - (width * 0.5) - 5, x + (width * 0.5) + 5)
+            self.axes.set_ylim(y - (height * 0.5) - 5, y + (height * 0.5) + 5)
 
         elif self.view == "theta":
             self.axes.set_xlabel("-y[cm]")
             self.axes.set_ylabel("z[cm]")
-            self.axes.set_xlim( y - (length * 0.5) - 5 , y + (length * 0.5) + 5)
-            self.axes.set_ylim( z - (height * 0.5) - 5, z + (height * 0.5) + 5)
+            self.axes.set_xlim(y - (length * 0.5) - 5, y + (length * 0.5) + 5)
+            self.axes.set_ylim(z - (height * 0.5) - 5, z + (height * 0.5) + 5)
 
         return
 
-    def _make_dt_patches(self):        
+    def _make_dt_patches(self):
         MB = self.current_DT
         cell_patches = []
         cell_times = []
 
-        if not self.local: # if global, compute the angle to rotate the patches
-            nx, ny, nz= MB.direction
-            angle = (degrees(atan2(ny, nx)) + 90)# ang_incline = ang_normal_refx + 90
+        if not self.local:  # if global, compute the angle to rotate the patches
+            nx, ny, nz = MB.direction
+            angle = degrees(atan2(ny, nx)) + 90  # ang_incline = ang_normal_refx + 90
 
         for super_layer in MB.super_layers:
             if not self.local or self.view == "phi":
-                if super_layer.number == 2: continue # we are not plotting SL-Theta
+                if super_layer.number == 2:
+                    continue  # we are not plotting SL-Theta
             elif self.view == "theta":
-                if super_layer.number != 2: continue
-            
+                if super_layer.number != 2:
+                    continue
+
             for layer in super_layer.layers:
                 for cell in layer.cells:
-                    xmin, ymin, _ = cell.local_position_at_min if self.local else cell.global_position_at_min # the global location appears to be wrong, ask pelayo
+                    xmin, ymin, _ = (
+                        cell.local_position_at_min
+                        if self.local
+                        else cell.global_position_at_min
+                    )  # the global location appears to be wrong, ask pelayo
                     width = cell.width
                     height = cell.height
                     drift_time = cell.driftTime
 
-                    # create cell patch 
+                    # create cell patch
                     cell_patch = Rectangle(
                         (xmin, ymin),
                         width,
                         height,
                     )
 
-                    if not self.local :  # if global, rotate the patch
-                        x, y, _ = layer.global_center # rotation_point
+                    if not self.local:  # if global, rotate the patch
+                        x, y, _ = layer.global_center  # rotation_point
 
-                        cell_patch.rotation_point=(x, y) 
+                        cell_patch.rotation_point = (x, y)
                         cell_patch.set_angle(angle)
 
                     cell_patches.append(cell_patch)
@@ -117,13 +128,17 @@ class dtpatch(object):
         return cell_patches, cell_times
 
     def set_cells_times(self, DT_info):
-        info_iter = (DataFrame(DT_info) if isinstance(DT_info, (dict, list)) else DT_info).itertuples(index=False)
+        info_iter = (
+            DataFrame(DT_info) if isinstance(DT_info, (dict, list)) else DT_info
+        ).itertuples(index=False)
         for info in info_iter:
             sl, l, w, time = info.sl, info.l, info.w, info.time
             if not self.local or self.view == "phi":
-                if sl == 2: continue # we are not plotting info in SL-Theta
+                if sl == 2:
+                    continue  # we are not plotting info in SL-Theta
             elif self.view == "theta":
-                if sl != 2: continue
+                if sl != 2:
+                    continue
             self.current_DT.super_layer(sl).layer(l).cell(w).driftTime = time
         return
 
@@ -160,7 +175,8 @@ if __name__ == "__main__":
     axs.scatter(x, y, color="red", s=10)
 
     for sl in dt_chamber.super_layers:
-        if sl.number == 2: continue
+        if sl.number == 2:
+            continue
         x, y, _ = sl.local_center if local else sl.global_center
         axs.scatter(x, y, color="green", s=10)
         for l in sl.layers:

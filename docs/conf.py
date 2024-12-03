@@ -6,7 +6,7 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'DT Pattern Recognition package'
+project = 'dtpr-package'
 copyright = '2024, Daniel Estrada'
 author = 'Daniel Estrada'
 release = '0.1.0'

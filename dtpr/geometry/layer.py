@@ -1,6 +1,7 @@
 from dtpr.geometry.drift_cell import DriftCell
 from dtpr.geometry.dt_geometry import DTGeometry, DTGEOMETRY
 
+
 class Layer(object):
     """
     Class representing a Layer.
@@ -18,7 +19,7 @@ class Layer(object):
     cells : list
         List of drift cells in the layer.
     """
-    
+
     def __init__(self, rawId, parent=None):
         """
         Constructor
@@ -33,12 +34,11 @@ class Layer(object):
         self.number = int(DTGEOMETRY.get("layerNumber", rawId=rawId))
         self._DriftCells = []
 
-        self._first_cell_id = int(DTGEOMETRY.get( ".//Channels//first" , rawId=rawId))
-        self._last_cell_id = int(DTGEOMETRY.get( ".//Channels//last" , rawId=rawId))
+        self._first_cell_id = int(DTGEOMETRY.get(".//Channels//first", rawId=rawId))
+        self._last_cell_id = int(DTGEOMETRY.get(".//Channels//last", rawId=rawId))
 
-        self.local_center = DTGEOMETRY.get( "LocalPosition" , rawId=rawId)
-        self.global_center = DTGEOMETRY.get( "GlobalPosition" , rawId=rawId)
-
+        self.local_center = DTGEOMETRY.get("LocalPosition", rawId=rawId)
+        self.global_center = DTGEOMETRY.get("GlobalPosition", rawId=rawId)
 
         self._build_layer()
 
@@ -104,7 +104,9 @@ class Layer(object):
         """
         if cell_id < self._first_cell_id or cell_id > self._last_cell_id:
             raise ValueError(f"Invalid cell id: {cell_id}")
-        return self.cells[cell_id - self._first_cell_id] # to match the cell id with the list index
+        return self.cells[
+            cell_id - self._first_cell_id
+        ]  # to match the cell id with the list index
 
     @id.setter
     def id(self, id):
@@ -160,12 +162,12 @@ class Layer(object):
 
     def __correct_cords(self, x, y, z):
         """
-        Correct the coordinates of the layer. Bear in mind that the station reference 
+        Correct the coordinates of the layer. Bear in mind that the station reference
         frame is rotated pi/2 with respect to the CMS frame depending on the super layer number:
-        
+
         if L lives in SL == 1 or 3:
             CMS -> x: right, y: up, z: forward, SuperLayer -> x: right, y: forward, z: down
-        
+
         if L lives in SL == 2:
             CMS -> x: right, y: up, z: forward, SuperLayer -> x: backward, y: right, z: down
 
@@ -186,28 +188,36 @@ class Layer(object):
         else:
             return x, y, z
 
-
     def _build_layer(self):
         """
         Ensemble a DT layer.
         """
-        
-        # _firs_wire_local = float(DTGEOMETRY.get( ".//WirePositions//FirstWire" , rawId=self.id))
-        _firs_wire_local = float(DTGEOMETRY.get( ".//WirePositions//FirstWire_ref_to_chamber" , rawId=self.id))
 
+        # _firs_wire_local = float(DTGEOMETRY.get( ".//WirePositions//FirstWire" , rawId=self.id))
+        _firs_wire_local = float(
+            DTGEOMETRY.get(".//WirePositions//FirstWire_ref_to_chamber", rawId=self.id)
+        )
 
         _, y_local, z_local = self.local_center
         x_global, y_global, z_global = self.global_center  # station global center
 
         for i, n_cell in enumerate(range(self._first_cell_id, self._last_cell_id + 1)):
             cell = DriftCell(id=n_cell, parent=self)
-            #positioned correctly
-            cell.local_center = (_firs_wire_local + (i - 1) * cell.width, y_local, z_local)
-            cell.global_center = ((x_global + _firs_wire_local) + (i - 1) * cell.width, y_global, z_global)
+            # positioned correctly
+            cell.local_center = (
+                _firs_wire_local + (i - 1) * cell.width,
+                y_local,
+                z_local,
+            )
+            cell.global_center = (
+                (x_global + _firs_wire_local) + (i - 1) * cell.width,
+                y_global,
+                z_global,
+            )
 
             self.add_cell(cell)
+
 
 if __name__ == "__main__":
     layer = Layer(589603840)
     print(layer.cells)
-    

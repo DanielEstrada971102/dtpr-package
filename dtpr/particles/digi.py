@@ -5,7 +5,17 @@ class Digi(object):
     __slots__ = ["index", "wh", "sc", "st", "sl", "w", "l", "time", "BX"]
 
     def __init__(
-        self, idigi, ev=None, wh=None, sc=None, st=None, sl=None, w=None, l=None, time=None, bx=None
+        self,
+        idigi,
+        ev=None,
+        wh=None,
+        sc=None,
+        st=None,
+        sl=None,
+        w=None,
+        l=None,
+        time=None,
+        bx=None,
     ):
         """
         Initialize a Digi instance.

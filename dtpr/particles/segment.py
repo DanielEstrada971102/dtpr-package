@@ -1,10 +1,34 @@
 import math
 from dtpr.utils.functions import color_msg
 
-class Segment(object):
-    __slots__ = ["index", "wh", "sc", "st", "phi", "eta", "nHits_phi", "nHits_z", "t0_phi", "matches"]
 
-    def __init__(self, iseg, ev=None, wh=None, sc=None, st=None, phi=None, eta=None, nHits_phi=None, nHits_z=None, t0_phi=None):
+class Segment(object):
+    __slots__ = [
+        "index",
+        "wh",
+        "sc",
+        "st",
+        "phi",
+        "eta",
+        "nHits_phi",
+        "nHits_z",
+        "t0_phi",
+        "matches",
+    ]
+
+    def __init__(
+        self,
+        iseg,
+        ev=None,
+        wh=None,
+        sc=None,
+        st=None,
+        phi=None,
+        eta=None,
+        nHits_phi=None,
+        nHits_z=None,
+        t0_phi=None,
+    ):
         """
         Initialize a Segment instance.
 
@@ -49,7 +73,7 @@ class Segment(object):
             self.nHits_phi = nHits_phi
             self.nHits_z = nHits_z
             self.t0_phi = t0_phi
-        
+
         self.matches = []
 
     def to_dict(self):
@@ -100,9 +124,10 @@ class Segment(object):
 
         :param tp: The trigger primitive to match.
         """
-        if tp not in self.matches: self.matches.append(tp) 
-    
-    def match_offline_to_AM(self, tp, max_dPhi = 0.1):
+        if tp not in self.matches:
+            self.matches.append(tp)
+
+    def match_offline_to_AM(self, tp, max_dPhi=0.1):
         """
         Match the segment to a trigger primitive based on dPhi.
 
@@ -112,19 +137,24 @@ class Segment(object):
         """
         # Fix issue with sector numbering
         seg_sc = self.sc
-        if   seg_sc == 13: seg_sc = 4
-        elif seg_sc == 14: seg_sc = 10
-        
+        if seg_sc == 13:
+            seg_sc = 4
+        elif seg_sc == 14:
+            seg_sc = 10
+
         # Match only if TP and segment are in the same chamber
-        if (tp.wh == self.wh and tp.sc == seg_sc and tp.st == self.st): 
+        if tp.wh == self.wh and tp.sc == seg_sc and tp.st == self.st:
             # In this case, they are in the same chamber: match dPhi
             # -- Use a conversion factor to express phi in radians
-            trigGlbPhi = tp.phi/tp.phires_conv + math.pi / 6 * (tp.sc - 1)
+            trigGlbPhi = tp.phi / tp.phires_conv + math.pi / 6 * (tp.sc - 1)
             dphi = abs(math.acos(math.cos(self.phi - trigGlbPhi)))
-            matches = (dphi < max_dPhi and tp.BX == 0)
+            matches = dphi < max_dPhi and tp.BX == 0
             if matches:
                 self._add_match(tp)
 
+
 if __name__ == "__main__":
-    seg = Segment(0, wh=1, sc=1, st=1, phi=0.1, eta=0.2, nHits_phi=3, nHits_z=2, t0_phi=0.3)
+    seg = Segment(
+        0, wh=1, sc=1, st=1, phi=0.1, eta=0.2, nHits_phi=3, nHits_z=2, t0_phi=0.3
+    )
     print(seg)

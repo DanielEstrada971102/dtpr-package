@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dtpr.geometry.layer &mdash; DT Pattern Recognition package 0.1.0 documentation</title>
+  <title>dtpr.geometry.layer &mdash; dtpr-package 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/general_styles.css" />
@@ -30,7 +30,7 @@
           
           
           <a href="../../../src/index.html" class="icon icon-home">
-            DT Pattern Recognition package
+            dtpr-package
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -54,7 +54,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../src/index.html">DT Pattern Recognition package</a>
+          <a href="../../../src/index.html">dtpr-package</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -76,6 +76,7 @@
 <span></span><span class="kn">from</span> <span class="nn">dtpr.geometry.drift_cell</span> <span class="kn">import</span> <span class="n">DriftCell</span>
 <span class="kn">from</span> <span class="nn">dtpr.geometry.dt_geometry</span> <span class="kn">import</span> <span class="n">DTGeometry</span><span class="p">,</span> <span class="n">DTGEOMETRY</span>
 
+
 <div class="viewcode-block" id="Layer">
 <a class="viewcode-back" href="../../../src/geometry/layer.html#dtpr.geometry.layer.Layer">[docs]</a>
 <span class="k">class</span> <span class="nc">Layer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -95,7 +96,7 @@
 <span class="sd">    cells : list</span>
 <span class="sd">        List of drift cells in the layer.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    
+
 <div class="viewcode-block" id="Layer.__init__">
 <a class="viewcode-back" href="../../../src/geometry/layer.html#dtpr.geometry.layer.Layer.__init__">[docs]</a>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rawId</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -112,12 +113,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">DTGEOMETRY</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;layerNumber&quot;</span><span class="p">,</span> <span class="n">rawId</span><span class="o">=</span><span class="n">rawId</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_DriftCells</span> <span class="o">=</span> <span class="p">[]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_first_cell_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">DTGEOMETRY</span><span class="o">.</span><span class="n">get</span><span class="p">(</span> <span class="s2">&quot;.//Channels//first&quot;</span> <span class="p">,</span> <span class="n">rawId</span><span class="o">=</span><span class="n">rawId</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_last_cell_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">DTGEOMETRY</span><span class="o">.</span><span class="n">get</span><span class="p">(</span> <span class="s2">&quot;.//Channels//last&quot;</span> <span class="p">,</span> <span class="n">rawId</span><span class="o">=</span><span class="n">rawId</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_first_cell_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">DTGEOMETRY</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;.//Channels//first&quot;</span><span class="p">,</span> <span class="n">rawId</span><span class="o">=</span><span class="n">rawId</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_cell_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">DTGEOMETRY</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;.//Channels//last&quot;</span><span class="p">,</span> <span class="n">rawId</span><span class="o">=</span><span class="n">rawId</span><span class="p">))</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">local_center</span> <span class="o">=</span> <span class="n">DTGEOMETRY</span><span class="o">.</span><span class="n">get</span><span class="p">(</span> <span class="s2">&quot;LocalPosition&quot;</span> <span class="p">,</span> <span class="n">rawId</span><span class="o">=</span><span class="n">rawId</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">global_center</span> <span class="o">=</span> <span class="n">DTGEOMETRY</span><span class="o">.</span><span class="n">get</span><span class="p">(</span> <span class="s2">&quot;GlobalPosition&quot;</span> <span class="p">,</span> <span class="n">rawId</span><span class="o">=</span><span class="n">rawId</span><span class="p">)</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">local_center</span> <span class="o">=</span> <span class="n">DTGEOMETRY</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;LocalPosition&quot;</span><span class="p">,</span> <span class="n">rawId</span><span class="o">=</span><span class="n">rawId</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">global_center</span> <span class="o">=</span> <span class="n">DTGEOMETRY</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;GlobalPosition&quot;</span><span class="p">,</span> <span class="n">rawId</span><span class="o">=</span><span class="n">rawId</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_build_layer</span><span class="p">()</span></div>
 
@@ -186,7 +186,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">cell_id</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_first_cell_id</span> <span class="ow">or</span> <span class="n">cell_id</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_cell_id</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid cell id: </span><span class="si">{</span><span class="n">cell_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cells</span><span class="p">[</span><span class="n">cell_id</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_first_cell_id</span><span class="p">]</span> <span class="c1"># to match the cell id with the list index</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cells</span><span class="p">[</span>
+            <span class="n">cell_id</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_first_cell_id</span>
+        <span class="p">]</span>  <span class="c1"># to match the cell id with the list index</span></div>
 
 
     <span class="nd">@id</span><span class="o">.</span><span class="n">setter</span>
@@ -246,12 +248,12 @@
 
     <span class="k">def</span> <span class="nf">__correct_cords</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Correct the coordinates of the layer. Bear in mind that the station reference </span>
+<span class="sd">        Correct the coordinates of the layer. Bear in mind that the station reference</span>
 <span class="sd">        frame is rotated pi/2 with respect to the CMS frame depending on the super layer number:</span>
-<span class="sd">        </span>
+
 <span class="sd">        if L lives in SL == 1 or 3:</span>
 <span class="sd">            CMS -&gt; x: right, y: up, z: forward, SuperLayer -&gt; x: right, y: forward, z: down</span>
-<span class="sd">        </span>
+
 <span class="sd">        if L lives in SL == 2:</span>
 <span class="sd">            CMS -&gt; x: right, y: up, z: forward, SuperLayer -&gt; x: backward, y: right, z: down</span>
 
@@ -272,32 +274,40 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span>
 
-
     <span class="k">def</span> <span class="nf">_build_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Ensemble a DT layer.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        
-        <span class="c1"># _firs_wire_local = float(DTGEOMETRY.get( &quot;.//WirePositions//FirstWire&quot; , rawId=self.id))</span>
-        <span class="n">_firs_wire_local</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">DTGEOMETRY</span><span class="o">.</span><span class="n">get</span><span class="p">(</span> <span class="s2">&quot;.//WirePositions//FirstWire_ref_to_chamber&quot;</span> <span class="p">,</span> <span class="n">rawId</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
 
+        <span class="c1"># _firs_wire_local = float(DTGEOMETRY.get( &quot;.//WirePositions//FirstWire&quot; , rawId=self.id))</span>
+        <span class="n">_firs_wire_local</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
+            <span class="n">DTGEOMETRY</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;.//WirePositions//FirstWire_ref_to_chamber&quot;</span><span class="p">,</span> <span class="n">rawId</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="p">)</span>
 
         <span class="n">_</span><span class="p">,</span> <span class="n">y_local</span><span class="p">,</span> <span class="n">z_local</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">local_center</span>
         <span class="n">x_global</span><span class="p">,</span> <span class="n">y_global</span><span class="p">,</span> <span class="n">z_global</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">global_center</span>  <span class="c1"># station global center</span>
 
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">n_cell</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_first_cell_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_cell_id</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)):</span>
             <span class="n">cell</span> <span class="o">=</span> <span class="n">DriftCell</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">n_cell</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
-            <span class="c1">#positioned correctly</span>
-            <span class="n">cell</span><span class="o">.</span><span class="n">local_center</span> <span class="o">=</span> <span class="p">(</span><span class="n">_firs_wire_local</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">cell</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">y_local</span><span class="p">,</span> <span class="n">z_local</span><span class="p">)</span>
-            <span class="n">cell</span><span class="o">.</span><span class="n">global_center</span> <span class="o">=</span> <span class="p">((</span><span class="n">x_global</span> <span class="o">+</span> <span class="n">_firs_wire_local</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">cell</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">y_global</span><span class="p">,</span> <span class="n">z_global</span><span class="p">)</span>
+            <span class="c1"># positioned correctly</span>
+            <span class="n">cell</span><span class="o">.</span><span class="n">local_center</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">_firs_wire_local</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">cell</span><span class="o">.</span><span class="n">width</span><span class="p">,</span>
+                <span class="n">y_local</span><span class="p">,</span>
+                <span class="n">z_local</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">cell</span><span class="o">.</span><span class="n">global_center</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="p">(</span><span class="n">x_global</span> <span class="o">+</span> <span class="n">_firs_wire_local</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">cell</span><span class="o">.</span><span class="n">width</span><span class="p">,</span>
+                <span class="n">y_global</span><span class="p">,</span>
+                <span class="n">z_global</span><span class="p">,</span>
+            <span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">add_cell</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span></div>
+
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">layer</span> <span class="o">=</span> <span class="n">Layer</span><span class="p">(</span><span class="mi">589603840</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">cells</span><span class="p">)</span>
-    
 </pre></div>
 
            </div>

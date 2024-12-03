@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dtpr.particles.segment &mdash; DT Pattern Recognition package 0.1.0 documentation</title>
+  <title>dtpr.particles.segment &mdash; dtpr-package 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/general_styles.css" />
@@ -30,7 +30,7 @@
           
           
           <a href="../../../src/index.html" class="icon icon-home">
-            DT Pattern Recognition package
+            dtpr-package
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -54,7 +54,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../src/index.html">DT Pattern Recognition package</a>
+          <a href="../../../src/index.html">dtpr-package</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -76,14 +76,38 @@
 <span></span><span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">from</span> <span class="nn">dtpr.utils.functions</span> <span class="kn">import</span> <span class="n">color_msg</span>
 
+
 <div class="viewcode-block" id="Segment">
 <a class="viewcode-back" href="../../../src/particles/segment.html#dtpr.particles.segment.Segment">[docs]</a>
 <span class="k">class</span> <span class="nc">Segment</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="s2">&quot;wh&quot;</span><span class="p">,</span> <span class="s2">&quot;sc&quot;</span><span class="p">,</span> <span class="s2">&quot;st&quot;</span><span class="p">,</span> <span class="s2">&quot;phi&quot;</span><span class="p">,</span> <span class="s2">&quot;eta&quot;</span><span class="p">,</span> <span class="s2">&quot;nHits_phi&quot;</span><span class="p">,</span> <span class="s2">&quot;nHits_z&quot;</span><span class="p">,</span> <span class="s2">&quot;t0_phi&quot;</span><span class="p">,</span> <span class="s2">&quot;matches&quot;</span><span class="p">]</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;index&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;wh&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sc&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;st&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;phi&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;eta&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;nHits_phi&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;nHits_z&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;t0_phi&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;matches&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
 
 <div class="viewcode-block" id="Segment.__init__">
 <a class="viewcode-back" href="../../../src/particles/segment.html#dtpr.particles.segment.Segment.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iseg</span><span class="p">,</span> <span class="n">ev</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wh</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sc</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">st</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nHits_phi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nHits_z</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">t0_phi</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">iseg</span><span class="p">,</span>
+        <span class="n">ev</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">wh</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">sc</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">st</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">phi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">eta</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">nHits_phi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">nHits_z</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">t0_phi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize a Segment instance.</span>
 
@@ -128,7 +152,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">nHits_phi</span> <span class="o">=</span> <span class="n">nHits_phi</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">nHits_z</span> <span class="o">=</span> <span class="n">nHits_z</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">t0_phi</span> <span class="o">=</span> <span class="n">t0_phi</span>
-        
+
         <span class="bp">self</span><span class="o">.</span><span class="n">matches</span> <span class="o">=</span> <span class="p">[]</span></div>
 
 
@@ -186,11 +210,12 @@
 
 <span class="sd">        :param tp: The trigger primitive to match.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">tp</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">matches</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">matches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tp</span><span class="p">)</span> 
-    
+        <span class="k">if</span> <span class="n">tp</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">matches</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">matches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tp</span><span class="p">)</span>
+
 <div class="viewcode-block" id="Segment.match_offline_to_AM">
 <a class="viewcode-back" href="../../../src/particles/segment.html#dtpr.particles.segment.Segment.match_offline_to_AM">[docs]</a>
-    <span class="k">def</span> <span class="nf">match_offline_to_AM</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tp</span><span class="p">,</span> <span class="n">max_dPhi</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">match_offline_to_AM</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tp</span><span class="p">,</span> <span class="n">max_dPhi</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Match the segment to a trigger primitive based on dPhi.</span>
 
@@ -200,23 +225,28 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Fix issue with sector numbering</span>
         <span class="n">seg_sc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sc</span>
-        <span class="k">if</span>   <span class="n">seg_sc</span> <span class="o">==</span> <span class="mi">13</span><span class="p">:</span> <span class="n">seg_sc</span> <span class="o">=</span> <span class="mi">4</span>
-        <span class="k">elif</span> <span class="n">seg_sc</span> <span class="o">==</span> <span class="mi">14</span><span class="p">:</span> <span class="n">seg_sc</span> <span class="o">=</span> <span class="mi">10</span>
-        
+        <span class="k">if</span> <span class="n">seg_sc</span> <span class="o">==</span> <span class="mi">13</span><span class="p">:</span>
+            <span class="n">seg_sc</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="k">elif</span> <span class="n">seg_sc</span> <span class="o">==</span> <span class="mi">14</span><span class="p">:</span>
+            <span class="n">seg_sc</span> <span class="o">=</span> <span class="mi">10</span>
+
         <span class="c1"># Match only if TP and segment are in the same chamber</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">tp</span><span class="o">.</span><span class="n">wh</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">wh</span> <span class="ow">and</span> <span class="n">tp</span><span class="o">.</span><span class="n">sc</span> <span class="o">==</span> <span class="n">seg_sc</span> <span class="ow">and</span> <span class="n">tp</span><span class="o">.</span><span class="n">st</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">st</span><span class="p">):</span> 
+        <span class="k">if</span> <span class="n">tp</span><span class="o">.</span><span class="n">wh</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">wh</span> <span class="ow">and</span> <span class="n">tp</span><span class="o">.</span><span class="n">sc</span> <span class="o">==</span> <span class="n">seg_sc</span> <span class="ow">and</span> <span class="n">tp</span><span class="o">.</span><span class="n">st</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">st</span><span class="p">:</span>
             <span class="c1"># In this case, they are in the same chamber: match dPhi</span>
             <span class="c1"># -- Use a conversion factor to express phi in radians</span>
-            <span class="n">trigGlbPhi</span> <span class="o">=</span> <span class="n">tp</span><span class="o">.</span><span class="n">phi</span><span class="o">/</span><span class="n">tp</span><span class="o">.</span><span class="n">phires_conv</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">6</span> <span class="o">*</span> <span class="p">(</span><span class="n">tp</span><span class="o">.</span><span class="n">sc</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">trigGlbPhi</span> <span class="o">=</span> <span class="n">tp</span><span class="o">.</span><span class="n">phi</span> <span class="o">/</span> <span class="n">tp</span><span class="o">.</span><span class="n">phires_conv</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">6</span> <span class="o">*</span> <span class="p">(</span><span class="n">tp</span><span class="o">.</span><span class="n">sc</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
             <span class="n">dphi</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">acos</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">-</span> <span class="n">trigGlbPhi</span><span class="p">)))</span>
-            <span class="n">matches</span> <span class="o">=</span> <span class="p">(</span><span class="n">dphi</span> <span class="o">&lt;</span> <span class="n">max_dPhi</span> <span class="ow">and</span> <span class="n">tp</span><span class="o">.</span><span class="n">BX</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">matches</span> <span class="o">=</span> <span class="n">dphi</span> <span class="o">&lt;</span> <span class="n">max_dPhi</span> <span class="ow">and</span> <span class="n">tp</span><span class="o">.</span><span class="n">BX</span> <span class="o">==</span> <span class="mi">0</span>
             <span class="k">if</span> <span class="n">matches</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_add_match</span><span class="p">(</span><span class="n">tp</span><span class="p">)</span></div>
 </div>
 
 
+
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">seg</span> <span class="o">=</span> <span class="n">Segment</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">wh</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sc</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">st</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">nHits_phi</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">nHits_z</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">t0_phi</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    <span class="n">seg</span> <span class="o">=</span> <span class="n">Segment</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span> <span class="n">wh</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sc</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">st</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">nHits_phi</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">nHits_z</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">t0_phi</span><span class="o">=</span><span class="mf">0.3</span>
+    <span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">seg</span><span class="p">)</span>
 </pre></div>
 

@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Event &mdash; DT Pattern Recognition package 0.1.0 documentation</title>
+  <title>Event &mdash; dtpr-package 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/general_styles.css" />
@@ -20,7 +20,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="DtNtuple" href="dtntuple.html" />
+    <link rel="next" title="NTuple" href="ntuple.html" />
     <link rel="prev" title="base" href="main.html" /> 
 </head>
 
@@ -33,7 +33,7 @@
           
           
           <a href="../index.html" class="icon icon-home">
-            DT Pattern Recognition package
+            dtpr-package
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -58,7 +58,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="dtntuple.html">DtNtuple</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntuple.html">NTuple</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../particles/main.html">particles</a></li>
@@ -72,7 +72,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">DT Pattern Recognition package</a>
+          <a href="../index.html">dtpr-package</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -93,17 +93,17 @@
              
   <section id="event">
 <h1>Event<a class="headerlink" href="#event" title="Link to this heading"></a></h1>
-<p>The <code class="docutils literal notranslate"><span class="pre">Event</span></code> class is designed to represent an event entry from a root DT Ntuple, facilitating access
+<p>The <code class="docutils literal notranslate"><span class="pre">Event</span></code> class is designed to represent an event entry from a root Ntuple, facilitating access
 to information by abstracting info into instances of Python objects (<strong>particles</strong>). There are a set
 of already defined particles in the <code class="docutils literal notranslate"><span class="pre">dtpr.particles</span></code> module. Each instance of the <code class="docutils literal notranslate"><span class="pre">Event</span></code>
-class provides specific methods to comfortably access those CMS DT objects such as offline segments,
+class provides specific methods to comfortably access those objects such as offline segments,
 generation-level muons, simulation digis, showers, and more.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">Event</span></code> class can dynamically build particle instances based on the root event’s entry information if
 specified through a run configuration file. This configuration file contains information about the types
 of particles and how to build them, allowing for flexible and customizable event processing.</p>
 <p>To illustrate the dynamic particle building feature, consider the <code class="docutils literal notranslate"><span class="pre">GenMuon</span></code> class from the
 <code class="docutils literal notranslate"><span class="pre">dtpr.particles.gen_muon</span></code> module. Suppose we want to create instances of <code class="docutils literal notranslate"><span class="pre">GenMuon</span></code> based
-on the root event’s entry when an event is instantiated. This requires specifying the following in a <code class="docutils literal notranslate"><span class="pre">YAML</span></code>
+on the root event’s entry when an event is instantiated. This requires specifying the following in a <cite>YAML</cite>
 configuration file under the <code class="docutils literal notranslate"><span class="pre">particle_types</span></code> section:</p>
 <p class="rubric">config.yaml</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">particle_types</span><span class="p">:</span>
@@ -125,12 +125,12 @@ that the information required to build the particles is present in the root even
 create an event instance should be like this:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ROOT</span> <span class="kn">import</span> <span class="n">TFile</span>
 <span class="kn">from</span> <span class="nn">dtpr.base.event</span> <span class="kn">import</span> <span class="n">Event</span>
-<span class="kn">from</span> <span class="nn">dtpr.utils.config</span> <span class="kn">import</span> <span class="n">RUN_CONFIG</span>
+<span class="kn">from</span> <span class="nn">dtpr.utils.config</span> <span class="kn">import</span> <span class="n">EVENT_CONFIG</span>
 
 <span class="c1"># First, you need to change the configuration file path. If not,</span>
 <span class="c1"># it will work with the default one dtpr/utils/templates/config_run_template.yaml.</span>
 <span class="c1"># You can also use the latter to define your own configuration file.</span>
-<span class="n">RUN_CONFIG</span><span class="o">.</span><span class="n">change_config</span><span class="p">(</span><span class="n">config_path</span><span class="o">=</span><span class="s2">&quot;path/to/config.yaml&quot;</span><span class="p">)</span>
+<span class="n">EVENT_CONFIG</span><span class="o">.</span><span class="n">change_config</span><span class="p">(</span><span class="n">config_path</span><span class="o">=</span><span class="s2">&quot;path/to/config.yaml&quot;</span><span class="p">)</span>
 
 <span class="k">with</span> <span class="n">TFile</span><span class="p">(</span><span class="s2">&quot;DTDPGNtuple_12_4_2_Phase2Concentrator_Simulation_101.root&quot;</span><span class="p">,</span> <span class="s2">&quot;read&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ntuple</span><span class="p">:</span>
     <span class="n">tree</span> <span class="o">=</span> <span class="n">ntuple</span><span class="p">[</span><span class="s2">&quot;dtNtupleProducer/DTTREE;1&quot;</span><span class="p">]</span>
@@ -169,9 +169,9 @@ create an event instance should be like this:</p>
     --&gt; Not showered
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">Event</span></code> class is not limited to using DT Ntuple information. It can be used in standalone mode
-just like a container by manually adding any type of attribute that you consider necessary. A simple
-example of this is, for instance, adding customized showers to the event. For practice, let us take
+<p>The <code class="docutils literal notranslate"><span class="pre">Event</span></code> class is not limited to using Ntuple information. It can be used just like a container
+by manually adding any type of attribute that you consider necessary. A simple example of this is,
+for instance, adding customized showers to the event. For practice, let us take
 the class <code class="docutils literal notranslate"><span class="pre">Shower</span></code> from the <code class="docutils literal notranslate"><span class="pre">dtpr.particles.shower</span></code> module just to illustrate how to add
 objects to the event:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dtpr.base.event</span> <span class="kn">import</span> <span class="n">Event</span>
@@ -278,7 +278,7 @@ objects to the event:</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="main.html" class="btn btn-neutral float-left" title="base" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="dtntuple.html" class="btn btn-neutral float-right" title="DtNtuple" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="ntuple.html" class="btn btn-neutral float-right" title="NTuple" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

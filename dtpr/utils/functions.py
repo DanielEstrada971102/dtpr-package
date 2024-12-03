@@ -1,18 +1,21 @@
 """ Miscelaneous """
+
 import math
 import ROOT as r
+
 r.gStyle.SetOptStat(0)
 import os
 from copy import deepcopy
 import numpy as np
 
 # Make Iterators for when we want to iterate over different subdetectors
-wheels   = range(-2, 3)
-sectors  = range(1, 15)
+wheels = range(-2, 3)
+sectors = range(1, 15)
 stations = range(1, 5)
 superlayers = range(1, 4)
 
-_noDelete = { "lines" : []}
+_noDelete = {"lines": []}
+
 
 def color_msg(msg, color="none", indentLevel=-1, return_str=False):
     """
@@ -37,21 +40,35 @@ def color_msg(msg, color="none", indentLevel=-1, return_str=False):
     }
 
     indentStr = ""
-    if indentLevel == 0: indentStr = ">>"
-    if indentLevel == 1: indentStr = "+"
-    if indentLevel == 2: indentStr = "*"
-    if indentLevel == 3: indentStr = "-->"
-    if indentLevel >= 4: indentStr = "-"
+    if indentLevel == 0:
+        indentStr = ">>"
+    if indentLevel == 1:
+        indentStr = "+"
+    if indentLevel == 2:
+        indentStr = "*"
+    if indentLevel == 3:
+        indentStr = "-->"
+    if indentLevel >= 4:
+        indentStr = "-"
 
     try:
-        formatted_msg = "\033[%s%s %s \033[0m" % (codes[color], "  " * indentLevel + indentStr, msg)
+        formatted_msg = "\033[%s%s %s \033[0m" % (
+            codes[color],
+            "  " * indentLevel + indentStr,
+            msg,
+        )
     except KeyError:
-        formatted_msg = "\033[%s%s %s \033[0m" % (codes["none"], "  " * indentLevel + indentStr, msg)
-    
+        formatted_msg = "\033[%s%s %s \033[0m" % (
+            codes["none"],
+            "  " * indentLevel + indentStr,
+            msg,
+        )
+
     if return_str:
         return formatted_msg
     else:
         print(formatted_msg)
+
 
 def warning_handler(message, category, filename, lineno, file=None, line=None):
     """
@@ -66,12 +83,25 @@ def warning_handler(message, category, filename, lineno, file=None, line=None):
         line (str, optional): The line of code where the warning occurred. Default is None.
     """
     print(
-        "".join([
-            color_msg(f"{category.__name__} in:", color="yellow", return_str=True, indentLevel=-1),
-            color_msg(f"{filename}-{lineno} :", color="purple", return_str=True, indentLevel=-1),
-            color_msg(f"{message}", return_str=True, indentLevel=-1),
-        ])
+        "".join(
+            [
+                color_msg(
+                    f"{category.__name__} in:",
+                    color="yellow",
+                    return_str=True,
+                    indentLevel=-1,
+                ),
+                color_msg(
+                    f"{filename}-{lineno} :",
+                    color="purple",
+                    return_str=True,
+                    indentLevel=-1,
+                ),
+                color_msg(f"{message}", return_str=True, indentLevel=-1),
+            ]
+        )
     )
+
 
 def error_handler(exc_type, exc_value, exc_traceback):
     """
@@ -83,13 +113,33 @@ def error_handler(exc_type, exc_value, exc_traceback):
         exc_traceback (traceback): The traceback object.
     """
     import traceback
+
     print(
-        "".join([
-            color_msg(f"{exc_type.__name__}:", color="red", return_str=True, indentLevel=-1),
-            color_msg(f"{exc_value}", color="yellow", return_str=True, indentLevel=-1),
-            color_msg("Traceback (most recent call last):" + "".join(traceback.format_tb(exc_traceback)) if exc_traceback else "", return_str=True, indentLevel=-1),#[-2:]
-        ])
+        "".join(
+            [
+                color_msg(
+                    f"{exc_type.__name__}:",
+                    color="red",
+                    return_str=True,
+                    indentLevel=-1,
+                ),
+                color_msg(
+                    f"{exc_value}", color="yellow", return_str=True, indentLevel=-1
+                ),
+                color_msg(
+                    (
+                        "Traceback (most recent call last):"
+                        + "".join(traceback.format_tb(exc_traceback))
+                        if exc_traceback
+                        else ""
+                    ),
+                    return_str=True,
+                    indentLevel=-1,
+                ),  # [-2:]
+            ]
+        )
     )
+
 
 def flatten(lst):
     """
@@ -109,6 +159,7 @@ def flatten(lst):
             result.append(i)
     return result
 
+
 def create_outfolder(outname):
     """
     Creates an output directory if it does not exist.
@@ -116,10 +167,11 @@ def create_outfolder(outname):
     Args:
         outname (str): The path of the output directory.
     """
-    if not(os.path.exists(outname)): 
-        os.system("mkdir -p %s"%outname)
+    if not (os.path.exists(outname)):
+        os.system("mkdir -p %s" % outname)
 
-def get_best_matches( reader, station = 1, _4showereds=None):
+
+def get_best_matches(reader, station=1, _4showereds=None):
     """
     Returns the best matching segments for each generator muon.
 
@@ -133,28 +185,33 @@ def get_best_matches( reader, station = 1, _4showereds=None):
     """
     # Fill with dummy segments
     if _4showereds is not None:
-        genmuons = [genmuon for genmuon in reader.genmuons if (genmuon.showered == _4showereds)]
+        genmuons = [
+            genmuon for genmuon in reader.genmuons if (genmuon.showered == _4showereds)
+        ]
     else:
         genmuons = reader.genmuons
 
-    bestMatches = [ None for igm in range(len(genmuons)) ]
+    bestMatches = [None for igm in range(len(genmuons))]
 
     # This is what's done in Jaime's code: https://github.com/jaimeleonh/DTNtuples/blob/unifiedPerf/test/DTNtupleTPGSimAnalyzer_Efficiency.C#L181-L208
     # Basically: get the best matching segment to a generator muon per MB chamber
 
-    #color_msg(f"[FUNCTIONS::GET_BEST_MATCHES] Debugging with station {station}", color = "red", indentLevel = 0)
+    # color_msg(f"[FUNCTIONS::GET_BEST_MATCHES] Debugging with station {station}", color = "red", indentLevel = 0)
     for igm, gm in enumerate(genmuons):
-        #color_msg(f"[FUNCTIONS::GET_BEST_MATCHES] igm {igm}", indentLevel = 1)
-        #gm.summarize(indentLevel = 2)
+        # color_msg(f"[FUNCTIONS::GET_BEST_MATCHES] igm {igm}", indentLevel = 1)
+        # gm.summarize(indentLevel = 2)
         for bestMatch in gm.matches:
             if bestMatch.st == station:
-                bestMatches[ igm ] =  bestMatch
-            
+                bestMatches[igm] = bestMatch
+
     # Remove those that are None which are simply dummy values
-    bestMatches = filter( lambda key: key is not None, bestMatches )
+    bestMatches = filter(lambda key: key is not None, bestMatches)
     return bestMatches
 
-def get_digis_distribution(reader, station=1, _4showereds=False, distribution_type="mean", group_by_sl=False):
+
+def get_digis_distribution(
+    reader, station=1, _4showereds=False, distribution_type="mean", group_by_sl=False
+):
     """
     Calculates the distribution of digis for a given station and showered status.
 
@@ -180,23 +237,36 @@ def get_digis_distribution(reader, station=1, _4showereds=False, distribution_ty
                 sl_range = [1, 2, 3] if group_by_sl else [None]
 
                 for sl in sl_range:
-                    # Filter digis for the current wheel, sector, and station (and superlayer if it's the case) 
+                    # Filter digis for the current wheel, sector, and station (and superlayer if it's the case)
                     if sl:
-                        digis = reader.filter_particles("digis", wh=wh, sc=sc, st=station, sl=sl)
+                        digis = reader.filter_particles(
+                            "digis", wh=wh, sc=sc, st=station, sl=sl
+                        )
                     else:
-                        digis = reader.filter_particles("digis", wh=wh, sc=sc, st=station)
+                        digis = reader.filter_particles(
+                            "digis", wh=wh, sc=sc, st=station
+                        )
 
                     if not digis:
                         continue
                     wires = [digi.w for digi in digis]
                     if distribution_type == "mean":
                         w_mean = np.mean(wires)
-                        data += [(wh, sl, w - w_mean) for w in wires] if group_by_sl else [(wh, w - w_mean) for w in wires]
+                        data += (
+                            [(wh, sl, w - w_mean) for w in wires]
+                            if group_by_sl
+                            else [(wh, w - w_mean) for w in wires]
+                        )
                     elif distribution_type == "length":
                         w_min, w_max = min(wires), max(wires)
-                        data.append((wh, sl, w_max - w_min) if group_by_sl else (wh, w_max - w_min))
+                        data.append(
+                            (wh, sl, w_max - w_min)
+                            if group_by_sl
+                            else (wh, w_max - w_min)
+                        )
 
     return data
+
 
 def deltaPhi(phi1, phi2):
     """
@@ -210,9 +280,12 @@ def deltaPhi(phi1, phi2):
         float: The difference in phi.
     """
     res = phi1 - phi2
-    while res > math.pi: res -= 2*math.pi
-    while res <= -math.pi: res += 2*math.pi
+    while res > math.pi:
+        res -= 2 * math.pi
+    while res <= -math.pi:
+        res += 2 * math.pi
     return res
+
 
 def deltaR(p1, p2):
     """
@@ -225,9 +298,10 @@ def deltaR(p1, p2):
     Returns:
         float: The delta R value.
     """
-    dEta = abs(p1.eta-p2.eta)
+    dEta = abs(p1.eta - p2.eta)
     dPhi = deltaPhi(p1.phi, p2.phi)
-    return math.sqrt(dEta*dEta + dPhi*dPhi)
+    return math.sqrt(dEta * dEta + dPhi * dPhi)
+
 
 def phiConv(phi):
     """
@@ -239,13 +313,26 @@ def phiConv(phi):
     Returns:
         float: The converted phi value.
     """
-    return 0.5*phi/65536.
+    return 0.5 * phi / 65536.0
 
-def plot_graphs(graphs, name, nBins, firstBin, lastBin, 
-                xMin = None, xMax = None, maxY = None, titleX = None, titleY = None, 
-                labels = [], notes = [], lines = [],
-                legend_pos = (0.62, 0.37, 0.70, 0.45),
-                outfolder = "results/plots"):
+
+def plot_graphs(
+    graphs,
+    name,
+    nBins,
+    firstBin,
+    lastBin,
+    xMin=None,
+    xMax=None,
+    maxY=None,
+    titleX=None,
+    titleY=None,
+    labels=[],
+    notes=[],
+    lines=[],
+    legend_pos=(0.62, 0.37, 0.70, 0.45),
+    outfolder="results/plots",
+):
     """
     Plots a set of graphs.
 
@@ -267,18 +354,18 @@ def plot_graphs(graphs, name, nBins, firstBin, lastBin,
         outfolder (str, optional): The output folder to save the plot. Default is "results/plots".
     """
     # --- Create canvas --- #
-    c = r.TCanvas("c_%s"%(name), "", 800, 800)
-    
+    c = r.TCanvas("c_%s" % (name), "", 800, 800)
+
     # --- Create legend --- #
     x0leg, y0leg, x1leg, y1leg = legend_pos
     legend = r.TLegend(x0leg, y0leg, x1leg, y1leg)
-    legend.SetName("l_%s"%(name))
+    legend.SetName("l_%s" % (name))
     legend.SetBorderSize(0)
     legend.SetFillColor(0)
     legend.SetTextFont(42)
     legend.SetTextSize(0.028)
     legend.SetNColumns(1)
-    
+
     # --- Create a frame metadata --- #
     frame = r.TH1D(name, "", nBins, firstBin, lastBin)
     frame.GetXaxis().SetTitleFont(42)
@@ -289,43 +376,43 @@ def plot_graphs(graphs, name, nBins, firstBin, lastBin,
     frame.GetYaxis().SetTitleSize(0.03)
     frame.GetYaxis().SetLabelFont(42)
     frame.GetYaxis().SetLabelSize(0.04)
-    
+
     if xMin and xMax:
         frame.GetXaxis().SetRangeUser(xMin, xMax)
     if maxY:
         frame.GetYaxis().SetRangeUser(0, maxY)
-    if titleX: 
+    if titleX:
         frame.GetYaxis().SetTitle(titleX)
     if titleY:
         frame.GetXaxis().SetTitle(titleY)
-    
+
     if labels != []:
         for iBin in range(frame.GetNbinsX()):
             frame.GetXaxis().SetBinLabel(iBin + 1, labels[iBin])
     frame.Draw("axis")
-    
+
     # open the root files
     color = 1
-    for igr, grInfo in enumerate( graphs ):
+    for igr, grInfo in enumerate(graphs):
         effgr, legendName = grInfo
-        effgr.SetMarkerColor( color )
-        effgr.SetLineColor( color )
-        effgr.SetMarkerSize( 1 )
-        effgr.SetMarkerStyle( 20 )
-        legend.AddEntry( effgr, legendName, "p")
+        effgr.SetMarkerColor(color)
+        effgr.SetLineColor(color)
+        effgr.SetMarkerSize(1)
+        effgr.SetMarkerStyle(20)
+        legend.AddEntry(effgr, legendName, "p")
 
-        if color == [10, 18]: color += 1 # skip white colors
+        if color == [10, 18]:
+            color += 1  # skip white colors
         effgr.Draw("pe1 same")
         color += 1
 
-    
     # Now add texts and lines
     for note in notes:
         text = note[0]
         x1, y1, x2, y2 = note[1]
         textSize = note[2]
-        align=12 
-        texnote = deepcopy(r.TPaveText(x1, y1, x2, y2,"NDC"))
+        align = 12
+        texnote = deepcopy(r.TPaveText(x1, y1, x2, y2, "NDC"))
         texnote.SetTextSize(textSize)
         texnote.SetFillColor(0)
         texnote.SetFillStyle(0)
@@ -335,21 +422,19 @@ def plot_graphs(graphs, name, nBins, firstBin, lastBin,
         texnote.SetTextFont(42)
         texnote.AddText(text)
         texnote.Draw("same")
-        _noDelete[texnote] = texnote # So it does not get deleted by ROOT
+        _noDelete[texnote] = texnote  # So it does not get deleted by ROOT
 
-        
     for line in lines:
         xpos0, ypos0, xpos1, ypos1 = line
         texline = deepcopy(r.TLine(xpos0, ypos0, xpos1, ypos1))
         texline.SetLineWidth(3)
-        texline.Draw("same") 
-        _noDelete[texline] = texline # So it does not get deleted by ROOT
-
+        texline.Draw("same")
+        _noDelete[texline] = texline  # So it does not get deleted by ROOT
 
     legend.Draw("same")
-    
-    outpath = os.path.join( outfolder, name)
-    if not os.path.exists(outpath):    
-        os.system("mkdir -p %s"%outpath)
-    c.SaveAs(outpath+"/%s.png"%name)
-    c.SaveAs(outpath+"/%s.pdf"%name)
+
+    outpath = os.path.join(outfolder, name)
+    if not os.path.exists(outpath):
+        os.system("mkdir -p %s" % outpath)
+    c.SaveAs(outpath + "/%s.png" % name)
+    c.SaveAs(outpath + "/%s.pdf" % name)

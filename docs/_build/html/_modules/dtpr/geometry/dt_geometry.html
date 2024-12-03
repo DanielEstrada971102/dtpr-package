@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dtpr.geometry.dt_geometry &mdash; DT Pattern Recognition package 0.1.0 documentation</title>
+  <title>dtpr.geometry.dt_geometry &mdash; dtpr-package 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/general_styles.css" />
@@ -30,7 +30,7 @@
           
           
           <a href="../../../src/index.html" class="icon icon-home">
-            DT Pattern Recognition package
+            dtpr-package
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -54,7 +54,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../src/index.html">DT Pattern Recognition package</a>
+          <a href="../../../src/index.html">dtpr-package</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -77,9 +77,10 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">re</span>
 
+
 <div class="viewcode-block" id="DTGeometry">
 <a class="viewcode-back" href="../../../src/geometry/dt_geometry.html#dtpr.geometry.dt_geometry.DTGeometry">[docs]</a>
-<span class="k">class</span> <span class="nc">DTGeometry</span><span class="p">():</span>
+<span class="k">class</span> <span class="nc">DTGeometry</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A class to represent the DT Geometry from an XML file.</span>
 
@@ -135,10 +136,12 @@
         <span class="n">element</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">element</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;GlobalPosition&quot;</span><span class="p">,</span> <span class="s2">&quot;LocalPosition&quot;</span><span class="p">,</span> <span class="s2">&quot;NormalVector&quot;</span><span class="p">]:</span>
-                <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">transform_to_pos</span><span class="p">(</span><span class="n">str_pos_tuple</span><span class="o">=</span><span class="n">element</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+                <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform_to_pos</span><span class="p">(</span>
+                    <span class="n">str_pos_tuple</span><span class="o">=</span><span class="n">element</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
+                <span class="p">)</span>
                 <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span>
             <span class="k">elif</span> <span class="n">attribute</span> <span class="o">==</span> <span class="s2">&quot;Bounds&quot;</span><span class="p">:</span>
-                <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">length</span> <span class="o">=</span>  <span class="n">element</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+                <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">length</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
                 <span class="k">return</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">width</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">height</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">length</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">sub_element</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">attribute</span><span class="p">)</span>
@@ -164,19 +167,24 @@
 <span class="sd">        :return: A tuple containing the transformed coordinates.</span>
 <span class="sd">        :rtype: tuple</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">cords</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?&#39;</span><span class="p">,</span> <span class="n">str_pos_tuple</span><span class="p">)</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">cord</span><span class="p">)</span> <span class="k">for</span> <span class="n">cord</span> <span class="ow">in</span> <span class="n">cords</span><span class="p">)</span> <span class="c1"># Bear in mind that the CMS local and global coordinates are different and depend of chamber and superlayer</span>
+        <span class="n">cords</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?&quot;</span><span class="p">,</span> <span class="n">str_pos_tuple</span><span class="p">)</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">float</span><span class="p">(</span><span class="n">cord</span><span class="p">)</span> <span class="k">for</span> <span class="n">cord</span> <span class="ow">in</span> <span class="n">cords</span>
+        <span class="p">)</span>  <span class="c1"># Bear in mind that the CMS local and global coordinates are different and depend of chamber and superlayer</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span></div>
 </div>
 
 
+
 <span class="c1"># Initialize the DTGeometry object with the path to the XML file</span>
-<span class="n">DTGEOMETRY</span> <span class="o">=</span> <span class="n">DTGeometry</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s2">&quot;../utils/templates/DTGeometry.xml&quot;</span><span class="p">))</span>
+<span class="n">DTGEOMETRY</span> <span class="o">=</span> <span class="n">DTGeometry</span><span class="p">(</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s2">&quot;../utils/templates/DTGeometry.xml&quot;</span><span class="p">)</span>
+<span class="p">)</span>
 
 <span class="c1"># Example usage</span>
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">dt_geometry</span> <span class="o">=</span> <span class="n">DTGeometry</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s2">&quot;../utils/templates/DTGeometry.xml&quot;</span><span class="p">))</span>
-    
+
     <span class="c1"># Retrieve and print global and local positions, and bounds for specific chambers</span>
     <span class="n">global_pos_1</span> <span class="o">=</span> <span class="n">dt_geometry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;GlobalPosition&quot;</span><span class="p">,</span> <span class="n">wh</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span> <span class="n">sec</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">st</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">local_pos_1</span> <span class="o">=</span> <span class="n">dt_geometry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;GlobalPosition&quot;</span><span class="p">,</span> <span class="n">wh</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">sec</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">st</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
@@ -201,7 +209,6 @@
     <span class="c1"># Test retrieving attributes of a specific SuperLayer</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TEST super layer&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">dt_geometry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">rawId</span><span class="o">=</span><span class="mi">574922752</span><span class="p">)</span><span class="o">.</span><span class="n">attrib</span><span class="p">)</span>
-
 </pre></div>
 
            </div>

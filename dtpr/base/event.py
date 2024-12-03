@@ -7,6 +7,7 @@ from importlib import import_module
 from dtpr.utils.config import EVENT_CONFIG
 from dtpr.utils.functions import color_msg
 
+
 class Event:
     __slots__ = ["iev", "particles"]
 
@@ -26,7 +27,9 @@ class Event:
                 for ptype, pinfo in EVENT_CONFIG.particle_types.items():
                     self.build_particles(root_ev, ptype, pinfo)
             else:
-                warnings.warn("No particle types defined in the configuration file. Initializing an empty Event instance.")
+                warnings.warn(
+                    "No particle types defined in the configuration file. Initializing an empty Event instance."
+                )
 
     def __getattr__(self, name):
         """
@@ -61,17 +64,51 @@ class Event:
         :param indentLevel: The indentation level for the summary.
         :return: The event summary.
         """
-        summary = [color_msg(f"------ Event {self.iev} info ------", color="yellow", indentLevel=indentLevel, return_str=True)]
+        summary = [
+            color_msg(
+                f"------ Event {self.iev} info ------",
+                color="yellow",
+                indentLevel=indentLevel,
+                return_str=True,
+            )
+        ]
         for ptype, particles in self.particles.items():
-            summary.append(color_msg(f"{ptype.capitalize()}", color="green", indentLevel=indentLevel+1, return_str=True))
-            summary.append(color_msg(f"Number of {ptype}: {len(particles)}", color="purple", indentLevel=indentLevel+2, return_str=True))
+            summary.append(
+                color_msg(
+                    f"{ptype.capitalize()}",
+                    color="green",
+                    indentLevel=indentLevel + 1,
+                    return_str=True,
+                )
+            )
+            summary.append(
+                color_msg(
+                    f"Number of {ptype}: {len(particles)}",
+                    color="purple",
+                    indentLevel=indentLevel + 2,
+                    return_str=True,
+                )
+            )
             if ptype == "genmuons":
                 for igm, gm in enumerate(particles):
-                    summary.append(color_msg(f"Muon {igm}", indentLevel=indentLevel+2, return_str=True))
-                    summary.append(gm.__str__(indentLevel=indentLevel+3))
+                    summary.append(
+                        color_msg(
+                            f"Muon {igm}", indentLevel=indentLevel + 2, return_str=True
+                        )
+                    )
+                    summary.append(gm.__str__(indentLevel=indentLevel + 3))
             elif ptype == "segments":
-                phiseg = [f"({seg.index:.2f}, {seg.phi:.2f}, {seg.eta:.2f})" for seg in particles]
-                summary.append(color_msg(f"(iSeg, Phi, eta): {phiseg[:5]}", indentLevel=indentLevel+2, return_str=True))
+                phiseg = [
+                    f"({seg.index:.2f}, {seg.phi:.2f}, {seg.eta:.2f})"
+                    for seg in particles
+                ]
+                summary.append(
+                    color_msg(
+                        f"(iSeg, Phi, eta): {phiseg[:5]}",
+                        indentLevel=indentLevel + 2,
+                        return_str=True,
+                    )
+                )
             # Add summaries for other particle types as needed
         return "\n".join(summary)
 
@@ -83,24 +120,36 @@ class Event:
         :param ptype: The type of particles to build. It will be the name of the attribute in the Event instance.
         :param pinfo: The information dictionary for the particle type builder. It should contain the class builder path, the name of the branch to infer the number of particles, and optional conditions and sorting parameters.
         """
-        module_name, class_name = pinfo["class"].rsplit('.', 1)
+        module_name, class_name = pinfo["class"].rsplit(".", 1)
         module = import_module(module_name)
         ParticleClass = getattr(module, class_name)
 
-        num_particles = n if isinstance(n := eval(f"root_ev.{pinfo['n_branch_name']}") , int) else len(n)
+        num_particles = (
+            n
+            if isinstance(n := eval(f"root_ev.{pinfo['n_branch_name']}"), int)
+            else len(n)
+        )
         if "conditioner" in pinfo:
             conditioner = pinfo["conditioner"]
             particles = [
-            ParticleClass(i, root_ev)
-            for i in range(num_particles)
-            if abs(eval(f"root_ev.{conditioner['property']}[{i}]{conditioner['condition']}")) #abs should not be hardcoded
+                ParticleClass(i, root_ev)
+                for i in range(num_particles)
+                if abs(
+                    eval(
+                        f"root_ev.{conditioner['property']}[{i}]{conditioner['condition']}"
+                    )
+                )  # abs should not be hardcoded
             ]
         else:
             particles = [ParticleClass(i, root_ev) for i in range(num_particles)]
 
         if "sorter" in pinfo:
             sorter = pinfo["sorter"]
-            particles = sorted(particles, key=lambda p: getattr(p, sorter["by"]), reverse=sorter["reverse"] if "reverse" in sorter else False)
+            particles = sorted(
+                particles,
+                key=lambda p: getattr(p, sorter["by"]),
+                reverse=sorter["reverse"] if "reverse" in sorter else False,
+            )
 
         setattr(self, ptype, particles)  # Add the particles to the Event instance
 
@@ -114,7 +163,9 @@ class Event:
         :raises ValueError: If invalid keys are provided for filtering.
         """
         if particle_type not in self.particles:
-            warnings.warn(f"Invalid particle type {particle_type} to apply filter. Valid types are: {list(self.particles.keys())}")
+            warnings.warn(
+                f"Invalid particle type {particle_type} to apply filter. Valid types are: {list(self.particles.keys())}"
+            )
             return []
 
         particles = self.particles.get(particle_type, [])
@@ -134,21 +185,34 @@ class Event:
 
         return [particle for particle in particles if match(particle, kwargs)]
 
+
 if __name__ == "__main__":
     """
     Example of how to use the Event class to build particles and analyze them.
     """
     from ROOT import TFile
     from dtpr.particles.shower import Shower
+
     _maxevents = 1
-    with TFile(os.path.abspath(os.path.join(os.path.dirname(__file__), "../utils/templates/DTDPGNtuple_12_4_2_Phase2Concentrator_Simulation_101.root")), "read") as ntuple:
+    with TFile(
+        os.path.abspath(
+            os.path.join(
+                os.path.dirname(__file__),
+                "../utils/templates/DTDPGNtuple_12_4_2_Phase2Concentrator_Simulation_101.root",
+            )
+        ),
+        "read",
+    ) as ntuple:
         tree = ntuple["dtNtupleProducer/DTTREE;1"]
 
         for iev, ev in enumerate(tree):
             event = Event(ev, iev=iev)
             # Print the event summary
             print(event)
-            shower = Shower(iShower=0, wh=1, sc=1, st=1, BX=0, nDigis=2, avg_pos=12.3, avg_time=0.5)
+            shower = Shower(
+                iShower=0, wh=1, sc=1, st=1, BX=0, nDigis=2, avg_pos=12.3, avg_time=0.5
+            )
             event.test_showers = [shower]
             print(event)
-            if iev + 1 == _maxevents: break
+            if iev + 1 == _maxevents:
+                break

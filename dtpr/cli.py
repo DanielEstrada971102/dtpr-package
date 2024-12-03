@@ -5,7 +5,11 @@ import argparse
 import warnings
 
 from dtpr.utils.functions import warning_handler, error_handler
-from dtpr.utils.create_templates import create_ntuple_class_template, create_particle_class_template, create_event_config_template
+from dtpr.utils.create_templates import (
+    create_ntuple_class_template,
+    create_particle_class_template,
+    create_event_config_template,
+)
 
 warnings.filterwarnings(action="once", category=UserWarning)
 # Set the custom warning handler
@@ -21,8 +25,12 @@ def main():
     subparsers = parser.add_subparsers(required=True, dest="command")
 
     # -------------------------------------- "create" command --------------------------------------
-    create_subparser = subparsers.add_parser("create", help="Command for create from any of the available templates.")
-    create_subparsers = create_subparser.add_subparsers(required=True, dest="subcommand")
+    create_subparser = subparsers.add_parser(
+        "create", help="Command for create from any of the available templates."
+    )
+    create_subparsers = create_subparser.add_subparsers(
+        required=True, dest="subcommand"
+    )
 
     # -----------> "particle" subcommand
     create_particle_parser = create_subparsers.add_parser(
@@ -30,7 +38,8 @@ def main():
         help="Create a new particle class from the template.",
     )
     create_particle_parser.add_argument(
-        "-n", "--name",
+        "-n",
+        "--name",
         dest="name",
         type=str,
         default="MyParticle",
@@ -40,7 +49,8 @@ def main():
         ),
     )
     create_particle_parser.add_argument(
-        "-o", "--output",
+        "-o",
+        "--output",
         dest="output",
         type=str,
         default="./",
@@ -56,7 +66,8 @@ def main():
         help="Create a new ntuple class from the template.",
     )
     create_ntuple_parser.add_argument(
-        "-n", "--name",
+        "-n",
+        "--name",
         dest="name",
         type=str,
         default="MyNtuple",
@@ -66,7 +77,8 @@ def main():
         ),
     )
     create_ntuple_parser.add_argument(
-        "-o", "--output",
+        "-o",
+        "--output",
         dest="output",
         type=str,
         default="./",
@@ -82,7 +94,8 @@ def main():
         help="Create a new event configuration file from the template.",
     )
     create_event_config_parser.add_argument(
-        "-o", "--output",
+        "-o",
+        "--output",
         dest="output",
         type=str,
         default="./",

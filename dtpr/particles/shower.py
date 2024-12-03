@@ -1,10 +1,32 @@
 import math
 from dtpr.utils.functions import color_msg
 
-class Shower(object):
-    __slots__ = ["index", "wh", "sc", "st", "BX", "nDigis", "avg_pos", "avg_time", "eq2Emulator"]
 
-    def __init__(self, iShower, ev=None, wh=None, sc=None, st=None, BX=None, nDigis=0, avg_pos=None, avg_time=None):
+class Shower(object):
+    __slots__ = [
+        "index",
+        "wh",
+        "sc",
+        "st",
+        "BX",
+        "nDigis",
+        "avg_pos",
+        "avg_time",
+        "eq2Emulator",
+    ]
+
+    def __init__(
+        self,
+        iShower,
+        ev=None,
+        wh=None,
+        sc=None,
+        st=None,
+        BX=None,
+        nDigis=0,
+        avg_pos=None,
+        avg_time=None,
+    ):
         """
         Initialize a Shower instance.
 
@@ -29,7 +51,7 @@ class Shower(object):
         :type avg_time: float, optional
         """
         self.index = iShower
-        if ev is not None: # constructor with root_event info
+        if ev is not None:  # constructor with root_event info
             self.wh = ev.ph2Shower_wheel[iShower]
             self.sc = ev.ph2Shower_sector[iShower]
             self.st = ev.ph2Shower_station[iShower]
@@ -38,7 +60,7 @@ class Shower(object):
             self.avg_pos = ev.ph2Shower_avg_pos[iShower]
             self.avg_time = ev.ph2Shower_avg_time[iShower]
             self.eq2Emulator = None
-        else: # constructor with explicit info
+        else:  # constructor with explicit info
             self.wh = wh
             self.sc = sc
             self.st = st
