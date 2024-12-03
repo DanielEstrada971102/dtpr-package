@@ -13,6 +13,7 @@ pandas = ">=2.2"
 matplotlib = ">=3.9"
 mplhep = ">=0.3"
 PyYAML = ">=5.4.1"
+argparse = "*"
 
 [tool.poetry.group.dev]
 optional = true
@@ -27,6 +28,10 @@ optional = true
 sphinx = "*"
 sphinx-rtd-theme = "*"
 sphinx-autobuild = "*"
+
+[tool.poetry.scripts]
+dtpr = "dtpr.cli:main"
+
 
 [build-system]
 requires = ["poetry-core"]

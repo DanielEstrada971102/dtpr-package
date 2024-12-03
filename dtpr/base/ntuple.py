@@ -1,16 +1,12 @@
-# Module to read DT Ntuples and create Event instances from root entries
-
-# -- Import libraries -- #
 import ROOT as r
 import os
 from dtpr.base.event import Event
 from dtpr.utils.functions import color_msg
-from dtpr.utils.genmuon_functions import analyze_genmuon_matches, analyze_genmuon_showers
 
-class DtNtuple(object):
-    def __init__(self, inputFolder, selectors, maxfiles=-1):
+class NTuple(object):
+    def __init__(self, inputFolder, selectors, maxfiles=-1, tree_name="/TTREE"):
         """
-        Initialize a DtNtuple instance.
+        Initialize an NTuple instance.
 
         :param inputFolder: The folder containing the input files.
         :type inputFolder: str
@@ -18,11 +14,14 @@ class DtNtuple(object):
         :type selectors: list
         :param maxfiles: The maximum number of files to process. Defaults to -1 (process all files).
         :type maxfiles: int, optional
+        :param tree_name: The name of the TTree to load. Defaults to "/TTREE".
+        :type tree_name: str, optional
         """
         # Save in attributes
         self.inputFolder = inputFolder
         self.selectors = selectors
         self.maxfiles = maxfiles
+        self.tree_name = tree_name
 
         # Prepare input
         self.load_tree(inputFolder)
@@ -37,13 +36,7 @@ class DtNtuple(object):
         :returns: The analyzed event if it passes the selection criteria, otherwise None.
         :rtype: Event
         """
-        analyze_genmuon_matches(ev)
-        analyze_genmuon_showers(ev)
-        # Apply global selection
-        if not self.passes_event(ev):
-            pass
-        else:
-            return ev
+        raise NotImplementedError("Subclasses should implement this method")
 
     def passes_event(self, ev: Event):
         """
@@ -67,7 +60,7 @@ class DtNtuple(object):
 
         if "root" in inpath:
             color_msg(f"Opening input file {inpath}", "blue", 1)
-            self.tree.Add(inpath + "/dtNtupleProducer/DTTREE")
+            self.tree.Add(inpath + self.tree_name)
             self.maxfiles = 1
         else:
             color_msg(f"Opening input files from {inpath}", "blue", 1)
@@ -79,26 +72,4 @@ class DtNtuple(object):
                 if "root" not in allFiles[iF]:
                     continue
                 color_msg(f"File {allFiles[iF]} added", indentLevel=2)
-                self.tree.Add(os.path.join(inpath, allFiles[iF]) + "/dtNtupleProducer/DTTREE")
-
-if __name__ == "__main__":
-    """
-    Example of how to use the DtNtuple class to read DT Ntuples and analyze events.
-    """
-    def example_selector(event):
-        # Example selector function that always returns True
-        return True
-
-    input_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), "../utils/templates/DTDPGNtuple_12_4_2_Phase2Concentrator_Simulation_101.root"))
-    selectors = [example_selector]
-    max_files = 5
-
-    dt_ntuple = DtNtuple(input_folder, selectors, maxfiles=max_files)
-    # you can iterate over the events built as Event instances
-    ev_iter = iter(dt_ntuple.events)
-    print(next(ev_iter))
-
-    # or simply use the root tree which is a ROOT.TChain
-    for ev in dt_ntuple.tree:
-        print(ev.gen_pt)
-        break
+                self.tree.Add(os.path.join(inpath, allFiles[iF]) + self.tree_name)
