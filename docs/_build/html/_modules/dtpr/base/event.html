@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dtpr.base.event &mdash; DT Pattern Recognition package 0.1.0 documentation</title>
+  <title>dtpr.base.event &mdash; dtpr-package 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../../_static/general_styles.css" />
@@ -30,7 +30,7 @@
           
           
           <a href="../../../src/index.html" class="icon icon-home">
-            DT Pattern Recognition package
+            dtpr-package
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -54,7 +54,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../../../src/index.html">DT Pattern Recognition package</a>
+          <a href="../../../src/index.html">dtpr-package</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -79,7 +79,7 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">import_module</span>
-<span class="kn">from</span> <span class="nn">dtpr.utils.config</span> <span class="kn">import</span> <span class="n">RUN_CONFIG</span>
+<span class="kn">from</span> <span class="nn">dtpr.utils.config</span> <span class="kn">import</span> <span class="n">EVENT_CONFIG</span>
 <span class="kn">from</span> <span class="nn">dtpr.utils.functions</span> <span class="kn">import</span> <span class="n">color_msg</span>
 
 <div class="viewcode-block" id="Event">
@@ -101,8 +101,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">particles</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># Initialize an empty dictionary for particles</span>
 
         <span class="k">if</span> <span class="n">root_ev</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">RUN_CONFIG</span><span class="o">.</span><span class="n">particle_types</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">ptype</span><span class="p">,</span> <span class="n">pinfo</span> <span class="ow">in</span> <span class="n">RUN_CONFIG</span><span class="o">.</span><span class="n">particle_types</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">EVENT_CONFIG</span><span class="o">.</span><span class="n">particle_types</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">ptype</span><span class="p">,</span> <span class="n">pinfo</span> <span class="ow">in</span> <span class="n">EVENT_CONFIG</span><span class="o">.</span><span class="n">particle_types</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">build_particles</span><span class="p">(</span><span class="n">root_ev</span><span class="p">,</span> <span class="n">ptype</span><span class="p">,</span> <span class="n">pinfo</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;No particle types defined in the configuration file. Initializing an empty Event instance.&quot;</span><span class="p">)</span></div>

@@ -1,10 +1,10 @@
 Event
 =====
 
-The ``Event`` class is designed to represent an event entry from a root DT Ntuple, facilitating access
+The ``Event`` class is designed to represent an event entry from a root Ntuple, facilitating access
 to information by abstracting info into instances of Python objects (**particles**). There are a set 
 of already defined particles in the ``dtpr.particles`` module. Each instance of the ``Event`` 
-class provides specific methods to comfortably access those CMS DT objects such as offline segments, 
+class provides specific methods to comfortably access those objects such as offline segments, 
 generation-level muons, simulation digis, showers, and more.
 
 The ``Event`` class can dynamically build particle instances based on the root event's entry information if 
@@ -13,7 +13,7 @@ of particles and how to build them, allowing for flexible and customizable event
 
 To illustrate the dynamic particle building feature, consider the ``GenMuon`` class from the 
 ``dtpr.particles.gen_muon`` module. Suppose we want to create instances of ``GenMuon`` based
-on the root event's entry when an event is instantiated. This requires specifying the following in a ``YAML``
+on the root event's entry when an event is instantiated. This requires specifying the following in a `YAML`
 configuration file under the ``particle_types`` section:
 
 .. rubric:: config.yaml
@@ -41,12 +41,12 @@ create an event instance should be like this:
 
     from ROOT import TFile
     from dtpr.base.event import Event
-    from dtpr.utils.config import RUN_CONFIG
+    from dtpr.utils.config import EVENT_CONFIG
 
     # First, you need to change the configuration file path. If not, 
     # it will work with the default one dtpr/utils/templates/config_run_template.yaml.
     # You can also use the latter to define your own configuration file.
-    RUN_CONFIG.change_config(config_path="path/to/config.yaml")
+    EVENT_CONFIG.change_config(config_path="path/to/config.yaml")
 
     with TFile("DTDPGNtuple_12_4_2_Phase2Concentrator_Simulation_101.root", "read") as ntuple:
         tree = ntuple["dtNtupleProducer/DTTREE;1"]
@@ -86,9 +86,9 @@ create an event instance should be like this:
         --> Stations traversed: [] 
         --> Not showered 
 
-The ``Event`` class is not limited to using DT Ntuple information. It can be used in standalone mode
-just like a container by manually adding any type of attribute that you consider necessary. A simple
-example of this is, for instance, adding customized showers to the event. For practice, let us take
+The ``Event`` class is not limited to using Ntuple information. It can be used just like a container
+by manually adding any type of attribute that you consider necessary. A simple example of this is, 
+for instance, adding customized showers to the event. For practice, let us take
 the class ``Shower`` from the ``dtpr.particles.shower`` module just to illustrate how to add
 objects to the event:
 

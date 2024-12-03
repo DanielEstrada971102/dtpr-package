@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DT Pattern Recognition documentation &mdash; DT Pattern Recognition package 0.1.0 documentation</title>
+  <title>DT Pattern Recognition Package &mdash; dtpr-package 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/general_styles.css" />
@@ -32,7 +32,7 @@
           
           
           <a href="#" class="icon icon-home">
-            DT Pattern Recognition package
+            dtpr-package
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -56,7 +56,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">DT Pattern Recognition package</a>
+          <a href="#">dtpr-package</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -64,7 +64,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">DT Pattern Recognition documentation</li>
+      <li class="breadcrumb-item active">DT Pattern Recognition Package</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/src/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -74,17 +74,40 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="dt-pattern-recognition-documentation">
-<h1>DT Pattern Recognition documentation<a class="headerlink" href="#dt-pattern-recognition-documentation" title="Link to this heading"></a></h1>
-<p>Add your content using <code class="docutils literal notranslate"><span class="pre">reStructuredText</span></code> syntax. See the
-<a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html">reStructuredText</a>
-documentation for details.</p>
+  <section id="dt-pattern-recognition-package">
+<h1>DT Pattern Recognition Package<a class="headerlink" href="#dt-pattern-recognition-package" title="Link to this heading"></a></h1>
+<p>This package provides a set of base tools for implementing pattern recognition algorithms using
+input data in Ntuple format. It also includes visualization tools for DT Ntuples, taking into account
+the geometrical features of the CMS DT system.</p>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<p>First, download the source files or clone the repository:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/DanielEstrada971102/dtpr-package.git
+<span class="nb">cd</span><span class="w"> </span>dtpr-package
+</pre></div>
+</div>
+<p>You can then install the package with pip by running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>.
+</pre></div>
+</div>
+<p>To check if the package was installed successfully, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>show<span class="w"> </span>dtpr
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Be aware that the package requires PyROOT, so you should have it installed. If you are working in
+a Python virtual environment, ensure to include ROOT in it. To do this, use the command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>--system-site-packages<span class="w"> </span>ROOT<span class="w"> </span>ENV_DIR<span class="o">[</span>ENV_DIR<span class="w"> </span>...<span class="o">]</span>
+</pre></div>
+</div>
+</div>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="base/main.html">base</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="base/event.html">Event</a></li>
-<li class="toctree-l2"><a class="reference internal" href="base/dtntuple.html">DtNtuple</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base/ntuple.html">NTuple</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="particles/main.html">particles</a><ul>
@@ -109,6 +132,7 @@ documentation for details.</p>
 </li>
 </ul>
 </div>
+</section>
 </section>
 
 
