@@ -82,6 +82,16 @@ class DriftCell(object):
         return self._height
 
     @property
+    def length(self):
+        """
+        Length of the drift cell.
+
+        :return: Length of the drift cell.
+        :rtype: float
+        """
+        return self._length
+
+    @property
     def local_center(self):
         """
         Local center coordinates of the drift cell.
@@ -168,6 +178,16 @@ class DriftCell(object):
         """
         cls.height = value
 
+    @length.setter
+    def length(cls, value):
+        """
+        Set the length of the drift cell.
+
+        :param value: Length of the drift cell.
+        :type value: float
+        """
+        cls._length = value
+
     @local_center.setter
     def local_center(self, position):
         """
@@ -176,7 +196,7 @@ class DriftCell(object):
         :param position: Local center coordinates (x, y, z).
         :type position: tuple
         """
-        self._x_local, self._y_local, self._z_local = self.__correct_cords(*position)
+        self._x_local, self._y_local, self._z_local = position
 
     @global_center.setter
     def global_center(self, position):
@@ -186,7 +206,7 @@ class DriftCell(object):
         :param position: Global center coordinates (x, y, z).
         :type position: tuple
         """
-        self._x_global, self._y_global, self._z_global = self.__correct_cords(*position)
+        self._x_global, self._y_global, self._z_global = position
 
     @driftTime.setter
     def driftTime(self, time):
@@ -197,32 +217,3 @@ class DriftCell(object):
         :type time: float
         """
         self._driftTime = time
-
-    def __correct_cords(self, x, y, z):
-        """
-        Correct the coordinates of the DriftCell. Bear in mind that the station reference
-        frame is rotated pi/2 with respect to the CMS frame depending on the super layer number:
-
-        if cell lives in SL == 1 or 3:
-            CMS -> x: right, y: up, z: forward, SuperLayer -> x: right, y: forward, z: down
-
-        if cell lives in SL == 2:
-            CMS -> x: right, y: up, z: forward, SuperLayer -> x: backward, y: right, z: down
-
-        :param x: x-coordinate.
-        :type x: float
-        :param y: y-coordinate.
-        :type y: float
-        :param z: z-coordinate.
-        :type z: float
-        :return: Corrected coordinates (x, y, z).
-        :rtype: tuple
-        """
-        # if self.parent.parent is not None:
-        #     if self.parent.parent.number == 1 or self.parent.parent.number == 3:
-        #         return x, -1 * z, y
-        #     else:
-        #         return -1 * x, y, -1 * z
-        # else:
-        #     return x, y, z
-        return x, y, z

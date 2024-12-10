@@ -32,8 +32,10 @@ class SuperLayer(object):
         self._layers = []
         self.id = rawId
         self.number = int(DTGEOMETRY.get("superLayerNumber", rawId=rawId))
-        self.global_center = DTGEOMETRY.get("GlobalPosition", rawId=rawId)
-        self.local_center = DTGEOMETRY.get("LocalPosition", rawId=rawId)
+        self.local_center = DTGEOMETRY.get("LocalPosition", rawId=self.id)
+        self.global_center = DTGEOMETRY.get("GlobalPosition", rawId=self.id)
+        self.direction = DTGEOMETRY.get("NormalVector", rawId=self.id)
+        self.bounds = DTGEOMETRY.get("Bounds", rawId=self.id)
 
         self._build_super_layer()
 
@@ -129,7 +131,7 @@ class SuperLayer(object):
         :param position: Local center coordinates (x, y, z).
         :type position: tuple
         """
-        self._x_local, self._y_local, self._z_local = self.__correct_cords(*position)
+        self._x_local, self._y_local, self._z_local = self._correct_cords(*position)
 
     @global_center.setter
     def global_center(self, position):
@@ -139,7 +141,7 @@ class SuperLayer(object):
         :param position: Global center coordinates (x, y, z).
         :type position: tuple
         """
-        self._x_global, self._y_global, self._z_global = self.__correct_cords(*position)
+        self._x_global, self._y_global, self._z_global = position
 
     def add_layer(self, layer):
         """
@@ -150,16 +152,27 @@ class SuperLayer(object):
         """
         self.layers.append(layer)
 
-    def __correct_cords(self, x, y, z):
+    def _correct_cords(self, x, y, z):
         """
         Correct the coordinates of the super layer. Bear in mind that the station reference
         frame is rotated pi/2 with respect to the CMS frame depending on the super layer number:
 
         if SL == 1 or 3:
             CMS -> x: right, y: up, z: forward, SuperLayer -> x: right, y: forward, z: down
+            That is, a rotation matrix of -90 degrees around the x-axis.
+
+                Rx(-pi/2) = | 1   0  0 |
+                            | 0   0  1 |
+                            | 0  -1  0 |
 
         if SL == 2:
             CMS -> x: right, y: up, z: forward, SuperLayer -> x: backward, y: right, z: down
+        
+            That is, a rotation matrix of -90 degrees around the z-axis. then a rotation of -90 
+            degrees around the x-axis.
+                Rx(-pi/2)Rz(-pi/2) =| 1   0  0 | * |  0  1  0 | = | 0  1  0 |
+                                    | 0   0  1 |   | -1  0  0 |   | 0  0  1 |  ? bad
+                                    | 0  -1  0 |   |  0  0  1 |   | 1  0  0 |
 
         :param x: x-coordinate.
         :type x: float
@@ -171,9 +184,10 @@ class SuperLayer(object):
         :rtype: tuple
         """
         if self.number == 1 or self.number == 3:
-            return x, -1 * z, y
+            return x, z, -1 * y
         else:
-            return -1 * x, y, -1 * z
+            return y, z, x
+    
 
     def _build_super_layer(self):
         """

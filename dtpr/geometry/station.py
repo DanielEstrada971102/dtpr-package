@@ -231,7 +231,7 @@ class Station(object):
         :param position: Global center coordinates
         :type position: tuple
         """
-        self._x_global, self._y_global, self._z_global = self._correct_cords(*position)
+        self._x_global, self._y_global, self._z_global = position
 
     @bounds.setter
     def bounds(self, bounds):
@@ -259,6 +259,13 @@ class Station(object):
 
         CMS -> x: right, y: up, z: forward, Station -> x: right, y: forward, z: down
 
+        That is, a rotation matrix of -90 degrees around the x-axis.
+
+                Rx(-pi/2) = | 1   0  0 |
+                            | 0   0  1 |
+                            | 0  -1  0 |
+
+
         :param x: x coordinate.
         :type x: float
         :param y: y coordinate.
@@ -268,7 +275,7 @@ class Station(object):
         :return: Corrected coordinates.
         :rtype: tuple
         """
-        return x, -1 * z, y
+        return x, z, -1 * y
 
     def _build_station(self):
         """

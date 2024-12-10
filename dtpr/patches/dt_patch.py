@@ -15,6 +15,10 @@ from mplhep import style
 from pandas import DataFrame
 from dtpr.geometry.station import Station
 from math import atan2, degrees
+from copy import deepcopy
+from pytransform3d.rotations import matrix_from_euler
+from pytransform3d.transformations import transform
+from numpy import array, radians
 
 plt.style.use(style.CMS)
 cmap = plt.get_cmap("viridis").copy()
@@ -39,36 +43,46 @@ class dtpatch(object):
 
         self.cell_patches, cell_times = self._make_dt_patches()
 
-        collection = PatchCollection(
+        self.collection = PatchCollection(
             self.cell_patches,
             cmap=cmap,
             norm=norm,
             edgecolors="k",
             linewidth=1,
         )
-        collection.set_array(cell_times)
+        self.collection.set_array(cell_times)
 
-        self.axes.add_collection(collection)
-        # add circle
-        if not self.local:
-            axs.add_patch(
-                plt.Circle((0, 0), 750, alpha=1, edgecolor="black", facecolor="none")
-            )
+        self.axes.add_collection(self.collection)
+        # # add frame bounds
+        # self.draw_dt_bounds()
         # add colorbar
-        self.fig.colorbar(collection, label="time [ns]")
+        self.fig.colorbar(self.collection, label="time [ns]")
+
+    # def draw_dt_bounds(self):
+    #     for super_layer in self.current_DT.super_layers:
+    #         width, height, length = super_layer.bounds
+    #         x, y, z = (
+    #             super_layer.local_center
+    #             if self.local
+    #             else super_layer.global_center
+    #         )
+    #         if super_layer.number == 2:
+    #             x_min, y_min = x - (length * 0.5), y - (height * 0.5)
+    #             frame = plt.Rectangle((x_min, y_min), length, height, alpha=1, edgecolor="black", facecolor="gray")
+    #         else:
+    #             x_min, y_min = x - (width * 0.5), y - (height * 0.5)
+    #             frame = plt.Rectangle((x_min, y_min), width, height, alpha=1, edgecolor="black", facecolor="blue")
+    #         axs.add_patch(frame)
 
     def setup_canvas(self):
         width, height, length = self.current_DT.bounds
         x, y, z = (
-            self.current_DT.global_center
-            if not self.local
-            else self.current_DT.local_center
+            self.current_DT.local_center
+            if self.local
+            else self.current_DT.global_center
         )
 
-        # print(f"Setting limits: x = {x}, y = {y}, width = {width}, height = {height}")
-        # print("xlims: ", x - (width * 0.5) - 5, x + (width * 0.5) + 5)
-
-        if not self.local or self.view == "phi":
+        if self.local or self.view == "phi":
             self.axes.set_xlabel("x[cm]")
             self.axes.set_ylabel("y[cm]")
             self.axes.set_xlim(x - (width * 0.5) - 5, x + (width * 0.5) + 5)
@@ -92,39 +106,55 @@ class dtpatch(object):
             angle = degrees(atan2(ny, nx)) + 90  # ang_incline = ang_normal_refx + 90
 
         for super_layer in MB.super_layers:
-            if not self.local or self.view == "phi":
-                if super_layer.number == 2:
-                    continue  # we are not plotting SL-Theta
-            elif self.view == "theta":
-                if super_layer.number != 2:
-                    continue
-
             for layer in super_layer.layers:
                 for cell in layer.cells:
-                    xmin, ymin, _ = (
+                    xmin, ymin, zmin = (
                         cell.local_position_at_min
                         if self.local
                         else cell.global_position_at_min
-                    )  # the global location appears to be wrong, ask pelayo
+                    )
                     width = cell.width
                     height = cell.height
+                    length = cell.length
                     drift_time = cell.driftTime
 
-                    # create cell patch
-                    cell_patch = Rectangle(
-                        (xmin, ymin),
-                        width,
-                        height,
-                    )
+                    if self.view == "phi":
+                        # create cell patch
+                        cell_patch = Rectangle(
+                            (xmin, ymin),
+                            length if super_layer.number == 2 else width,
+                            height,
+                        )
 
-                    if not self.local:  # if global, rotate the patch
-                        x, y, _ = layer.global_center  # rotation_point
+                        if not self.local:  # if global, rotate the patch
+                            x, y, z = layer.global_center # rotation_point
 
-                        cell_patch.rotation_point = (x, y)
-                        cell_patch.set_angle(angle)
+                            cell_patch.rotation_point = (x, y)
+                            if super_layer.number == 2: 
+                                cell_patch.set_xy((xmin-length, ymin))
+                            cell_patch.set_angle(angle)
 
-                    cell_patches.append(cell_patch)
-                    cell_times.append(drift_time)
+                        cell_patches.append(cell_patch)
+                        cell_times.append(drift_time if super_layer.number != 2 else 0) # not color for SL-2
+                        if super_layer.number == 2: break # just draw one cell per layer in SL-2
+
+                    elif self.view == "theta": # not implemented yet    
+                        # create cell patch
+                        cell_patch = Rectangle(
+                            (xmin, ymin),
+                            length if super_layer.number != 2 else width,
+                            height,
+                        )
+
+                        if not self.local:  # if global, rotate the patch
+                            x, y, z = layer.global_center  # rotation_point
+
+                            cell_patch.rotation_point = (x, y)
+                            cell_patch.set_angle(angle)
+
+                        cell_patches.append(cell_patch)
+                        cell_times.append(drift_time if super_layer.number == 2 else 0) # not color for SL-1 and SL-3
+                        if super_layer.number != 2: break # just draw one cell per layer in SL-1 and SL-3
 
         return cell_patches, cell_times
 
@@ -150,23 +180,23 @@ if __name__ == "__main__":
 
     # local = True
     local = False
-    fig, axs = plt.subplots(1, 1, figsize=(60, 50))
-    dt_chamber = Station(wheel=-2, sector=12, station=1)
+    fig, axs = plt.subplots(1, 1, figsize=(10, 8))
+    dt_chamber = Station(wheel=-2, sector=2, station=1)
     dt_patch = dtpatch(
         MB=dt_chamber,
-        # dt_info=[
-        #     {"sl": 1, "l": 1, "w": 1, "time": 300},
-        #     {"sl": 1, "l": 1, "w": 2, "time": 400},
-        #     {"sl": 1, "l": 2, "w": 1, "time": 500},
-        #     {"sl": 1, "l": 2, "w": 2, "time": 600},
-        #     {"sl": 2, "l": 1, "w": 1, "time": 700},
-        #     {"sl": 2, "l": 1, "w": 2, "time": 800},
-        #     {"sl": 2, "l": 2, "w": 1, "time": 900},
-        #     {"sl": 3, "l": 1, "w": 1, "time": 700},
-        #     {"sl": 3, "l": 1, "w": 2, "time": 800},
-        #     {"sl": 3, "l": 2, "w": 1, "time": 900},
-        #     {"sl": 3, "l": 2, "w": 2, "time": 1000},
-        # ],
+        dt_info=[
+            {"sl": 1, "l": 1, "w": 1, "time": 300},
+            {"sl": 1, "l": 1, "w": 2, "time": 400},
+            {"sl": 1, "l": 2, "w": 1, "time": 500},
+            {"sl": 1, "l": 2, "w": 2, "time": 600},
+            {"sl": 2, "l": 1, "w": 1, "time": 700},
+            {"sl": 2, "l": 1, "w": 2, "time": 800},
+            {"sl": 2, "l": 2, "w": 1, "time": 900},
+            {"sl": 3, "l": 1, "w": 1, "time": 700},
+            {"sl": 3, "l": 1, "w": 2, "time": 800},
+            {"sl": 3, "l": 2, "w": 1, "time": 900},
+            {"sl": 3, "l": 2, "w": 2, "time": 1000},
+        ],
         fig=fig,
         axes=axs,
         local=local,
@@ -176,19 +206,15 @@ if __name__ == "__main__":
     axs.scatter(x, y, color="red", s=10)
 
     for sl in dt_chamber.super_layers:
-        if sl.number == 2:
-            continue
-        x, y, _ = sl.local_center if local else sl.global_center
+        x, y, z = sl.local_center if local else sl.global_center
         axs.scatter(x, y, color="green", s=10)
         for l in sl.layers:
-            x, y, _ = l.local_center if local else l.global_center
+            x, y, z = l.local_center if local else l.global_center
             axs.scatter(x, y, color="orange", s=10)
-            x_c, y_c, _ = l.cells[0].local_center if local else l.cells[0].global_center
+            x_c, y_c, z_c = l.cells[0].local_center if local else l.cells[0].global_center
+            x_pm, y_pm, z_pm = l.cells[0].local_position_at_min if local else l.cells[0].global_position_at_min
             axs.scatter(x_c, y_c, color="purple", s=10)
-
-    if not local:
-        axs.set_xlim(-750, 750)
-        axs.set_ylim(-750, 750)
+            axs.scatter(x_pm, y_pm, color="yellow", s=10)
 
     # fig.savefig("test.svg")
     plt.show()
