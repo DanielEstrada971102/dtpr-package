@@ -1,86 +1,38 @@
 from dtpr.geometry.drift_cell import DriftCell
-from dtpr.geometry.dt_geometry import DTGeometry, DTGEOMETRY
+from dtpr.geometry import DTGEOMETRY, DTFrame
 
-
-class Layer(object):
+class Layer(DTFrame):
     """
     Class representing a Layer.
 
     Attributes
     ----------
-    id : int
-        Identifier of the layer.
-    number : int
-        Number of the layer.
-    local_center : tuple
-        Local center coordinates of the layer.
-    global_center : tuple
-        Global center coordinates of the layer.
     cells : list
         List of drift cells in the layer.
+    parent : Station
+        Parent station of the super layer.
+    
+    Others inherit from ``dtpr.geometry.DTFrame``... (e.g. id, local_center, global_center, direction, etc.)
     """
 
     def __init__(self, rawId, parent=None):
         """
-        Constructor
+        Constructor of the Layer class.
 
         :param rawId: Raw identifier of the layer.
         :type rawId: int
+        :param parent: Parent station of the super layer. Default is None.
+        :type parent: Station, optional
         """
-        self.parent = parent
-        self.id = rawId
-        self._xml_info = DTGEOMETRY.get(rawId=rawId)
-
         self.number = int(DTGEOMETRY.get("layerNumber", rawId=rawId))
+        super().__init__(rawId=rawId)
+        self.parent = parent
         self._DriftCells = []
 
         self._first_cell_id = int(DTGEOMETRY.get(".//Channels//first", rawId=rawId))
         self._last_cell_id = int(DTGEOMETRY.get(".//Channels//last", rawId=rawId))
 
-        self.local_center = DTGEOMETRY.get("LocalPosition", rawId=rawId)
-        self.global_center = DTGEOMETRY.get("GlobalPosition", rawId=rawId)
-
         self._build_layer()
-
-    @property
-    def id(self):
-        """
-        Identifier of the layer.
-
-        :return: Identifier of the layer.
-        :rtype: int
-        """
-        return self._id
-
-    @property
-    def number(self):
-        """
-        Number of the layer.
-
-        :return: Number of the layer.
-        :rtype: int
-        """
-        return self._number
-
-    @property
-    def local_center(self):
-        """
-        Local center coordinates of the layer.
-
-        :return: Local center coordinates (x, y, z).
-        :rtype: tuple
-        """
-        return self._x_local, self._y_local, self._z_local
-
-    @property
-    def global_center(self):
-        """
-        Global center coordinates of the layer.
-
-        :return: Global center coordinates (x, y, z).
-        :rtype: tuple
-        """
-        return self._x_global, self._y_global, self._z_global
 
     @property
     def cells(self):
@@ -88,9 +40,22 @@ class Layer(object):
         Get all the layer's cells.
 
         :return: List of drift cells in the layer.
-        :rtype: list
+        :rtype: list of DriftCell
         """
         return self._DriftCells
+
+    @DTFrame.number.setter
+    def number(self, number):
+        """
+        Set the number of the layer.
+
+        :param number: Number of the layer.
+        :type number: int
+        :raises ValueError: If the number is not between 1 and 4.
+        """
+        if number < 1 or number > 4:
+            raise ValueError("Layer number must be between 1 and 4")
+        DTFrame.number.fset(self, number)
 
     def cell(self, cell_id):
         """
@@ -108,50 +73,7 @@ class Layer(object):
             cell_id - self._first_cell_id
         ]  # to match the cell id with the list index
 
-    @id.setter
-    def id(self, id):
-        """
-        Set the identifier of the layer.
-
-        :param id: Identifier of the layer.
-        :type id: int
-        """
-        self._id = id
-
-    @number.setter
-    def number(self, number):
-        """
-        Set the number of the layer.
-
-        :param number: Number of the layer.
-        :type number: int
-        :raises ValueError: If the number is not between 1 and 4.
-        """
-        if number < 1 or number > 4:
-            raise ValueError("Layer number must be between 1 and 4")
-        self._number = number
-
-    @local_center.setter
-    def local_center(self, position):
-        """
-        Set the local center coordinates of the layer.
-
-        :param position: Local center coordinates (x, y, z).
-        :type position: tuple
-        """
-        self._x_local, self._y_local, self._z_local = self.__correct_cords(*position)
-
-    @global_center.setter
-    def global_center(self, position):
-        """
-        Set the global center coordinates of the layer.
-
-        :param position: Global center coordinates (x, y, z).
-        :type position: tuple
-        """
-        self._x_global, self._y_global, self._z_global = self.__correct_cords(*position)
-
-    def add_cell(self, cell):
+    def _add_cell(self, cell):
         """
         Add a new cell to the layer.
 
@@ -160,16 +82,47 @@ class Layer(object):
         """
         self.cells.append(cell)
 
-    def __correct_cords(self, x, y, z):
+    def _correct_cords(self, x, y, z):
         """
-        Correct the coordinates of the layer. Bear in mind that the station reference
+        Correct the coordinates of the super layer. Bear in mind that the station reference
         frame is rotated pi/2 with respect to the CMS frame depending on the super layer number:
 
-        if L lives in SL == 1 or 3:
+        if SL == 1 or 3:
             CMS -> x: right, y: up, z: forward, SuperLayer -> x: right, y: forward, z: down
+            That is, a rotation matrix of -90 degrees around the x-axis.
 
-        if L lives in SL == 2:
+            .. math::
+                
+                Rx(-\\pi/2) = \\begin{bmatrix} 
+                                    1 & 0 & 0 \\\\
+                                    0 & 0 & 1 \\\\
+                                    0 & -1 & 0
+                                \\end{bmatrix}
+
+        if SL == 2:
             CMS -> x: right, y: up, z: forward, SuperLayer -> x: backward, y: right, z: down
+        
+            That is, a rotation matrix of -90 degrees around the z-axis. then a rotation of -90 
+            degrees around the x-axis.
+
+            .. math::
+
+                R_x(-\\pi/2) R_z(-\\pi/2) = 
+                    \\begin{bmatrix} 
+                        1 & 0 & 0 \\\\
+                        0 & 0 & 1 \\\\
+                        0 & -1 & 0
+                    \\end{bmatrix} \\cdot
+                    \\begin{bmatrix} 
+                        0 & 1 & 0 \\\\
+                        -1 & 0 & 0 \\\\
+                        0 & 0 & 1
+                    \\end{bmatrix}
+                    = \\begin{bmatrix} 
+                        0 & 1 & 0 \\\\
+                        0 & 0 & 1 \\\\
+                        1 & 0 & 0
+                    \\end{bmatrix}
 
         :param x: x-coordinate.
         :type x: float
@@ -180,43 +133,41 @@ class Layer(object):
         :return: Corrected coordinates (x, y, z).
         :rtype: tuple
         """
-        if self.parent is not None:
-            if self.parent.number == 1 or self.parent.number == 3:
-                return x, -1 * z, y
-            else:
-                return -1 * x, y, -1 * z
+        if self.number == 1 or self.number == 3:
+            return x, z, -1 * y
         else:
-            return x, y, z
+            return y, z, x
 
     def _build_layer(self):
         """
         Ensemble a DT layer.
         """
 
-        # _firs_wire_local = float(DTGEOMETRY.get( ".//WirePositions//FirstWire" , rawId=self.id))
-        _firs_wire_local = float(
+        _firs_wire_x_local = float(
             DTGEOMETRY.get(".//WirePositions//FirstWire_ref_to_chamber", rawId=self.id)
         )
+        _firs_wire_x_global = float(
+            DTGEOMETRY.get(".//WirePositions//FirstWire", rawId=self.id)
+        )
 
-        _, y_local, z_local = self.local_center
-        x_global, y_global, z_global = self.global_center  # station global center
+        x_local, y_local, z_local = self.local_center
+        x_global, y_global, z_global = self.global_center
 
         for i, n_cell in enumerate(range(self._first_cell_id, self._last_cell_id + 1)):
-            cell = DriftCell(id=n_cell, parent=self)
+            cell = DriftCell(number=n_cell, parent=self)
             # positioned correctly
             cell.local_center = (
-                _firs_wire_local + (i - 1) * cell.width,
+                _firs_wire_x_local + i * cell.width,
                 y_local,
                 z_local,
             )
             cell.global_center = (
-                (x_global + _firs_wire_local) + (i - 1) * cell.width,
+                (x_global  - _firs_wire_x_global) - i * cell.width,
                 y_global,
                 z_global,
             )
 
-            self.add_cell(cell)
-
+            self._add_cell(cell)
 
 if __name__ == "__main__":
     layer = Layer(589603840)
