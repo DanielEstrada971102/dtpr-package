@@ -1,73 +1,62 @@
-from dtpr.geometry.dt_geometry import DTGEOMETRY
+from dtpr.geometry import DTGEOMETRY, DTFrame
 from dtpr.geometry.super_layer import SuperLayer
+from pandas import DataFrame
 
-
-class Station(object):
+class Station(DTFrame):
     """
-    Class representing a Drift Station.
+    Class representing a CMS Drift Tube Chamber.
 
     Attributes
     ----------
-    id : int
-        Identifier of the DT station.
     wheel : int
         Geometrical position within CMS.
     sector : int
         Geometrical position within CMS.
     station : int
         Geometrical position within CMS.
-    bounds : tuple
-        Space dimensions of the station.
-    center : tuple
-        Global center coordinates of the station.
-    direction : tuple
-        Normal vector that determines the direcciont of station refer to CMS.
+    name : str
+        Name of the station. returns "Wheel {wheel}, Sector {sector}, Station {station}".
     super_layers : list
         List of super layers in the station.
+
+    Others inherit from ``dtpr.geometry.DTFrame``... (e.g. id, local_center, global_center, direction, etc.)
     """
 
-    def __init__(self, wheel, sector, station):
+    def __init__(self, wheel, sector, station, dt_info=None):
         """
-        Constructor
+        Constructor of the Station class.
 
-        :param wheel: Geometrical position within CMS.
+        :param wheel: Wheel position within CMS.
         :type wheel: int
-        :param sector: Geometrical position within CMS.
+        :param sector: Sector position within CMS.
         :type sector: int
-        :param station: Geometrical position within CMS.
+        :param station: Station type.
         :type station: int
+        :param dt_info: Drift time information for the station. Default is None.
+        :type dt_info: dict, list, or pandas.DataFrame
         """
-        self._super_layers = []
+        super().__init__(rawId=DTGEOMETRY.get("rawId", wh=wheel, sec=sector, st=station))
+        self.number = None
 
         # == Chamber related parameters
         self.wheel = wheel
         self.sector = sector
         self.station = station
-        self.id = DTGEOMETRY.get("rawId", wh=wheel, sec=sector, st=station)
-        self.bounds = DTGEOMETRY.get("Bounds", rawId=self.id)
-        self.local_center = DTGEOMETRY.get("LocalPosition", rawId=self.id)
-        self.global_center = DTGEOMETRY.get("GlobalPosition", rawId=self.id)
-        self.direction = DTGEOMETRY.get("NormalVector", rawId=self.id)
 
         # == Build the station
+        self._super_layers = []
         self._build_station()
+
+        # == Set the drift times
+        if dt_info is not None:
+            self.set_cell_times(dt_info) 
 
     # == Getters
 
     @property
-    def id(self):
-        """
-        Identifier of the station.
-
-        :return: Identifier of the station.
-        :rtype: int
-        """
-        return self._id
-
-    @property
     def wheel(self):
         """
-        Geometrical position within CMS.
+        Wheel position within CMS.
 
         :return: Wheel position.
         :rtype: int
@@ -77,7 +66,7 @@ class Station(object):
     @property
     def sector(self):
         """
-        Geometrical position within CMS.
+        Sector position within CMS.
 
         :return: Sector position.
         :rtype: int
@@ -87,7 +76,7 @@ class Station(object):
     @property
     def station(self):
         """
-        Geometrical position within CMS.
+        Station type.
 
         :return: Station position.
         :rtype: int
@@ -99,7 +88,7 @@ class Station(object):
         """
         Name of the station.
 
-        :return: Name of the station.
+        :return: Name of the station in format "Wheel {wheel}, Sector {sector}, Station {station}".
         :rtype: str
         """
         return f"Wheel {self.wheel}, Sector {self.sector}, Station {self.station}"
@@ -116,7 +105,7 @@ class Station(object):
 
     def super_layer(self, super_layer_number):
         """
-        Get a super layer by its number.
+        Get a super layer by its number. if the super layer does not exist, it returns None.
 
         :param super_layer_number: Number of the super layer.
         :type super_layer_number: int
@@ -127,47 +116,7 @@ class Station(object):
             (sl for sl in self.super_layers if sl.number == super_layer_number), None
         )
 
-    @property
-    def local_center(self):
-        """
-        Local center coordinates of the station.
-
-        :return: Local center coordinates (x, y, z).
-        :rtype: tuple
-        """
-        return self._x_local, self._y_local, self._z_local
-
-    @property
-    def global_center(self):
-        """
-        Global center coordinates of the station.
-
-        :return: Global center coordinates (x, y, z).
-        :rtype: tuple
-        """
-        return self._x_global, self._y_global, self._z_global
-
-    @property
-    def bounds(self):
-        """
-        Space dimensions of the station.
-
-        :return: Dimensions of the station (width, height, depth).
-        :rtype: tuple
-        """
-        return self._width, self._height, self._depth
-
     # == Setters
-
-    @id.setter
-    def id(self, value):
-        """
-        Set the identifier of the station.
-
-        :param value: Identifier of the station.
-        :type value: int
-        """
-        self._id = value
 
     @wheel.setter
     def wheel(self, value):
@@ -193,19 +142,15 @@ class Station(object):
         """
         if value < 1 or value > 14:
             raise ValueError("Sector value must be between 1 and 14")
-        if value == 13:
-            self._sector = 4
-        elif value == 14:
-            self._sector = 10
         else:
             self._sector = value
 
     @station.setter
     def station(self, value):
         """
-        Set the station position.
+        Set the station type.
 
-        :param value: Station position.
+        :param value: Station type.
         :type value: int
         :raises ValueError: If the value is not between 1 and 4.
         """
@@ -213,37 +158,7 @@ class Station(object):
             raise ValueError("Station value must be between 1 and 4")
         self._station = value
 
-    @local_center.setter
-    def local_center(self, position):
-        """
-        Set the local center coordinates of the station.
-
-        :param position: Local center coordinates (x, y, z).
-        :type position: tuple
-        """
-        self._x_local, self._y_local, self._z_local = self._correct_cords(*position)
-
-    @global_center.setter
-    def global_center(self, position):
-        """
-        Set the global center coordinates of the station.
-
-        :param position: Global center coordinates
-        :type position: tuple
-        """
-        self._x_global, self._y_global, self._z_global = self._correct_cords(*position)
-
-    @bounds.setter
-    def bounds(self, bounds):
-        """
-        Set the space dimensions of the station.
-
-        :param bounds: Dimensions of the station (width, height, depth).
-        :type bounds: tuple
-        """
-        self._width, self._height, self._depth = bounds
-
-    def add_super_layer(self, super_layer):
+    def _add_super_layer(self, super_layer):
         """
         Add a new super layer to the station.
 
@@ -259,24 +174,53 @@ class Station(object):
 
         CMS -> x: right, y: up, z: forward, Station -> x: right, y: forward, z: down
 
+        That is, a rotation matrix of -90 degrees around the x-axis.
+
+        .. math::
+
+            R_x(-\\pi/2) = \\begin{bmatrix} 
+                                1 & 0 & 0 \\\\
+                                0 & 0 & 1 \\\\
+                                0 & -1 & 0
+                            \\end{bmatrix}
+
         :param x: x coordinate.
         :type x: float
         :param y: y coordinate.
         :type y: float
         :param z: z coordinate.
         :type z: float
-        :return: Corrected coordinates.
+        :return: Transformed coordinates.
         :rtype: tuple
         """
-        return x, -1 * z, y
+        return x, z, -1 * y
 
     def _build_station(self):
         """
-        Build up the station.
+        Build up the station. It creates the super layers contained in the station.
         """
         for SL in DTGEOMETRY.get(rawId=self.id).iter("SuperLayer"):
             new_super_layer = SuperLayer(rawId=SL.get("rawId"), parent=self)
-            self.add_super_layer(new_super_layer)
+            self._add_super_layer(new_super_layer)
+
+    def set_cell_times(self, dt_info):
+        """
+        Set the drift times for the cells in the station. 
+
+        :param dt_info: Drift time information for the station. Can be a dictionary, a list of dictionaries, 
+                or a pandas DataFrame containing the drift time information identified by super layer, 
+                layer, and wire. e.g. [{"sl": 1, "l": 1, "w": 1, "time": 300}, ...]
+        :type dt_info: dict, list, or pandas.DataFrame
+        """
+        info_iter = (
+            DataFrame(dt_info) if isinstance(dt_info, (dict, list)) else dt_info
+        ).itertuples(index=False)
+        for info in info_iter:
+            sl, l, w, time = info.sl, info.l, info.w, info.time
+            try:
+                self.super_layer(sl).layer(l).cell(w).driftTime = time
+            except:
+                pass
 
 
 if __name__ == "__main__":
@@ -304,11 +248,3 @@ if __name__ == "__main__":
                 l.cells[-1].local_center if local else l.cells[-1].global_center,
             )
 
-    # print(st.center)
-    # print(st.super_layers)
-    # sl_1 = st.super_layer(1)
-    # print(sl_1.id, sl_1.number)
-    # sl_2 = st.super_layer(2)
-    # # print(sl_2.id, sl_2.number)
-    # sl_3 = st.super_layer(3)
-    # print(sl_3.id,  sl_3.number)
