@@ -80,6 +80,32 @@ class SuperLayer(object):
         return self._x_global, self._y_global, self._z_global
 
     @property
+    def local_position_at_min(self):
+        """
+        Local position at the minimum coordinates of the super layer.
+
+        :return: Local position at minimum coordinates (x, y, z).
+        :rtype: tuple
+        """
+        x = self._x_local - self.bounds[0] / 2
+        y = self._y_local - self.bounds[1] / 2
+        z = self._z_local - self.bounds[2] / 2
+        return x, y, z
+
+    @property
+    def global_position_at_min(self):
+        """
+        Global position at the minimum coordinates of the super layer.
+
+        :return: Global position at minimum coordinates (x, y, z).
+        :rtype: tuple
+        """
+        x = self._x_global - self.bounds[0] / 2
+        y = self._y_global - self.bounds[1] / 2
+        z = self._z_global - self.bounds[2] / 2
+        return x, y, z
+
+    @property
     def layers(self):
         """
         Get all the layers in the super layer.

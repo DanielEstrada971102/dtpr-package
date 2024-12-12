@@ -1,5 +1,6 @@
 from dtpr.geometry.dt_geometry import DTGEOMETRY
 from dtpr.geometry.super_layer import SuperLayer
+from pandas import DataFrame
 
 
 class Station(object):
@@ -26,7 +27,7 @@ class Station(object):
         List of super layers in the station.
     """
 
-    def __init__(self, wheel, sector, station):
+    def __init__(self, wheel, sector, station, dt_info=None):
         """
         Constructor
 
@@ -51,6 +52,10 @@ class Station(object):
 
         # == Build the station
         self._build_station()
+
+        # == Set the drift times
+        if dt_info is not None:
+            self.set_cell_times(dt_info) 
 
     # == Getters
 
@@ -156,6 +161,32 @@ class Station(object):
         :rtype: tuple
         """
         return self._width, self._height, self._depth
+
+    @property
+    def local_position_at_min(self):
+        """
+        Local position at the minimum coordinates of the station.
+
+        :return: Local position at minimum coordinates (x, y, z).
+        :rtype: tuple
+        """
+        x = self._x_local - self.bounds[0] / 2
+        y = self._y_local - self.bounds[1] / 2
+        z = self._z_local - self.bounds[2] / 2
+        return x, y, z
+
+    @property
+    def global_position_at_min(self):
+        """
+        Global position at the minimum coordinates of the station.
+
+        :return: Global position at minimum coordinates (x, y, z).
+        :rtype: tuple
+        """
+        x = self._x_global - self.bounds[0] / 2
+        y = self._y_global - self.bounds[1] / 2
+        z = self._z_global - self.bounds[2] / 2
+        return x, y, z
 
     # == Setters
 
@@ -284,6 +315,17 @@ class Station(object):
         for SL in DTGEOMETRY.get(rawId=self.id).iter("SuperLayer"):
             new_super_layer = SuperLayer(rawId=SL.get("rawId"), parent=self)
             self.add_super_layer(new_super_layer)
+
+    def set_cell_times(self, dt_info):
+        info_iter = (
+            DataFrame(dt_info) if isinstance(dt_info, (dict, list)) else dt_info
+        ).itertuples(index=False)
+        for info in info_iter:
+            sl, l, w, time = info.sl, info.l, info.w, info.time
+            try:
+                self.super_layer(sl).layer(l).cell(w).driftTime = time
+            except:
+                pass
 
 
 if __name__ == "__main__":

@@ -152,6 +152,32 @@ class Layer(object):
         """
         self._x_global, self._y_global, self._z_global = position
 
+    @property
+    def local_position_at_min(self):
+        """
+        Local position at the minimum coordinates of the layer.
+
+        :return: Local position at minimum coordinates (x, y, z).
+        :rtype: tuple
+        """
+        x = self._x_local - self.bounds[0] / 2
+        y = self._y_local - self.bounds[1] / 2
+        z = self._z_local - self.bounds[2] / 2
+        return x, y, z
+
+    @property
+    def global_position_at_min(self):
+        """
+        Global position at the minimum coordinates of the layer.
+
+        :return: Global position at minimum coordinates (x, y, z).
+        :rtype: tuple
+        """
+        x = self._x_global - self.bounds[0] / 2
+        y = self._y_global - self.bounds[1] / 2
+        z = self._z_global - self.bounds[2] / 2
+        return x, y, z
+
     def add_cell(self, cell):
         """
         Add a new cell to the layer.
@@ -206,6 +232,9 @@ class Layer(object):
         _firs_wire_x_local = float(
             DTGEOMETRY.get(".//WirePositions//FirstWire_ref_to_chamber", rawId=self.id)
         )
+        _firs_wire_x_global = float(
+            DTGEOMETRY.get(".//WirePositions//FirstWire", rawId=self.id)
+        )
 
         x_local, y_local, z_local = self.local_center
         x_global, y_global, z_global = self.global_center
@@ -219,7 +248,7 @@ class Layer(object):
                 z_local,
             )
             cell.global_center = (
-                (x_global  - _firs_wire_x_local) - i * cell.width,
+                (x_global  - _firs_wire_x_global) - i * cell.width,
                 y_global,
                 z_global,
             )

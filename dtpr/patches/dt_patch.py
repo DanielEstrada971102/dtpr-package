@@ -8,101 +8,118 @@ very disk consuming (plots are quite full of stuff).
 """
 
 import matplotlib.pyplot as plt
-from matplotlib.patches import Rectangle, Circle
+from matplotlib.patches import Rectangle
 from matplotlib.collections import PatchCollection
 from matplotlib.colors import Normalize
 from mplhep import style
-from pandas import DataFrame
 from dtpr.geometry.station import Station
 from math import atan2, degrees
 
 plt.style.use(style.CMS)
 cmap = plt.get_cmap("viridis").copy()
-cmap.set_under("w")
+cmap.set_under("none")
 norm = Normalize(vmin=299, vmax=1000, clip=False)
 
 
-class dtpatch(object):
-    def __init__(self, MB: Station, fig, axes, dt_info=None, local=True):
-        self.current_DT = MB
-        self.fig = fig
+class DTPatch():
+    def __init__(self, station: Station, fig, axes, local=True, faceview="phi"):
+        self.current_DT = station
         self.axes = axes
+        self.view = faceview
+        self.bounds_collections = PatchCollection([])
+        self.cells_collection = PatchCollection([])
 
         self.local = local
 
         if not self.local:  # if global, compute the angle to rotate the patches
-            nx, ny, nz = MB.direction
+            nx, ny, _ = station.direction
             self.angle = degrees(atan2(ny, nx)) + 90  # ang_incline = ang_normal_refx + 90
 
         #draw Sl bounds
-        frames = self.draw_dt_bounds()
-        self.axes.add_collection(PatchCollection(frames, match_original=True))
+        self._draw_bounds()
 
-        if dt_info is not None:
-            self.set_cells_times(dt_info)
+        # self.axes.add_collection(PatchCollection(frames, match_original=True))
 
-        self.cell_patches, cell_times = self._make_dt_patches()
+        self._draw_cells()
 
-        self.collection = PatchCollection(
-            self.cell_patches,
-            cmap=cmap,
-            norm=norm,
-            edgecolors="k",
-            linewidth=.5,
-        )
-        self.collection.set_array(cell_times)
+        # add collections to axes
+        axes.add_collection(self.bounds_collections)
+        axes.add_collection(self.cells_collection)
 
-        self.axes.add_collection(self.collection)
+        # # add colorbar
+        # if not any(hasattr(ax, 'colorbar') for ax in plt.gcf().get_axes()):
+        #     fig.colorbar(self.cells_collection, label="time [ns]")
 
-        # add colorbar
-        # self.fig.colorbar(self.collection, label="time [ns]")
-
-    def draw_dt_bounds(self):
-        colors = {1 : "lightblue", 2 : "orange", 3 : "green"}
+    def _draw_bounds(self):
         frames = []
+        # first draw the DT frame
+        frames.append(self._create_frame(self.current_DT))
+
+        # then draw the superlayer frames
         for super_layer in self.current_DT.super_layers:
-            width, height, length = super_layer.bounds
-            x, y, z = (
-                super_layer.local_center
-                if self.local
-                else super_layer.global_center
-            )
+            frames.append(self._create_frame(super_layer))
 
-            x_min, y_min = x - (width * 0.5), y - (height * 0.5)
-            frame = Rectangle(
-                (x_min-.25, y_min),
-                width + 0.5,
-                height,
-                edgecolor="black",
-                linewidth=1,
-                facecolor=colors[super_layer.number],
-                alpha=0.3,
-            )
-            if not self.local:  # if global, rotate the frame
-                x, y, z = super_layer.global_center  # rotation_point
+        self.bounds_collections.set_paths(frames)
+        self.bounds_collections.set_facecolor(["lightgray", "lightyellow", "lightpink", "lightblue"])
+        self.bounds_collections.set_edgecolor("k")
+        self.bounds_collections.set_linewidth(1)
+        self.bounds_collections.set_alpha(0.3)
 
-                frame.rotation_point = (x, y)
-                frame.set_angle(self.angle)
-            frames.append(frame)
-        return frames
 
-    def _make_dt_patches(self):
-        MB = self.current_DT
-        cell_patches = []
-        cell_times = []
+    def _create_frame(self, obj):
+        width, height, length = obj.bounds
+        x_min, y_min, z_min = (
+            obj.local_position_at_min if self.local
+            else obj.global_position_at_min
+        )
+        x, y, z = (
+            obj.local_center
+            if self.local
+            else obj.global_center
+        )
 
-        for super_layer in MB.super_layers:
+        if self.view == "eta":
+            if getattr(obj, "number", None) != 2:
+                width = length
+                x = z
+                x_min = z_min
+
+        elif self.view == "phi":
+            if hasattr(obj, "number") and obj.number == 2:
+                width = length
+                if self.local:
+                    x = z
+                    x_min = z_min
+                else:
+                    x_min = x - (length / 2)
+
+        frame = Rectangle(
+            (x_min, y_min),
+            width,
+            height,
+        )
+
+        if not self.local:  # if global, rotate the frame
+            frame.rotation_point = (x, y)
+            frame.set_angle(self.angle)
+
+        return frame
+
+    def _draw_cells(self):
+        cells = []
+        times = []
+        for super_layer in self.current_DT.super_layers:
+            if self.view=="phi" and super_layer.number == 2: continue # skip superlayer 2
+            elif self.view=="eta" and super_layer.number != 2: continue # skip superlayer 1 and 3
             for layer in super_layer.layers:
                 for cell in layer.cells:
-                    xmin, ymin, zmin = (
-                        cell.local_position_at_min
-                        if self.local
+                    xmin, ymin, _ = (
+                        cell.local_position_at_min if self.local
                         else cell.global_position_at_min
                     )
                     width = cell.width
                     height = cell.height
-                    length = cell.length
-                    drift_time = cell.driftTime
+                    time = cell.driftTime
 
                     # create cell patch
                     cell_patch = Rectangle(
@@ -117,19 +134,14 @@ class dtpatch(object):
                         cell_patch.rotation_point = (x, y)
                         cell_patch.set_angle(self.angle)
 
-                    cell_patches.append(cell_patch)
-                    cell_times.append(drift_time) # if super_layer.number == 2 else 0)
+                    cells.append(cell_patch),
+                    times.append(time)
 
-        return cell_patches, cell_times
+        self.cells_collection.set_paths(cells)
+        self.cells_collection.set_array(times)
+        self.cells_collection.set_cmap(cmap)
+        self.cells_collection.set_norm(norm)
+        self.cells_collection.set_edgecolor("k")
+        self.cells_collection.set_linewidth(.1)
 
-    def set_cells_times(self, DT_info):
-        info_iter = (
-            DataFrame(DT_info) if isinstance(DT_info, (dict, list)) else DT_info
-        ).itertuples(index=False)
-        for info in info_iter:
-            sl, l, w, time = info.sl, info.l, info.w, info.time
-            try:
-                self.current_DT.super_layer(sl).layer(l).cell(w).driftTime = time
-            except:
-                pass
-        return
+# extender create_frame to cells...
