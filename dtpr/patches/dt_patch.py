@@ -8,17 +8,13 @@ very disk consuming (plots are quite full of stuff).
 """
 
 import matplotlib.pyplot as plt
-from matplotlib.patches import Rectangle
+from matplotlib.patches import Rectangle, Circle
 from matplotlib.collections import PatchCollection
 from matplotlib.colors import Normalize
 from mplhep import style
 from pandas import DataFrame
 from dtpr.geometry.station import Station
 from math import atan2, degrees
-from copy import deepcopy
-from pytransform3d.rotations import matrix_from_euler
-from pytransform3d.transformations import transform
-from numpy import array, radians
 
 plt.style.use(style.CMS)
 cmap = plt.get_cmap("viridis").copy()
@@ -27,16 +23,20 @@ norm = Normalize(vmin=299, vmax=1000, clip=False)
 
 
 class dtpatch(object):
-    def __init__(self, MB: Station, fig, axes, view="phi", dt_info=None, local=True):
+    def __init__(self, MB: Station, fig, axes, dt_info=None, local=True):
         self.current_DT = MB
         self.fig = fig
         self.axes = axes
-        self.view = view
 
-        # self.local = True  # local At the moment global is not working
         self.local = local
 
-        self.setup_canvas()
+        if not self.local:  # if global, compute the angle to rotate the patches
+            nx, ny, nz = MB.direction
+            self.angle = degrees(atan2(ny, nx)) + 90  # ang_incline = ang_normal_refx + 90
+
+        #draw Sl bounds
+        frames = self.draw_dt_bounds()
+        self.axes.add_collection(PatchCollection(frames, match_original=True))
 
         if dt_info is not None:
             self.set_cells_times(dt_info)
@@ -48,62 +48,48 @@ class dtpatch(object):
             cmap=cmap,
             norm=norm,
             edgecolors="k",
-            linewidth=1,
+            linewidth=.5,
         )
         self.collection.set_array(cell_times)
 
         self.axes.add_collection(self.collection)
-        # # add frame bounds
-        # self.draw_dt_bounds()
+
         # add colorbar
-        self.fig.colorbar(self.collection, label="time [ns]")
+        # self.fig.colorbar(self.collection, label="time [ns]")
 
-    # def draw_dt_bounds(self):
-    #     for super_layer in self.current_DT.super_layers:
-    #         width, height, length = super_layer.bounds
-    #         x, y, z = (
-    #             super_layer.local_center
-    #             if self.local
-    #             else super_layer.global_center
-    #         )
-    #         if super_layer.number == 2:
-    #             x_min, y_min = x - (length * 0.5), y - (height * 0.5)
-    #             frame = plt.Rectangle((x_min, y_min), length, height, alpha=1, edgecolor="black", facecolor="gray")
-    #         else:
-    #             x_min, y_min = x - (width * 0.5), y - (height * 0.5)
-    #             frame = plt.Rectangle((x_min, y_min), width, height, alpha=1, edgecolor="black", facecolor="blue")
-    #         axs.add_patch(frame)
+    def draw_dt_bounds(self):
+        colors = {1 : "lightblue", 2 : "orange", 3 : "green"}
+        frames = []
+        for super_layer in self.current_DT.super_layers:
+            width, height, length = super_layer.bounds
+            x, y, z = (
+                super_layer.local_center
+                if self.local
+                else super_layer.global_center
+            )
 
-    def setup_canvas(self):
-        width, height, length = self.current_DT.bounds
-        x, y, z = (
-            self.current_DT.local_center
-            if self.local
-            else self.current_DT.global_center
-        )
+            x_min, y_min = x - (width * 0.5), y - (height * 0.5)
+            frame = Rectangle(
+                (x_min-.25, y_min),
+                width + 0.5,
+                height,
+                edgecolor="black",
+                linewidth=1,
+                facecolor=colors[super_layer.number],
+                alpha=0.3,
+            )
+            if not self.local:  # if global, rotate the frame
+                x, y, z = super_layer.global_center  # rotation_point
 
-        if self.local or self.view == "phi":
-            self.axes.set_xlabel("x[cm]")
-            self.axes.set_ylabel("y[cm]")
-            self.axes.set_xlim(x - (width * 0.5) - 5, x + (width * 0.5) + 5)
-            self.axes.set_ylim(y - (height * 0.5) - 5, y + (height * 0.5) + 5)
-
-        elif self.view == "theta":
-            self.axes.set_xlabel("-y[cm]")
-            self.axes.set_ylabel("z[cm]")
-            self.axes.set_xlim(y - (length * 0.5) - 5, y + (length * 0.5) + 5)
-            self.axes.set_ylim(z - (height * 0.5) - 5, z + (height * 0.5) + 5)
-
-        return
+                frame.rotation_point = (x, y)
+                frame.set_angle(self.angle)
+            frames.append(frame)
+        return frames
 
     def _make_dt_patches(self):
         MB = self.current_DT
         cell_patches = []
         cell_times = []
-
-        if not self.local:  # if global, compute the angle to rotate the patches
-            nx, ny, nz = MB.direction
-            angle = degrees(atan2(ny, nx)) + 90  # ang_incline = ang_normal_refx + 90
 
         for super_layer in MB.super_layers:
             for layer in super_layer.layers:
@@ -118,43 +104,21 @@ class dtpatch(object):
                     length = cell.length
                     drift_time = cell.driftTime
 
-                    if self.view == "phi":
-                        # create cell patch
-                        cell_patch = Rectangle(
-                            (xmin, ymin),
-                            length if super_layer.number == 2 else width,
-                            height,
-                        )
+                    # create cell patch
+                    cell_patch = Rectangle(
+                        (xmin, ymin),
+                        width, # length if super_layer.number != 2 else width,
+                        height,
+                    )
 
-                        if not self.local:  # if global, rotate the patch
-                            x, y, z = layer.global_center # rotation_point
+                    if not self.local:  # if global, rotate the patch
+                        x, y, z = layer.global_center  # rotation_point
 
-                            cell_patch.rotation_point = (x, y)
-                            if super_layer.number == 2: 
-                                cell_patch.set_xy((xmin-length, ymin))
-                            cell_patch.set_angle(angle)
+                        cell_patch.rotation_point = (x, y)
+                        cell_patch.set_angle(self.angle)
 
-                        cell_patches.append(cell_patch)
-                        cell_times.append(drift_time if super_layer.number != 2 else 0) # not color for SL-2
-                        if super_layer.number == 2: break # just draw one cell per layer in SL-2
-
-                    elif self.view == "theta": # not implemented yet    
-                        # create cell patch
-                        cell_patch = Rectangle(
-                            (xmin, ymin),
-                            length if super_layer.number != 2 else width,
-                            height,
-                        )
-
-                        if not self.local:  # if global, rotate the patch
-                            x, y, z = layer.global_center  # rotation_point
-
-                            cell_patch.rotation_point = (x, y)
-                            cell_patch.set_angle(angle)
-
-                        cell_patches.append(cell_patch)
-                        cell_times.append(drift_time if super_layer.number == 2 else 0) # not color for SL-1 and SL-3
-                        if super_layer.number != 2: break # just draw one cell per layer in SL-1 and SL-3
+                    cell_patches.append(cell_patch)
+                    cell_times.append(drift_time) # if super_layer.number == 2 else 0)
 
         return cell_patches, cell_times
 
@@ -164,57 +128,8 @@ class dtpatch(object):
         ).itertuples(index=False)
         for info in info_iter:
             sl, l, w, time = info.sl, info.l, info.w, info.time
-            if not self.local or self.view == "phi":
-                if sl == 2:
-                    continue  # we are not plotting info in SL-Theta
-            elif self.view == "theta":
-                if sl != 2:
-                    continue
-            self.current_DT.super_layer(sl).layer(l).cell(w).driftTime = time
+            try:
+                self.current_DT.super_layer(sl).layer(l).cell(w).driftTime = time
+            except:
+                pass
         return
-
-
-if __name__ == "__main__":
-    import matplotlib.pyplot as plt
-    from dtpr.geometry.station import Station
-
-    # local = True
-    local = False
-    fig, axs = plt.subplots(1, 1, figsize=(10, 8))
-    dt_chamber = Station(wheel=-2, sector=2, station=1)
-    dt_patch = dtpatch(
-        MB=dt_chamber,
-        dt_info=[
-            {"sl": 1, "l": 1, "w": 1, "time": 300},
-            {"sl": 1, "l": 1, "w": 2, "time": 400},
-            {"sl": 1, "l": 2, "w": 1, "time": 500},
-            {"sl": 1, "l": 2, "w": 2, "time": 600},
-            {"sl": 2, "l": 1, "w": 1, "time": 700},
-            {"sl": 2, "l": 1, "w": 2, "time": 800},
-            {"sl": 2, "l": 2, "w": 1, "time": 900},
-            {"sl": 3, "l": 1, "w": 1, "time": 700},
-            {"sl": 3, "l": 1, "w": 2, "time": 800},
-            {"sl": 3, "l": 2, "w": 1, "time": 900},
-            {"sl": 3, "l": 2, "w": 2, "time": 1000},
-        ],
-        fig=fig,
-        axes=axs,
-        local=local,
-    )
-
-    x, y, _ = dt_chamber.local_center if local else dt_chamber.global_center
-    axs.scatter(x, y, color="red", s=10)
-
-    for sl in dt_chamber.super_layers:
-        x, y, z = sl.local_center if local else sl.global_center
-        axs.scatter(x, y, color="green", s=10)
-        for l in sl.layers:
-            x, y, z = l.local_center if local else l.global_center
-            axs.scatter(x, y, color="orange", s=10)
-            x_c, y_c, z_c = l.cells[0].local_center if local else l.cells[0].global_center
-            x_pm, y_pm, z_pm = l.cells[0].local_position_at_min if local else l.cells[0].global_position_at_min
-            axs.scatter(x_c, y_c, color="purple", s=10)
-            axs.scatter(x_pm, y_pm, color="yellow", s=10)
-
-    # fig.savefig("test.svg")
-    plt.show()

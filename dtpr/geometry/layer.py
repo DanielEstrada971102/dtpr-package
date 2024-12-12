@@ -214,12 +214,12 @@ class Layer(object):
             cell = DriftCell(id=n_cell, parent=self)
             # positioned correctly
             cell.local_center = (
-                _firs_wire_x_local + (i - self._first_cell_id) * cell.width,
+                _firs_wire_x_local + i * cell.width,
                 y_local,
                 z_local,
             )
             cell.global_center = (
-                (x_global  - _firs_wire_x_local) - (i - self._first_cell_id) * cell.width,
+                (x_global  - _firs_wire_x_local) - i * cell.width,
                 y_global,
                 z_global,
             )
