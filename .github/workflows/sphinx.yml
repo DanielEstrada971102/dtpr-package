@@ -17,10 +17,10 @@ jobs:
         python-version: '3.x'
     - name: Install dependencies
       run: |
-        pip install sphinx sphinx-rtd-theme
+        pip install . && pip install sphinx sphinx_rtd_theme
     - name: Build docs
       run: |
-        cd "$GITHUB_WORKSPACE/docs" && make html
+        cd $GITHUB_WORKSPACE/docs && ls && make html
 
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v4
