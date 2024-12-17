@@ -146,3 +146,4 @@ The following particles are available in the package:
     ph2tp
     segment
     shower
+    simhit
