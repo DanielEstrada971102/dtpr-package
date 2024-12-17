@@ -25,3 +25,6 @@ particle_types:
   emushowers:
     class: 'dtpr.particles.shower.Shower'
     n_branch_name: 'ph2Shower_station'
+  simhits:
+    class: 'dtpr.particles.simhit.SimHit'
+    n_branch_name: 'simHit_nSimHits'
