@@ -51,7 +51,27 @@
 <li class="toctree-l2"><a class="reference internal" href="drift_cell.html">DriftCell</a></li>
 <li class="toctree-l2"><a class="reference internal" href="layer.html">Layer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="super_layer.html">SuperLayer</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Station</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Station</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dtpr.geometry.station.Station"><code class="docutils literal notranslate"><span class="pre">Station</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.station.Station.__dict__"><code class="docutils literal notranslate"><span class="pre">Station.__dict__</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.station.Station.__init__"><code class="docutils literal notranslate"><span class="pre">Station.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.station.Station.__module__"><code class="docutils literal notranslate"><span class="pre">Station.__module__</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.station.Station.__weakref__"><code class="docutils literal notranslate"><span class="pre">Station.__weakref__</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.station.Station.add_super_layer"><code class="docutils literal notranslate"><span class="pre">Station.add_super_layer()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.station.Station.bounds"><code class="docutils literal notranslate"><span class="pre">Station.bounds</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.station.Station.global_center"><code class="docutils literal notranslate"><span class="pre">Station.global_center</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.station.Station.id"><code class="docutils literal notranslate"><span class="pre">Station.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.station.Station.local_center"><code class="docutils literal notranslate"><span class="pre">Station.local_center</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.station.Station.name"><code class="docutils literal notranslate"><span class="pre">Station.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.station.Station.sector"><code class="docutils literal notranslate"><span class="pre">Station.sector</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.station.Station.station"><code class="docutils literal notranslate"><span class="pre">Station.station</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.station.Station.super_layer"><code class="docutils literal notranslate"><span class="pre">Station.super_layer()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.station.Station.super_layers"><code class="docutils literal notranslate"><span class="pre">Station.super_layers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.station.Station.wheel"><code class="docutils literal notranslate"><span class="pre">Station.wheel</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="dt_geometry.html">DTGeometry</a></li>
 </ul>
 </li>
@@ -86,6 +106,218 @@
   <section id="station">
 <h1>Station<a class="headerlink" href="#station" title="Link to this heading"></a></h1>
 <p>SOME DESCRIPTION HERE…</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="dtpr.geometry.station.Station">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dtpr.geometry.station.</span></span><span class="sig-name descname"><span class="pre">Station</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wheel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/geometry/station.html#Station"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.geometry.station.Station" title="Link to this definition"></a></dt>
+<dd><p>Class representing a Drift Station.</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>id<span class="classifier">int</span></dt><dd><p>Identifier of the DT station.</p>
+</dd>
+<dt>wheel<span class="classifier">int</span></dt><dd><p>Geometrical position within CMS.</p>
+</dd>
+<dt>sector<span class="classifier">int</span></dt><dd><p>Geometrical position within CMS.</p>
+</dd>
+<dt>station<span class="classifier">int</span></dt><dd><p>Geometrical position within CMS.</p>
+</dd>
+<dt>bounds<span class="classifier">tuple</span></dt><dd><p>Space dimensions of the station.</p>
+</dd>
+<dt>center<span class="classifier">tuple</span></dt><dd><p>Global center coordinates of the station.</p>
+</dd>
+<dt>direction<span class="classifier">tuple</span></dt><dd><p>Normal vector that determines the direcciont of station refer to CMS.</p>
+</dd>
+<dt>super_layers<span class="classifier">list</span></dt><dd><p>List of super layers in the station.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dtpr.geometry.station.Station.__dict__">
+<span class="sig-name descname"><span class="pre">__dict__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">mappingproxy({'__module__':</span> <span class="pre">'dtpr.geometry.station',</span> <span class="pre">'__doc__':</span> <span class="pre">'\n</span>&#160;&#160;&#160; <span class="pre">Class</span> <span class="pre">representing</span> <span class="pre">a</span> <span class="pre">Drift</span> <span class="pre">Station.\n\n</span>&#160;&#160;&#160; <span class="pre">Attributes\n</span>&#160;&#160;&#160; <span class="pre">----------\n</span>&#160;&#160;&#160; <span class="pre">id</span> <span class="pre">:</span> <span class="pre">int\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">Identifier</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">DT</span> <span class="pre">station.\n</span>&#160;&#160;&#160; <span class="pre">wheel</span> <span class="pre">:</span> <span class="pre">int\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">Geometrical</span> <span class="pre">position</span> <span class="pre">within</span> <span class="pre">CMS.\n</span>&#160;&#160;&#160; <span class="pre">sector</span> <span class="pre">:</span> <span class="pre">int\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">Geometrical</span> <span class="pre">position</span> <span class="pre">within</span> <span class="pre">CMS.\n</span>&#160;&#160;&#160; <span class="pre">station</span> <span class="pre">:</span> <span class="pre">int\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">Geometrical</span> <span class="pre">position</span> <span class="pre">within</span> <span class="pre">CMS.\n</span>&#160;&#160;&#160; <span class="pre">bounds</span> <span class="pre">:</span> <span class="pre">tuple\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">Space</span> <span class="pre">dimensions</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">station.\n</span>&#160;&#160;&#160; <span class="pre">center</span> <span class="pre">:</span> <span class="pre">tuple\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">Global</span> <span class="pre">center</span> <span class="pre">coordinates</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">station.\n</span>&#160;&#160;&#160; <span class="pre">direction</span> <span class="pre">:</span> <span class="pre">tuple\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">Normal</span> <span class="pre">vector</span> <span class="pre">that</span> <span class="pre">determines</span> <span class="pre">the</span> <span class="pre">direcciont</span> <span class="pre">of</span> <span class="pre">station</span> <span class="pre">refer</span> <span class="pre">to</span> <span class="pre">CMS.\n</span>&#160;&#160;&#160; <span class="pre">super_layers</span> <span class="pre">:</span> <span class="pre">list\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">List</span> <span class="pre">of</span> <span class="pre">super</span> <span class="pre">layers</span> <span class="pre">in</span> <span class="pre">the</span> <span class="pre">station.\n</span>&#160;&#160;&#160; <span class="pre">',</span> <span class="pre">'__init__':</span> <span class="pre">&lt;function</span> <span class="pre">Station.__init__&gt;,</span> <span class="pre">'id':</span> <span class="pre">&lt;property</span> <span class="pre">object&gt;,</span> <span class="pre">'wheel':</span> <span class="pre">&lt;property</span> <span class="pre">object&gt;,</span> <span class="pre">'sector':</span> <span class="pre">&lt;property</span> <span class="pre">object&gt;,</span> <span class="pre">'station':</span> <span class="pre">&lt;property</span> <span class="pre">object&gt;,</span> <span class="pre">'name':</span> <span class="pre">&lt;property</span> <span class="pre">object&gt;,</span> <span class="pre">'super_layers':</span> <span class="pre">&lt;property</span> <span class="pre">object&gt;,</span> <span class="pre">'super_layer':</span> <span class="pre">&lt;function</span> <span class="pre">Station.super_layer&gt;,</span> <span class="pre">'local_center':</span> <span class="pre">&lt;property</span> <span class="pre">object&gt;,</span> <span class="pre">'global_center':</span> <span class="pre">&lt;property</span> <span class="pre">object&gt;,</span> <span class="pre">'bounds':</span> <span class="pre">&lt;property</span> <span class="pre">object&gt;,</span> <span class="pre">'add_super_layer':</span> <span class="pre">&lt;function</span> <span class="pre">Station.add_super_layer&gt;,</span> <span class="pre">'_correct_cords':</span> <span class="pre">&lt;function</span> <span class="pre">Station._correct_cords&gt;,</span> <span class="pre">'_build_station':</span> <span class="pre">&lt;function</span> <span class="pre">Station._build_station&gt;,</span> <span class="pre">'__dict__':</span> <span class="pre">&lt;attribute</span> <span class="pre">'__dict__'</span> <span class="pre">of</span> <span class="pre">'Station'</span> <span class="pre">objects&gt;,</span> <span class="pre">'__weakref__':</span> <span class="pre">&lt;attribute</span> <span class="pre">'__weakref__'</span> <span class="pre">of</span> <span class="pre">'Station'</span> <span class="pre">objects&gt;,</span> <span class="pre">'__annotations__':</span> <span class="pre">{}})</span></em><a class="headerlink" href="#dtpr.geometry.station.Station.__dict__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dtpr.geometry.station.Station.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wheel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/geometry/station.html#Station.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.geometry.station.Station.__init__" title="Link to this definition"></a></dt>
+<dd><p>Constructor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>wheel</strong> (<em>int</em>) – Geometrical position within CMS.</p></li>
+<li><p><strong>sector</strong> (<em>int</em>) – Geometrical position within CMS.</p></li>
+<li><p><strong>station</strong> (<em>int</em>) – Geometrical position within CMS.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dtpr.geometry.station.Station.__module__">
+<span class="sig-name descname"><span class="pre">__module__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'dtpr.geometry.station'</span></em><a class="headerlink" href="#dtpr.geometry.station.Station.__module__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dtpr.geometry.station.Station.__weakref__">
+<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#dtpr.geometry.station.Station.__weakref__" title="Link to this definition"></a></dt>
+<dd><p>list of weak references to the object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dtpr.geometry.station.Station.add_super_layer">
+<span class="sig-name descname"><span class="pre">add_super_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">super_layer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/geometry/station.html#Station.add_super_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.geometry.station.Station.add_super_layer" title="Link to this definition"></a></dt>
+<dd><p>Add a new super layer to the station.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>super_layer</strong> (<a class="reference internal" href="super_layer.html#dtpr.geometry.super_layer.SuperLayer" title="dtpr.geometry.super_layer.SuperLayer"><em>SuperLayer</em></a>) – Super layer to be added.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.station.Station.bounds">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bounds</span></span><a class="headerlink" href="#dtpr.geometry.station.Station.bounds" title="Link to this definition"></a></dt>
+<dd><p>Space dimensions of the station.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dimensions of the station (width, height, depth).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.station.Station.global_center">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">global_center</span></span><a class="headerlink" href="#dtpr.geometry.station.Station.global_center" title="Link to this definition"></a></dt>
+<dd><p>Global center coordinates of the station.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Global center coordinates (x, y, z).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.station.Station.id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#dtpr.geometry.station.Station.id" title="Link to this definition"></a></dt>
+<dd><p>Identifier of the station.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Identifier of the station.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.station.Station.local_center">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">local_center</span></span><a class="headerlink" href="#dtpr.geometry.station.Station.local_center" title="Link to this definition"></a></dt>
+<dd><p>Local center coordinates of the station.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Local center coordinates (x, y, z).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.station.Station.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#dtpr.geometry.station.Station.name" title="Link to this definition"></a></dt>
+<dd><p>Name of the station.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Name of the station.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.station.Station.sector">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sector</span></span><a class="headerlink" href="#dtpr.geometry.station.Station.sector" title="Link to this definition"></a></dt>
+<dd><p>Geometrical position within CMS.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Sector position.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.station.Station.station">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">station</span></span><a class="headerlink" href="#dtpr.geometry.station.Station.station" title="Link to this definition"></a></dt>
+<dd><p>Geometrical position within CMS.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Station position.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dtpr.geometry.station.Station.super_layer">
+<span class="sig-name descname"><span class="pre">super_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">super_layer_number</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/geometry/station.html#Station.super_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.geometry.station.Station.super_layer" title="Link to this definition"></a></dt>
+<dd><p>Get a super layer by its number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>super_layer_number</strong> (<em>int</em>) – Number of the super layer.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Super layer with the specified number.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="super_layer.html#dtpr.geometry.super_layer.SuperLayer" title="dtpr.geometry.super_layer.SuperLayer">SuperLayer</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.station.Station.super_layers">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">super_layers</span></span><a class="headerlink" href="#dtpr.geometry.station.Station.super_layers" title="Link to this definition"></a></dt>
+<dd><p>Get all the super layers in the station.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of super layers in the station.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.station.Station.wheel">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wheel</span></span><a class="headerlink" href="#dtpr.geometry.station.Station.wheel" title="Link to this definition"></a></dt>
+<dd><p>Geometrical position within CMS.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Wheel position.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</dd></dl>
+
 </section>
 
 

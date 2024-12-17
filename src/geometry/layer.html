@@ -49,7 +49,23 @@
 <li class="toctree-l1"><a class="reference internal" href="../particles/main.html">particles</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="main.html">geometry</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="drift_cell.html">DriftCell</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Layer</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Layer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dtpr.geometry.layer.Layer"><code class="docutils literal notranslate"><span class="pre">Layer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.layer.Layer.__dict__"><code class="docutils literal notranslate"><span class="pre">Layer.__dict__</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.layer.Layer.__init__"><code class="docutils literal notranslate"><span class="pre">Layer.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.layer.Layer.__module__"><code class="docutils literal notranslate"><span class="pre">Layer.__module__</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.layer.Layer.__weakref__"><code class="docutils literal notranslate"><span class="pre">Layer.__weakref__</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.layer.Layer.add_cell"><code class="docutils literal notranslate"><span class="pre">Layer.add_cell()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.layer.Layer.cell"><code class="docutils literal notranslate"><span class="pre">Layer.cell()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.layer.Layer.cells"><code class="docutils literal notranslate"><span class="pre">Layer.cells</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.layer.Layer.global_center"><code class="docutils literal notranslate"><span class="pre">Layer.global_center</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.layer.Layer.id"><code class="docutils literal notranslate"><span class="pre">Layer.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.layer.Layer.local_center"><code class="docutils literal notranslate"><span class="pre">Layer.local_center</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.layer.Layer.number"><code class="docutils literal notranslate"><span class="pre">Layer.number</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="super_layer.html">SuperLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="station.html">Station</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dt_geometry.html">DTGeometry</a></li>
@@ -86,6 +102,155 @@
   <section id="layer">
 <h1>Layer<a class="headerlink" href="#layer" title="Link to this heading"></a></h1>
 <p>SOME DESCRIPTION HERE…</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="dtpr.geometry.layer.Layer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dtpr.geometry.layer.</span></span><span class="sig-name descname"><span class="pre">Layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rawId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/geometry/layer.html#Layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.geometry.layer.Layer" title="Link to this definition"></a></dt>
+<dd><p>Class representing a Layer.</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>id<span class="classifier">int</span></dt><dd><p>Identifier of the layer.</p>
+</dd>
+<dt>number<span class="classifier">int</span></dt><dd><p>Number of the layer.</p>
+</dd>
+<dt>local_center<span class="classifier">tuple</span></dt><dd><p>Local center coordinates of the layer.</p>
+</dd>
+<dt>global_center<span class="classifier">tuple</span></dt><dd><p>Global center coordinates of the layer.</p>
+</dd>
+<dt>cells<span class="classifier">list</span></dt><dd><p>List of drift cells in the layer.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dtpr.geometry.layer.Layer.__dict__">
+<span class="sig-name descname"><span class="pre">__dict__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">mappingproxy({'__module__':</span> <span class="pre">'dtpr.geometry.layer',</span> <span class="pre">'__doc__':</span> <span class="pre">'\n</span>&#160;&#160;&#160; <span class="pre">Class</span> <span class="pre">representing</span> <span class="pre">a</span> <span class="pre">Layer.\n\n</span>&#160;&#160;&#160; <span class="pre">Attributes\n</span>&#160;&#160;&#160; <span class="pre">----------\n</span>&#160;&#160;&#160; <span class="pre">id</span> <span class="pre">:</span> <span class="pre">int\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">Identifier</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">layer.\n</span>&#160;&#160;&#160; <span class="pre">number</span> <span class="pre">:</span> <span class="pre">int\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">Number</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">layer.\n</span>&#160;&#160;&#160; <span class="pre">local_center</span> <span class="pre">:</span> <span class="pre">tuple\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">Local</span> <span class="pre">center</span> <span class="pre">coordinates</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">layer.\n</span>&#160;&#160;&#160; <span class="pre">global_center</span> <span class="pre">:</span> <span class="pre">tuple\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">Global</span> <span class="pre">center</span> <span class="pre">coordinates</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">layer.\n</span>&#160;&#160;&#160; <span class="pre">cells</span> <span class="pre">:</span> <span class="pre">list\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">List</span> <span class="pre">of</span> <span class="pre">drift</span> <span class="pre">cells</span> <span class="pre">in</span> <span class="pre">the</span> <span class="pre">layer.\n</span>&#160;&#160;&#160; <span class="pre">',</span> <span class="pre">'__init__':</span> <span class="pre">&lt;function</span> <span class="pre">Layer.__init__&gt;,</span> <span class="pre">'id':</span> <span class="pre">&lt;property</span> <span class="pre">object&gt;,</span> <span class="pre">'number':</span> <span class="pre">&lt;property</span> <span class="pre">object&gt;,</span> <span class="pre">'local_center':</span> <span class="pre">&lt;property</span> <span class="pre">object&gt;,</span> <span class="pre">'global_center':</span> <span class="pre">&lt;property</span> <span class="pre">object&gt;,</span> <span class="pre">'cells':</span> <span class="pre">&lt;property</span> <span class="pre">object&gt;,</span> <span class="pre">'cell':</span> <span class="pre">&lt;function</span> <span class="pre">Layer.cell&gt;,</span> <span class="pre">'add_cell':</span> <span class="pre">&lt;function</span> <span class="pre">Layer.add_cell&gt;,</span> <span class="pre">'_Layer__correct_cords':</span> <span class="pre">&lt;function</span> <span class="pre">Layer.__correct_cords&gt;,</span> <span class="pre">'_build_layer':</span> <span class="pre">&lt;function</span> <span class="pre">Layer._build_layer&gt;,</span> <span class="pre">'__dict__':</span> <span class="pre">&lt;attribute</span> <span class="pre">'__dict__'</span> <span class="pre">of</span> <span class="pre">'Layer'</span> <span class="pre">objects&gt;,</span> <span class="pre">'__weakref__':</span> <span class="pre">&lt;attribute</span> <span class="pre">'__weakref__'</span> <span class="pre">of</span> <span class="pre">'Layer'</span> <span class="pre">objects&gt;,</span> <span class="pre">'__annotations__':</span> <span class="pre">{}})</span></em><a class="headerlink" href="#dtpr.geometry.layer.Layer.__dict__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dtpr.geometry.layer.Layer.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rawId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/geometry/layer.html#Layer.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.geometry.layer.Layer.__init__" title="Link to this definition"></a></dt>
+<dd><p>Constructor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rawId</strong> (<em>int</em>) – Raw identifier of the layer.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dtpr.geometry.layer.Layer.__module__">
+<span class="sig-name descname"><span class="pre">__module__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'dtpr.geometry.layer'</span></em><a class="headerlink" href="#dtpr.geometry.layer.Layer.__module__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dtpr.geometry.layer.Layer.__weakref__">
+<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#dtpr.geometry.layer.Layer.__weakref__" title="Link to this definition"></a></dt>
+<dd><p>list of weak references to the object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dtpr.geometry.layer.Layer.add_cell">
+<span class="sig-name descname"><span class="pre">add_cell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cell</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/geometry/layer.html#Layer.add_cell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.geometry.layer.Layer.add_cell" title="Link to this definition"></a></dt>
+<dd><p>Add a new cell to the layer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cell</strong> (<a class="reference internal" href="drift_cell.html#dtpr.geometry.drift_cell.DriftCell" title="dtpr.geometry.drift_cell.DriftCell"><em>DriftCell</em></a>) – Drift cell to be added.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dtpr.geometry.layer.Layer.cell">
+<span class="sig-name descname"><span class="pre">cell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cell_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/geometry/layer.html#Layer.cell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.geometry.layer.Layer.cell" title="Link to this definition"></a></dt>
+<dd><p>Get a layer cell by its id.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cell_id</strong> (<em>int</em>) – Identifier of the cell.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Drift cell with the specified id.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="drift_cell.html#dtpr.geometry.drift_cell.DriftCell" title="dtpr.geometry.drift_cell.DriftCell">DriftCell</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the cell_id is invalid.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.layer.Layer.cells">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cells</span></span><a class="headerlink" href="#dtpr.geometry.layer.Layer.cells" title="Link to this definition"></a></dt>
+<dd><p>Get all the layer’s cells.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of drift cells in the layer.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.layer.Layer.global_center">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">global_center</span></span><a class="headerlink" href="#dtpr.geometry.layer.Layer.global_center" title="Link to this definition"></a></dt>
+<dd><p>Global center coordinates of the layer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Global center coordinates (x, y, z).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.layer.Layer.id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#dtpr.geometry.layer.Layer.id" title="Link to this definition"></a></dt>
+<dd><p>Identifier of the layer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Identifier of the layer.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.layer.Layer.local_center">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">local_center</span></span><a class="headerlink" href="#dtpr.geometry.layer.Layer.local_center" title="Link to this definition"></a></dt>
+<dd><p>Local center coordinates of the layer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Local center coordinates (x, y, z).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.layer.Layer.number">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">number</span></span><a class="headerlink" href="#dtpr.geometry.layer.Layer.number" title="Link to this definition"></a></dt>
+<dd><p>Number of the layer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of the layer.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</dd></dl>
+
 </section>
 
 
