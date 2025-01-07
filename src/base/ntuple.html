@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NTuple &mdash; dtpr-package 0.1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/general_styles.css" />
 
@@ -97,11 +97,11 @@ selecting <code class="docutils literal notranslate"><span class="pre">Event</sp
 </pre></div>
 </div>
 <p>This will create a new file called <code class="docutils literal notranslate"><span class="pre">dt_ntuple.py</span></code> in the specified output folder with the following content:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dtpr.base.event</span> <span class="kn">import</span> <span class="n">Event</span>
-<span class="kn">from</span> <span class="nn">dtpr.base.ntuple</span> <span class="kn">import</span> <span class="n">NTuple</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dtpr.base.event</span><span class="w"> </span><span class="kn">import</span> <span class="n">Event</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtpr.base.ntuple</span><span class="w"> </span><span class="kn">import</span> <span class="n">NTuple</span>
 
-<span class="k">class</span> <span class="nc">DtNtuple</span><span class="p">(</span><span class="n">NTuple</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputFolder</span><span class="p">,</span> <span class="n">selectors</span><span class="p">,</span> <span class="n">maxfiles</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DtNtuple</span><span class="p">(</span><span class="n">NTuple</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputFolder</span><span class="p">,</span> <span class="n">selectors</span><span class="p">,</span> <span class="n">maxfiles</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize a DtNtuple instance.</span>
 
@@ -114,7 +114,7 @@ selecting <code class="docutils literal notranslate"><span class="pre">Event</sp
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">inputFolder</span><span class="p">,</span> <span class="n">selectors</span><span class="p">,</span> <span class="n">maxfiles</span><span class="p">)</span> <span class="c1"># add tree_name argument if needed, default is &quot;/TTREE&quot;</span>
 
-    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">:</span> <span class="n">Event</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">:</span> <span class="n">Event</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Run the event analysis specific to DtNtuple.</span>
 
@@ -135,9 +135,9 @@ selecting <code class="docutils literal notranslate"><span class="pre">Event</sp
 </div>
 <p>and then, you can implement the specific analysis for your NTuple (from the previous skeleton,
 the tree_name argument was set to <cite>/dtNtupleProducer/DTTREE`</cite> to agree with the inputs).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dtpr.base.event</span> <span class="kn">import</span> <span class="n">Event</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dtpr.base.event</span><span class="w"> </span><span class="kn">import</span> <span class="n">Event</span>
 
-<span class="k">def</span> <span class="nf">example_selector</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="n">Event</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">example_selector</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="n">Event</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="c1"># Example selector function that always returns True</span>
     <span class="k">return</span> <span class="kc">True</span>
 

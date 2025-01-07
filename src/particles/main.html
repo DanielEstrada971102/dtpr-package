@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>particles &mdash; dtpr-package 0.1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/general_styles.css" />
 
@@ -52,7 +52,6 @@
 <li class="toctree-l2"><a class="reference internal" href="ph2tp.html">Ph2tp</a></li>
 <li class="toctree-l2"><a class="reference internal" href="segment.html">Segment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="shower.html">Shower</a></li>
-<li class="toctree-l2"><a class="reference internal" href="simhit.html">SimHit</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../geometry/main.html">geometry</a></li>
@@ -95,13 +94,13 @@ instance is produced. However, you can also manually add a particle to an event 
 </div>
 <p>This will create a new file called <cite>testparticle.py</cite> in the specified output folder with the following
 content:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dtpr.utils.functions</span> <span class="kn">import</span> <span class="n">color_msg</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dtpr.utils.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">color_msg</span>
 
-<span class="k">class</span> <span class="nc">TestParticle</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TestParticle</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="c1"># Define the attributes of the class in the __slots__ list to save memory</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;index&quot;</span><span class="p">]</span> <span class="c1"># add more attributes here</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">ev</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">ev</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize a TestParticle instance.</span>
 
@@ -118,7 +117,7 @@ content:</p>
             <span class="c1"># Initialize the attributes of the instance with the input arguments</span>
             <span class="k">pass</span>
 
-    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Convert the TestParticle instance to a dictionary.</span>
 
@@ -127,7 +126,7 @@ content:</p>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">attr</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__slots__</span><span class="p">}</span>
 
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indentLevel</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indentLevel</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generate a string representation of the TestParticle instance.</span>
 
@@ -199,7 +198,7 @@ following content, where you can include your particle type:</p>
 </pre></div>
 </div>
 <p>Then, to use your configuration, ensure that the correct file path is set in <cite>EVENT_CONFIG</cite> by doing:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dtpr.utils.config</span> <span class="kn">import</span> <span class="n">EVENT_CONFIG</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dtpr.utils.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">EVENT_CONFIG</span>
 
 <span class="n">EVENT_CONFIG</span><span class="o">.</span><span class="n">change_config</span><span class="p">(</span><span class="n">config_path</span><span class="o">=</span><span class="s2">&quot;path/to/event_config.yaml&quot;</span><span class="p">)</span>
 <span class="c1"># your code here...</span>
@@ -214,7 +213,6 @@ following content, where you can include your particle type:</p>
 <li class="toctree-l1"><a class="reference internal" href="ph2tp.html">Ph2tp</a></li>
 <li class="toctree-l1"><a class="reference internal" href="segment.html">Segment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="shower.html">Shower</a></li>
-<li class="toctree-l1"><a class="reference internal" href="simhit.html">SimHit</a></li>
 </ul>
 </div>
 </section>

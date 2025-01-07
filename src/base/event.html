@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Event &mdash; dtpr-package 0.1.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/general_styles.css" />
 
@@ -112,9 +112,9 @@ branch. The <code class="docutils literal notranslate"><span class="pre">conditi
 entry information based on specified conditions, and the <code class="docutils literal notranslate"><span class="pre">sorter</span></code> orders the created particles. Ensure
 that the information required to build the particles is present in the root event’s entry. The way to
 create an event instance should be like this:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ROOT</span> <span class="kn">import</span> <span class="n">TFile</span>
-<span class="kn">from</span> <span class="nn">dtpr.base.event</span> <span class="kn">import</span> <span class="n">Event</span>
-<span class="kn">from</span> <span class="nn">dtpr.utils.config</span> <span class="kn">import</span> <span class="n">EVENT_CONFIG</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ROOT</span><span class="w"> </span><span class="kn">import</span> <span class="n">TFile</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtpr.base.event</span><span class="w"> </span><span class="kn">import</span> <span class="n">Event</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtpr.utils.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">EVENT_CONFIG</span>
 
 <span class="c1"># First, you need to change the configuration file path. If not,</span>
 <span class="c1"># it will work with the default one dtpr/utils/templates/config_run_template.yaml.</span>
@@ -163,8 +163,8 @@ by manually adding any type of attribute that you consider necessary. A simple e
 for instance, adding customized showers to the event. For practice, let us take
 the class <code class="docutils literal notranslate"><span class="pre">Shower</span></code> from the <code class="docutils literal notranslate"><span class="pre">dtpr.particles.shower</span></code> module just to illustrate how to add
 objects to the event:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dtpr.base.event</span> <span class="kn">import</span> <span class="n">Event</span>
-<span class="kn">from</span> <span class="nn">dtpr.particles.shower</span> <span class="kn">import</span> <span class="n">Shower</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dtpr.base.event</span><span class="w"> </span><span class="kn">import</span> <span class="n">Event</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtpr.particles.shower</span><span class="w"> </span><span class="kn">import</span> <span class="n">Shower</span>
 
 <span class="n">event</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="n">iev</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">showers</span> <span class="o">=</span> <span class="p">[</span><span class="n">Shower</span><span class="p">(</span><span class="n">iShower</span><span class="o">=</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)]</span>
