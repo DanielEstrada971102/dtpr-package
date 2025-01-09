@@ -20,8 +20,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Layer" href="layer.html" />
-    <link rel="prev" title="geometry" href="main.html" /> 
+    <link rel="next" title="patches" href="../patches/main.html" />
+    <link rel="prev" title="Layer" href="layer.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -48,11 +48,19 @@
 <li class="toctree-l1"><a class="reference internal" href="../base/main.html">base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../particles/main.html">particles</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="main.html">geometry</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">DriftCell</a></li>
-<li class="toctree-l2"><a class="reference internal" href="layer.html">Layer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="super_layer.html">SuperLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="station.html">Station</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dt_geometry.html">DTGeometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="super_layer.html">SuperLayer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="layer.html">Layer</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">DriftCell</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dtpr.geometry.drift_cell.DriftCell"><code class="docutils literal notranslate"><span class="pre">DriftCell</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.drift_cell.DriftCell.__init__"><code class="docutils literal notranslate"><span class="pre">DriftCell.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.drift_cell.DriftCell._correct_cords"><code class="docutils literal notranslate"><span class="pre">DriftCell._correct_cords()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.drift_cell.DriftCell.driftTime"><code class="docutils literal notranslate"><span class="pre">DriftCell.driftTime</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#classes">Classes</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../patches/main.html">patches</a></li>
@@ -85,15 +93,82 @@
              
   <section id="driftcell">
 <h1>DriftCell<a class="headerlink" href="#driftcell" title="Link to this heading"></a></h1>
-<p>SOME DESCRIPTION HERE…</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="dtpr.geometry.drift_cell.DriftCell">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dtpr.geometry.drift_cell.</span></span><span class="sig-name descname"><span class="pre">DriftCell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/geometry/drift_cell.html#DriftCell"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.geometry.drift_cell.DriftCell" title="Link to this definition"></a></dt>
+<dd><p>Class representing a Drift Cell.</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>driftTime<span class="classifier">float</span></dt><dd><p>Drift time of the drift cell.</p>
+</dd>
+<dt>parent<span class="classifier">Layer</span></dt><dd><p>Parent layer of the drift cell.</p>
+</dd>
+</dl>
+<p>Others inherit from <code class="docutils literal notranslate"><span class="pre">dtpr.geometry.DTFrame</span></code>… (e.g. local_center, global_center, direction, etc.)
+Bounds variables (width, height, length) are fixed values: 4.2 cm, 1.3 cm, 235 cm.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dtpr.geometry.drift_cell.DriftCell.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/geometry/drift_cell.html#DriftCell.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.geometry.drift_cell.DriftCell.__init__" title="Link to this definition"></a></dt>
+<dd><p>Constructor for DriftCell.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>number</strong> (<em>int</em><em>, </em><em>optional</em>) – Identifier of the drift cell (default is -1).</p></li>
+<li><p><strong>parent</strong> (<a class="reference internal" href="layer.html#dtpr.geometry.layer.Layer" title="dtpr.geometry.layer.Layer"><em>Layer</em></a><em>, </em><em>optional</em>) – Parent layer of the drift cell (default is None).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dtpr.geometry.drift_cell.DriftCell._correct_cords">
+<span class="sig-name descname"><span class="pre">_correct_cords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/geometry/drift_cell.html#DriftCell._correct_cords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.geometry.drift_cell.DriftCell._correct_cords" title="Link to this definition"></a></dt>
+<dd><p>Not correction needed since parent layer already applied the correction and set the local and global centers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em>) – x-coordinate.</p></li>
+<li><p><strong>y</strong> (<em>float</em>) – y-coordinate.</p></li>
+<li><p><strong>z</strong> (<em>float</em>) – z-coordinate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Corrected coordinates (x, y, z).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.drift_cell.DriftCell.driftTime">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">driftTime</span></span><a class="headerlink" href="#dtpr.geometry.drift_cell.DriftCell.driftTime" title="Link to this definition"></a></dt>
+<dd><p>Drift time of the drift cell.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Drift time.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<p class="rubric">Example</p>
+<p>It works similarly to the Station class, see the example in the <a class="reference internal" href="station.html"><span class="doc">Station</span></a> documentation.</p>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="main.html" class="btn btn-neutral float-left" title="geometry" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="layer.html" class="btn btn-neutral float-right" title="Layer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="layer.html" class="btn btn-neutral float-left" title="Layer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../patches/main.html" class="btn btn-neutral float-right" title="patches" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

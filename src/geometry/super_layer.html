@@ -17,11 +17,12 @@
       <script src="../../_static/documentation_options.js?v=01f34227"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Station" href="station.html" />
-    <link rel="prev" title="Layer" href="layer.html" /> 
+    <link rel="next" title="Layer" href="layer.html" />
+    <link rel="prev" title="Station" href="station.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -48,11 +49,21 @@
 <li class="toctree-l1"><a class="reference internal" href="../base/main.html">base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../particles/main.html">particles</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="main.html">geometry</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="drift_cell.html">DriftCell</a></li>
-<li class="toctree-l2"><a class="reference internal" href="layer.html">Layer</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">SuperLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="station.html">Station</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dt_geometry.html">DTGeometry</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">SuperLayer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dtpr.geometry.super_layer.SuperLayer"><code class="docutils literal notranslate"><span class="pre">SuperLayer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.super_layer.SuperLayer.__init__"><code class="docutils literal notranslate"><span class="pre">SuperLayer.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.super_layer.SuperLayer._correct_cords"><code class="docutils literal notranslate"><span class="pre">SuperLayer._correct_cords()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.super_layer.SuperLayer.layer"><code class="docutils literal notranslate"><span class="pre">SuperLayer.layer()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.super_layer.SuperLayer.layers"><code class="docutils literal notranslate"><span class="pre">SuperLayer.layers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.super_layer.SuperLayer.number"><code class="docutils literal notranslate"><span class="pre">SuperLayer.number</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="layer.html">Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drift_cell.html">DriftCell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#classes">Classes</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../patches/main.html">patches</a></li>
@@ -85,15 +96,145 @@
              
   <section id="superlayer">
 <h1>SuperLayer<a class="headerlink" href="#superlayer" title="Link to this heading"></a></h1>
-<p>SOME DESCRIPTION HERE…</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="dtpr.geometry.super_layer.SuperLayer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dtpr.geometry.super_layer.</span></span><span class="sig-name descname"><span class="pre">SuperLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rawId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/geometry/super_layer.html#SuperLayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.geometry.super_layer.SuperLayer" title="Link to this definition"></a></dt>
+<dd><p>Class representing a SuperLayer.</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>layers<span class="classifier">list</span></dt><dd><p>List of layers in the super layer.</p>
+</dd>
+<dt>parent<span class="classifier">Station</span></dt><dd><p>Parent station of the super layer.</p>
+</dd>
+</dl>
+<p>Others inherit from <code class="docutils literal notranslate"><span class="pre">dtpr.geometry.DTFrame</span></code>… (e.g. id, local_center, global_center, direction, etc.)</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dtpr.geometry.super_layer.SuperLayer.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rawId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/geometry/super_layer.html#SuperLayer.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.geometry.super_layer.SuperLayer.__init__" title="Link to this definition"></a></dt>
+<dd><p>Constructor of the SuperLayer class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rawId</strong> (<em>int</em>) – Raw identifier of the super layer.</p></li>
+<li><p><strong>parent</strong> (<a class="reference internal" href="station.html#dtpr.geometry.station.Station" title="dtpr.geometry.station.Station"><em>Station</em></a><em>, </em><em>optional</em>) – Parent station of the super layer. Default is None.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dtpr.geometry.super_layer.SuperLayer._correct_cords">
+<span class="sig-name descname"><span class="pre">_correct_cords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/geometry/super_layer.html#SuperLayer._correct_cords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.geometry.super_layer.SuperLayer._correct_cords" title="Link to this definition"></a></dt>
+<dd><p>Correct the coordinates of the super layer. Bear in mind that the reference
+frame is rotated pi/2 with respect to the CMS frame depending on the super layer number:</p>
+<dl>
+<dt>if SL == 1 or 3:</dt><dd><p>CMS -&gt; x: right, y: up, z: forward, SuperLayer -&gt; x: right, y: forward, z: down
+That is, a rotation matrix of -90 degrees around the x-axis.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}R_x(-\pi/2) = \begin{bmatrix} 
+                    1 &amp; 0 &amp; 0 \\
+                    0 &amp; 0 &amp; 1 \\
+                    0 &amp; -1 &amp; 0
+                \end{bmatrix}\end{split}\]</div>
+</dd>
+<dt>if SL == 2:</dt><dd><p>CMS -&gt; x: right, y: up, z: forward, SuperLayer -&gt; x: backward, y: right, z: down</p>
+<p>That is, a rotation matrix of -90 degrees around the z-axis, then a rotation of -90 
+degrees around the x-axis.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}R_x(-\pi/2) R_z(-\pi/2) = 
+    \begin{bmatrix} 
+        1 &amp; 0 &amp; 0 \\
+        0 &amp; 0 &amp; 1 \\
+        0 &amp; -1 &amp; 0
+    \end{bmatrix} \cdot
+    \begin{bmatrix} 
+        0 &amp; 1 &amp; 0 \\
+        -1 &amp; 0 &amp; 0 \\
+        0 &amp; 0 &amp; 1
+    \end{bmatrix}
+    = \begin{bmatrix} 
+        0 &amp; 1 &amp; 0 \\
+        0 &amp; 0 &amp; 1 \\
+        1 &amp; 0 &amp; 0
+    \end{bmatrix}\end{split}\]</div>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em>) – x-coordinate.</p></li>
+<li><p><strong>y</strong> (<em>float</em>) – y-coordinate.</p></li>
+<li><p><strong>z</strong> (<em>float</em>) – z-coordinate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Corrected coordinates (x, y, z).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dtpr.geometry.super_layer.SuperLayer.layer">
+<span class="sig-name descname"><span class="pre">layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer_number</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/geometry/super_layer.html#SuperLayer.layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.geometry.super_layer.SuperLayer.layer" title="Link to this definition"></a></dt>
+<dd><p>Get a layer by its number. If the layer does not exist, it returns None.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>layer_number</strong> (<em>int</em>) – Number of the layer.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Layer with the specified number.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="layer.html#dtpr.geometry.layer.Layer" title="dtpr.geometry.layer.Layer">Layer</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.super_layer.SuperLayer.layers">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">layers</span></span><a class="headerlink" href="#dtpr.geometry.super_layer.SuperLayer.layers" title="Link to this definition"></a></dt>
+<dd><p>Get all the layers in the super layer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of layers in the super layer.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of Layer objects</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.super_layer.SuperLayer.number">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">number</span></span><a class="headerlink" href="#dtpr.geometry.super_layer.SuperLayer.number" title="Link to this definition"></a></dt>
+<dd><p>Number of the Object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of the Object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<p class="rubric">Example</p>
+<p>It works similarly to the Station class, see the example in the <a class="reference internal" href="station.html"><span class="doc">Station</span></a> documentation.</p>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="layer.html" class="btn btn-neutral float-left" title="Layer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="station.html" class="btn btn-neutral float-right" title="Station" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="station.html" class="btn btn-neutral float-left" title="Station" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="layer.html" class="btn btn-neutral float-right" title="Layer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

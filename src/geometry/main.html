@@ -17,11 +17,12 @@
       <script src="../../_static/documentation_options.js?v=01f34227"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="DriftCell" href="drift_cell.html" />
-    <link rel="prev" title="Shower" href="../particles/shower.html" /> 
+    <link rel="next" title="Station" href="station.html" />
+    <link rel="prev" title="SimHit" href="../particles/simhit.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -48,11 +49,21 @@
 <li class="toctree-l1"><a class="reference internal" href="../base/main.html">base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../particles/main.html">particles</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">geometry</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="drift_cell.html">DriftCell</a></li>
-<li class="toctree-l2"><a class="reference internal" href="layer.html">Layer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="super_layer.html">SuperLayer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="station.html">Station</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dt_geometry.html">DTGeometry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="super_layer.html">SuperLayer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="layer.html">Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drift_cell.html">DriftCell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dtgeometry">DTGeometry</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.DTGeometry"><code class="docutils literal notranslate"><span class="pre">DTGeometry</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dtframe">DTFrame</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.geometry.DTFrame"><code class="docutils literal notranslate"><span class="pre">DTFrame</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../patches/main.html">patches</a></li>
@@ -84,25 +95,309 @@
              
   <section id="geometry">
 <h1>geometry<a class="headerlink" href="#geometry" title="Link to this heading"></a></h1>
-<p>SOME DESCRIPTION HERE…</p>
+<p>This module provides tools to manage geometrical objects for data pattern recognition.</p>
+<p>The CMS DTs geometry information is stored in an XML file (<a class="reference external" href="https://github.com/DanielEstrada971102/dtpr-package/blob/main/dtpr/utils/templates/DTGeometry.xml">DTGeometry.xml</a>).
+The <code class="docutils literal notranslate"><span class="pre">geometry</span></code> module includes a class to read and manage this file. By default, an instance of this class is created
+when the package is imported, and the geometry information can be accessed from the variable <code class="docutils literal notranslate"><span class="pre">DTGEOMETRY</span></code>.</p>
+<p>Additionally, this module offers a base class for defining geometrical objects representing various
+DT chamber components (e.g., <a class="reference internal" href="drift_cell.html"><span class="doc">DriftCell</span></a>, DT <a class="reference internal" href="layer.html"><span class="doc">Layer</span></a>, DT <a class="reference internal" href="super_layer.html"><span class="doc">SuperLayer</span></a>). This base class represents a general
+cubic frame with properties such as bounds, center, id, width, height, etc. In this way, CMS DT chambers are built by nesting instances
+of DTFrames (see the Submodules below). It means, a Chamber is a DTFrame child which contains SuperLayers, SuperLayers are DTFrame children which contain Layers, and so on until the DriftCells.
+The following image shows the composition of a CMS DT chamber and indicates how the reference frames for each component are defined, which is important when reading the geometry information from the XML file.</p>
+<a class="reference internal image-reference" href="../../_images/dt_chamber.png"><img alt="../../_images/dt_chamber.png" class="align-center" src="../../_images/dt_chamber.png" style="width: 400px;" />
+</a>
 <div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Classes:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Submodules:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="drift_cell.html">DriftCell</a></li>
-<li class="toctree-l1"><a class="reference internal" href="layer.html">Layer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="super_layer.html">SuperLayer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="station.html">Station</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dt_geometry.html">DTGeometry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="super_layer.html">SuperLayer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="layer.html">Layer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="drift_cell.html">DriftCell</a></li>
 </ul>
 </div>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="#dtgeometry"><span class="std std-ref">DTGeometry</span></a></p></li>
+<li><p><a class="reference internal" href="#dtframe"><span class="std std-ref">DTFrame</span></a></p></li>
+</ul>
+<section id="dtgeometry">
+<span id="id1"></span><h3>DTGeometry<a class="headerlink" href="#dtgeometry" title="Link to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="dtpr.geometry.DTGeometry">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dtpr.geometry.</span></span><span class="sig-name descname"><span class="pre">DTGeometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xml_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/geometry/_geometry.html#DTGeometry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.geometry.DTGeometry" title="Link to this definition"></a></dt>
+<dd><p>A class to represent the CMS DT Geometry from an XML file.</p>
+<section id="attributes">
+<h4>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h4>
+<dl class="simple">
+<dt>root<span class="classifier">xml.etree.ElementTree.Element</span></dt><dd><p>The root element of the parsed XML tree.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="dtpr.geometry.DTGeometry.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">attribute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/geometry/_geometry.html#DTGeometry.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.geometry.DTGeometry.get" title="Link to this definition"></a></dt>
+<dd><p>Retrieve specific attributes or elements from the XML based on the provided criteria.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>attribute</strong> (<em>str</em><em>, </em><em>optional</em>) – The attribute to retrieve (e.g., ‘GlobalPosition’, ‘LocalPosition’, ‘Bounds’).</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) – Additional criteria to filter the elements (e.g., rawId, wh, sec, st, sl, l).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The requested attribute values or element text.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple or str</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the element is not found for the given query.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<p>The following example shows how to access the CMS DT geometry information.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dt_geometry</span> <span class="o">=</span> <span class="n">DTGeometry</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s2">&quot;../utils/templates/DTGeometry.xml&quot;</span><span class="p">))</span>
+
+<span class="c1"># Retrieve and print global and local positions, and bounds for specific chambers</span>
+<span class="n">global_pos_1</span> <span class="o">=</span> <span class="n">dt_geometry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;GlobalPosition&quot;</span><span class="p">,</span> <span class="n">wh</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span> <span class="n">sec</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">st</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">local_pos_1</span> <span class="o">=</span> <span class="n">dt_geometry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;GlobalPosition&quot;</span><span class="p">,</span> <span class="n">wh</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">sec</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">st</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">bounds</span> <span class="o">=</span> <span class="n">dt_geometry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Bounds&quot;</span><span class="p">,</span> <span class="n">wh</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">sec</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">st</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Bounds for Wh:-1, Sec:1, St:4: </span><span class="si">{</span><span class="n">bounds</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Global position for Wh:-2, Sec:1, St:1: </span><span class="si">{</span><span class="n">global_pos_1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Local position for Wh:1, Sec:1, St:4: </span><span class="si">{</span><span class="n">local_pos_1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Iterate through all layers in a specific SuperLayer and print their attributes</span>
+<span class="k">for</span> <span class="n">sl</span> <span class="ow">in</span> <span class="n">dt_geometry</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.//SuperLayer[@rawId=&#39;574922752&#39;]&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s2">&quot;Layer&quot;</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">sl</span><span class="o">.</span><span class="n">attrib</span><span class="p">)</span>
+
+<span class="c1"># Test retrieving the total number of channels in a specific layer</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TEST cells&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dt_geometry</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.//Layer[@rawId=&#39;579380224&#39;]//Channels//total&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+<span class="c1"># Test retrieving attributes of a specific SuperLayer</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TEST super layer&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dt_geometry</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">rawId</span><span class="o">=</span><span class="mi">574922752</span><span class="p">)</span><span class="o">.</span><span class="n">attrib</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="rubric">Output</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Bounds for Wh:-1, Sec:1, St:4: (416.339996, 32.5999985, 251.100006)
+Global position for Wh:-2, Sec:1, St:1: (431.175, 39.12, -533.35)
+Local position for Wh:1, Sec:1, St:4: (720.2, -94.895, -267.75)
+{&#39;rawId&#39;: &#39;574923776&#39;, &#39;layerNumber&#39;: &#39;1&#39;}
+{&#39;rawId&#39;: &#39;574924800&#39;, &#39;layerNumber&#39;: &#39;2&#39;}
+{&#39;rawId&#39;: &#39;574925824&#39;, &#39;layerNumber&#39;: &#39;3&#39;}
+{&#39;rawId&#39;: &#39;574926848&#39;, &#39;layerNumber&#39;: &#39;4&#39;}
+TEST cells
+59
+TEST super layer
+{&#39;rawId&#39;: &#39;574922752&#39;, &#39;superLayerNumber&#39;: &#39;1&#39;}
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Notice that the root atrribte of the DTGeometry class is simply an instance of the <a class="reference external" href="https://docs.python.org/3/library/xml.etree.elementtree.html">xlm.etree.ElementTree</a> class, so you can use all its methods to navigate through the XML file.
+the only advantage of using DTGeometry is that it provides a more intuitive way to access the specific information of the CMS DT geometry through the <code class="docutils literal notranslate"><span class="pre">get</span></code> method.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>insted of create an instance of DTGeometry each time, if you will use the default geometry file, you can access the geometry information from the variable <code class="docutils literal notranslate"><span class="pre">DTGEOMETRY</span></code>.</p>
+</div>
+</section>
+<section id="dtframe">
+<span id="id2"></span><h3>DTFrame<a class="headerlink" href="#dtframe" title="Link to this heading"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="dtpr.geometry.DTFrame">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dtpr.geometry.</span></span><span class="sig-name descname"><span class="pre">DTFrame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rawId</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/geometry/_geometry.html#DTFrame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.geometry.DTFrame" title="Link to this definition"></a></dt>
+<dd><p>A parent class representing any possible DT frame object, such as a DT cell, a Layer, a SuperLayer, or the whole DT.
+This class is designed to manage common attributes, getters, setters, etc.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dtpr.geometry.DTFrame.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rawId</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/geometry/_geometry.html#DTFrame.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.geometry.DTFrame.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the DTFrame object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rawId</strong> (<em>int</em><em>, </em><em>optional</em>) – Raw identifier of the DT geometrical object. If not provided, no XML geometrical info will be used to initialize the instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dtpr.geometry.DTFrame._correct_cords">
+<span class="sig-name descname"><span class="pre">_correct_cords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/geometry/_geometry.html#DTFrame._correct_cords"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.geometry.DTFrame._correct_cords" title="Link to this definition"></a></dt>
+<dd><p>Correct the coordinates to the CMS coordinate system. This method should be implemented by subclasses.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em>) – The x coordinate.</p></li>
+<li><p><strong>y</strong> (<em>float</em>) – The y coordinate.</p></li>
+<li><p><strong>z</strong> (<em>float</em>) – The z coordinate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The corrected coordinates.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.DTFrame.bounds">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bounds</span></span><a class="headerlink" href="#dtpr.geometry.DTFrame.bounds" title="Link to this definition"></a></dt>
+<dd><p>Space dimensions of the Object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Space dimensions of the object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.DTFrame.global_center">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">global_center</span></span><a class="headerlink" href="#dtpr.geometry.DTFrame.global_center" title="Link to this definition"></a></dt>
+<dd><p>Global center coordinates of the Object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Global center coordinates (x, y, z).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.DTFrame.global_position_at_min">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">global_position_at_min</span></span><a class="headerlink" href="#dtpr.geometry.DTFrame.global_position_at_min" title="Link to this definition"></a></dt>
+<dd><p>Global position at the minimum coordinates of the Object. It means the lower left corner of the object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Global position at minimum coordinates (x, y, z).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.DTFrame.height">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">height</span></span><a class="headerlink" href="#dtpr.geometry.DTFrame.height" title="Link to this definition"></a></dt>
+<dd><p>Height of the Object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Height of the object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.DTFrame.id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#dtpr.geometry.DTFrame.id" title="Link to this definition"></a></dt>
+<dd><p>Identifier of the Object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Identifier of the object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.DTFrame.length">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">length</span></span><a class="headerlink" href="#dtpr.geometry.DTFrame.length" title="Link to this definition"></a></dt>
+<dd><p>Length of the Object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Length of the object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.DTFrame.local_center">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">local_center</span></span><a class="headerlink" href="#dtpr.geometry.DTFrame.local_center" title="Link to this definition"></a></dt>
+<dd><p>Local center coordinates of the Object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Local center coordinates (x, y, z).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.DTFrame.local_position_at_min">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">local_position_at_min</span></span><a class="headerlink" href="#dtpr.geometry.DTFrame.local_position_at_min" title="Link to this definition"></a></dt>
+<dd><p>Local position at the minimum coordinates of the Object. It means the lower left corner of the object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Local position at minimum coordinates (x, y, z).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.DTFrame.number">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">number</span></span><a class="headerlink" href="#dtpr.geometry.DTFrame.number" title="Link to this definition"></a></dt>
+<dd><p>Number of the Object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Number of the Object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="dtpr.geometry.DTFrame.width">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">width</span></span><a class="headerlink" href="#dtpr.geometry.DTFrame.width" title="Link to this definition"></a></dt>
+<dd><p>Width of the Object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Width of the object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../particles/shower.html" class="btn btn-neutral float-left" title="Shower" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="drift_cell.html" class="btn btn-neutral float-right" title="DriftCell" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../particles/simhit.html" class="btn btn-neutral float-left" title="SimHit" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="station.html" class="btn btn-neutral float-right" title="Station" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

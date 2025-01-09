@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dtpatch &mdash; dtpr-package 0.1.0 documentation</title>
+  <title>DTPatch &mdash; dtpr-package 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/general_styles.css" />
@@ -17,6 +17,7 @@
       <script src="../../_static/documentation_options.js?v=01f34227"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -48,7 +49,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../particles/main.html">particles</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../geometry/main.html">geometry</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="main.html">patches</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">dtpatch</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">DTPatch</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dtpr.patches.dt_patch.DTPatch"><code class="docutils literal notranslate"><span class="pre">DTPatch</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dtpr.patches.dt_patch.DTPatch.__init__"><code class="docutils literal notranslate"><span class="pre">DTPatch.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -68,7 +75,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="main.html">patches</a></li>
-      <li class="breadcrumb-item active">dtpatch</li>
+      <li class="breadcrumb-item active">DTPatch</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/src/patches/dt_patch.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -79,10 +86,172 @@
            <div itemprop="articleBody">
              
   <section id="dtpatch">
-<h1>dtpatch<a class="headerlink" href="#dtpatch" title="Link to this heading"></a></h1>
-<p>Example of DT Station  local Patch</p>
-<a class="image-class reference internal image-reference" href="../../_images/station_local_example.png"><img alt="Alternative text" class="image-class align-center" src="../../_images/station_local_example.png" style="width: 600px;" />
+<h1>DTPatch<a class="headerlink" href="#dtpatch" title="Link to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">DTPatch</span></code> class provides visualization capabilities for DT Station data. It can draw super layer
+boundary boxes and DT cells, and allows for the definition of colormap cell colors based on time information.
+The class supports plotting in both local and global CMS coordinate views using CMS geometry information.
+In local mode, it is possible to draw the chamber in either the <span class="math notranslate nohighlight">\(\phi\)</span> or <span class="math notranslate nohighlight">\(\eta\)</span> orientation, displaying
+the cells of SL1 and SL3 or the cells of SL2, respectively.</p>
+<p><code class="docutils literal notranslate"><span class="pre">DTPatch</span></code> requires the prior definition of an instance of <code class="docutils literal notranslate"><span class="pre">dtpr.geometry.station.Station</span></code>, which contains
+the geometrical information of the entire DT chambers.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">DTPatch</span></code> class adds two collections to the provided matplotlib axes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">bounds_collections</span></code>: A collection of patches representing the bounds of the station and its superlayers.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cells_collection</span></code>: A collection of patches representing each DT cell, with optional colormap based on time information.</p></li>
+</ul>
+<p>These collections can be accessed as attributes of the <code class="docutils literal notranslate"><span class="pre">DTPatch</span></code> instance.</p>
+<p class="rubric">Examples</p>
+<p>The following example shows how to create <code class="docutils literal notranslate"><span class="pre">DTPatch</span></code> objects and plot the cells of a DT chamber in the local view.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dtpr.geometry.station</span><span class="w"> </span><span class="kn">import</span> <span class="n">Station</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dtpr.patches.dt_patch</span><span class="w"> </span><span class="kn">import</span> <span class="n">DTPatch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mplhep</span><span class="w"> </span><span class="kn">import</span> <span class="n">style</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">Normalize</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="n">style</span><span class="o">.</span><span class="n">CMS</span><span class="p">)</span>
+<span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s2">&quot;viridis&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">cmap</span><span class="o">.</span><span class="n">set_under</span><span class="p">(</span><span class="s2">&quot;none&quot;</span><span class="p">)</span>
+<span class="n">norm</span> <span class="o">=</span> <span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mi">299</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">clip</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">axs</span> <span class="o">=</span> <span class="n">axs</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+<span class="n">chamber</span> <span class="o">=</span> <span class="n">Station</span><span class="p">(</span><span class="n">wheel</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">station</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sector</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">dt_patch_phi</span> <span class="o">=</span> <span class="n">DTPatch</span><span class="p">(</span><span class="n">chamber</span><span class="p">,</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">faceview</span><span class="o">=</span><span class="s2">&quot;phi&quot;</span><span class="p">,</span> <span class="n">cells_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;cmap&quot;</span><span class="p">:</span> <span class="n">cmap</span><span class="p">,</span> <span class="s2">&quot;norm&quot;</span><span class="p">:</span> <span class="n">norm</span><span class="p">,</span> <span class="s2">&quot;edgecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;linewidth&quot;</span><span class="p">:</span> <span class="mf">.1</span><span class="p">})</span>
+<span class="n">dt_patch_eta</span> <span class="o">=</span> <span class="n">DTPatch</span><span class="p">(</span><span class="n">chamber</span><span class="p">,</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">faceview</span><span class="o">=</span><span class="s2">&quot;eta&quot;</span><span class="p">,</span> <span class="n">cells_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;cmap&quot;</span><span class="p">:</span> <span class="n">cmap</span><span class="p">,</span> <span class="s2">&quot;norm&quot;</span><span class="p">:</span> <span class="n">norm</span><span class="p">,</span> <span class="s2">&quot;edgecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="s2">&quot;linewidth&quot;</span><span class="p">:</span> <span class="mf">.1</span><span class="p">})</span>
+
+<span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">length</span> <span class="o">=</span> <span class="n">chamber</span><span class="o">.</span><span class="n">bounds</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">chamber</span><span class="o">.</span><span class="n">local_center</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="n">chamber</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">width</span><span class="o">/</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">5</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">width</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">height</span><span class="o">/</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">5</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">height</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span>
+
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39; $\phi$-view&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x [cm]&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y [cm]&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">z</span> <span class="o">-</span> <span class="n">length</span><span class="o">/</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">5</span><span class="p">,</span> <span class="n">z</span> <span class="o">+</span> <span class="n">length</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">height</span><span class="o">/</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">5</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">height</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39; $\eta$-view&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;-z [cm]&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y [cm]&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<a class="image-class reference internal image-reference" href="../../_images/dt_patch_local_white.svg"><img alt="Alternative text" class="image-class align-center" src="../../_images/dt_patch_local_white.svg" style="width: 800px;" />
 </a>
+<p>Other matplotlib kwargs are accepted, and a colormap based on time information can be defined:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># changing the chamber definition to...</span>
+<span class="n">chamber</span> <span class="o">=</span> <span class="n">Station</span><span class="p">(</span>
+    <span class="n">wheel</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">station</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sector</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">dt_info</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;sl&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;l&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="mi">300</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;sl&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;l&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="mi">400</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;sl&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;l&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="mi">500</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;sl&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;l&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="mi">600</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;sl&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;l&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="mi">700</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;sl&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;l&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="mi">800</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;sl&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;l&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="mi">900</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;sl&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;l&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="mi">700</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;sl&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;l&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="mi">800</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;sl&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;l&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="mi">900</span><span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;sl&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;l&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">},</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+<span class="c1"># defining more kargs...</span>
+<span class="n">bounds_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;facecolor&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;lightgray&quot;</span><span class="p">,</span> <span class="s2">&quot;lightyellow&quot;</span><span class="p">,</span> <span class="s2">&quot;lightpink&quot;</span><span class="p">,</span> <span class="s2">&quot;lightblue&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;edgecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;linewidth&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">&quot;alpha&quot;</span><span class="p">:</span> <span class="mf">0.3</span>
+<span class="p">}</span>
+<span class="n">cells_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;cmap&quot;</span><span class="p">:</span> <span class="n">cmap</span><span class="p">,</span>
+    <span class="s2">&quot;norm&quot;</span><span class="p">:</span> <span class="n">norm</span><span class="p">,</span>
+    <span class="s2">&quot;edgecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;linewidth&quot;</span><span class="p">:</span> <span class="mf">.1</span>
+<span class="p">}</span>
+<span class="n">dt_patch_phi</span> <span class="o">=</span> <span class="n">DTPatch</span><span class="p">(</span><span class="n">chamber</span><span class="p">,</span> <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">faceview</span><span class="o">=</span><span class="s2">&quot;phi&quot;</span><span class="p">,</span> <span class="n">cells_kwargs</span><span class="o">=</span><span class="n">cells_kwargs</span><span class="p">,</span> <span class="n">bounds_kwargs</span><span class="o">=</span><span class="n">bounds_kwargs</span><span class="p">)</span>
+<span class="n">dt_patch_eta</span> <span class="o">=</span> <span class="n">DTPatch</span><span class="p">(</span><span class="n">chamber</span><span class="p">,</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">faceview</span><span class="o">=</span><span class="s2">&quot;eta&quot;</span><span class="p">,</span> <span class="n">cells_kwargs</span><span class="o">=</span><span class="n">cells_kwargs</span><span class="p">,</span> <span class="n">bounds_kwargs</span><span class="o">=</span><span class="n">bounds_kwargs</span><span class="p">)</span>
+<span class="c1"># and adding the colorbar...</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">dt_patch_eta</span><span class="o">.</span><span class="n">cells_collection</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;time [ns]&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="image-class reference internal image-reference" href="../../_images/dt_patch_local_color.svg"><img alt="Alternative text" class="image-class align-center" src="../../_images/dt_patch_local_color.svg" style="width: 800px;" />
+</a>
+<p>Since each <code class="docutils literal notranslate"><span class="pre">DTPatch</span></code> object is an isolated instance, it is possible to plot multiple chambers in the same axes and use the global mode
+to utilize the exact CMS coordinate system to visualize part or the whole DT system.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">dpi</span><span class="o">=</span><span class="mi">800</span><span class="p">)</span>
+<span class="n">bounds_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;facecolor&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;lightgray&quot;</span><span class="p">,</span> <span class="s2">&quot;lightyellow&quot;</span><span class="p">,</span> <span class="s2">&quot;lightpink&quot;</span><span class="p">,</span> <span class="s2">&quot;lightblue&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;edgecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;linewidth&quot;</span><span class="p">:</span> <span class="mi">72</span> <span class="o">/</span> <span class="n">fig</span><span class="o">.</span><span class="n">dpi</span><span class="p">,</span>
+    <span class="s2">&quot;alpha&quot;</span><span class="p">:</span> <span class="mf">0.3</span>
+<span class="p">}</span>
+<span class="n">cells_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;cmap&quot;</span><span class="p">:</span> <span class="n">cmap</span><span class="p">,</span>
+    <span class="s2">&quot;norm&quot;</span><span class="p">:</span> <span class="n">norm</span><span class="p">,</span>
+    <span class="s2">&quot;edgecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;k&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;linewidth&quot;</span><span class="p">:</span> <span class="mf">.1</span> <span class="o">*</span> <span class="mi">72</span> <span class="o">/</span> <span class="n">fig</span><span class="o">.</span><span class="n">dpi</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="k">for</span> <span class="n">sec</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">15</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">st</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">chamber</span> <span class="o">=</span> <span class="n">Station</span><span class="p">(</span><span class="n">wheel</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span> <span class="n">station</span><span class="o">=</span><span class="n">st</span><span class="p">,</span> <span class="n">sector</span><span class="o">=</span><span class="n">sec</span><span class="p">)</span>
+            <span class="n">_</span> <span class="o">=</span> <span class="n">DTPatch</span><span class="p">(</span><span class="n">chamber</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">local</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">faceview</span><span class="o">=</span><span class="s2">&quot;phi&quot;</span><span class="p">,</span> <span class="n">bounds_kwargs</span><span class="o">=</span><span class="n">bounds_kwargs</span><span class="p">,</span> <span class="n">cells_kwargs</span><span class="o">=</span><span class="n">cells_kwargs</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">800</span><span class="p">,</span> <span class="mi">800</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">800</span><span class="p">,</span> <span class="mi">800</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Global view&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x [cm]&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y [cm]&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<a class="image-class reference internal image-reference" href="../../_images/dt_patch_global_color.svg"><img alt="Alternative text" class="image-class align-center" src="../../_images/dt_patch_global_color.svg" style="width: 600px;" />
+</a>
+<dl class="py class">
+<dt class="sig sig-object py" id="dtpr.patches.dt_patch.DTPatch">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dtpr.patches.dt_patch.</span></span><span class="sig-name descname"><span class="pre">DTPatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">station</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../geometry/station.html#dtpr.geometry.station.Station" title="dtpr.geometry.station.Station"><span class="pre">Station</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">faceview</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'phi'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cells_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/patches/dt_patch.html#DTPatch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.patches.dt_patch.DTPatch" title="Link to this definition"></a></dt>
+<dd><p>A class to visualize DT Station data.</p>
+<section id="attributes">
+<h2>Attributes:<a class="headerlink" href="#attributes" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt>bounds_collections<span class="classifier">PatchCollection</span></dt><dd><p>A collection of patches representing the bounds of the station and its superlayers.</p>
+</dd>
+<dt>cells_collection<span class="classifier">PatchCollection</span></dt><dd><p>A collection of patches representing each DT cell, with optional colormap based on time information.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="dtpr.patches.dt_patch.DTPatch.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">station</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../geometry/station.html#dtpr.geometry.station.Station" title="dtpr.geometry.station.Station"><span class="pre">Station</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">faceview</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'phi'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cells_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/patches/dt_patch.html#DTPatch.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.patches.dt_patch.DTPatch.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize a DTPatch instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>station</strong> (<a class="reference internal" href="../geometry/station.html#dtpr.geometry.station.Station" title="dtpr.geometry.station.Station"><em>Station</em></a>) – The Station object containing the geometry information.</p></li>
+<li><p><strong>axes</strong> (<em>matplotlib.axes.Axes</em>) – The matplotlib axes to draw the patches on.</p></li>
+<li><p><strong>local</strong> (<em>bool</em><em>, </em><em>optional</em>) – Boolean indicating whether to use local or global coordinates.</p></li>
+<li><p><strong>faceview</strong> (<em>str</em><em>, </em><em>optional</em>) – The view type, either “phi” or “eta”.</p></li>
+<li><p><strong>bounds_kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – Additional keyword arguments for the bounds PatchCollection.</p></li>
+<li><p><strong>cells_kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) – Additional keyword arguments for the cells PatchCollection.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None. Adds two collections, one for the bounds and another for each DT cell, to the provided matplotlib axes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</dd></dl>
+
 </section>
 
 
