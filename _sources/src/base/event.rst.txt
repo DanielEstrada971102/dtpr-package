@@ -39,6 +39,7 @@ create an event instance should be like this:
 
 .. code-block:: python
 
+    from ROOT import TFile
     from dtpr.base import Event
     from dtpr.utils.config import EVENT_CONFIG
 
@@ -47,7 +48,7 @@ create an event instance should be like this:
     # You can also use the latter to define your own configuration file.
     EVENT_CONFIG.change_config(config_path="path/to/config.yaml")
 
-    with ROOT.TFile("DTDPGNtuple_12_4_2_Phase2Concentrator_Simulation_99.root", "read") as ntuple:
+    with TFile("DTDPGNtuple_12_4_2_Phase2Concentrator_Simulation_99.root", "read") as ntuple:
         tree = ntuple["dtNtupleProducer/DTTREE;1"]
 
         for iev, ev in enumerate(tree):
@@ -113,7 +114,7 @@ objects to the event:
     >> ------ Shower 4 info ------ 
     + Wh: None, Sc: None, St: None, Bx: None, Ndigis: 0, Avg_pos: None, Avg_time: None, Eq2emulator: False 
 
-.. autoclass:: dtpr.base.Event
+.. autoclass:: dtpr.base.event.Event
     :members:
     :private-members: _build_particles
     :special-members: __init__, __str__, __getter__,__setter__
