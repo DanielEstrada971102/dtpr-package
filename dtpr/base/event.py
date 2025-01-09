@@ -9,7 +9,7 @@ from dtpr.utils.functions import color_msg
 
 
 class Event:
-    __slots__ = ["iev", "particles"]
+    __slots__ = ["iev", "_particles"]
 
     def __init__(self, root_ev=None, iev=-1):
         """
@@ -20,12 +20,12 @@ class Event:
         """
 
         self.iev = iev
-        self.particles = {}  # Initialize an empty dictionary for particles
+        self._particles = {}  # Initialize an empty dictionary for particles
 
         if root_ev is not None:
             if EVENT_CONFIG.particle_types:
                 for ptype, pinfo in EVENT_CONFIG.particle_types.items():
-                    self.build_particles(root_ev, ptype, pinfo)
+                    self._build_particles(root_ev, ptype, pinfo)
             else:
                 warnings.warn(
                     "No particle types defined in the configuration file. Initializing an empty Event instance."
@@ -41,8 +41,8 @@ class Event:
         """
         if name in self.__slots__:
             return super().__getattr__(name)
-        if name in self.particles:
-            return self.particles[name]
+        if name in self._particles:
+            return self._particles[name]
         raise AttributeError(f"'Event' object has no attribute '{name}'")
 
     def __setattr__(self, name, value):
@@ -55,7 +55,7 @@ class Event:
         if name in self.__slots__ or name == "particles":
             super().__setattr__(name, value)
         else:
-            self.particles[name] = value
+            self._particles[name] = value
 
     def __str__(self, indentLevel=0):
         """
@@ -72,7 +72,7 @@ class Event:
                 return_str=True,
             )
         ]
-        for ptype, particles in self.particles.items():
+        for ptype, particles in self._particles.items():
             summary.append(
                 color_msg(
                     f"{ptype.capitalize()}",
@@ -112,7 +112,16 @@ class Event:
             # Add summaries for other particle types as needed
         return "\n".join(summary)
 
-    def build_particles(self, root_ev, ptype, pinfo):
+    def __dict__(self):
+        """
+        Generate a dictionary representation of the event. to be able to serialize it to akward arrays.
+        """
+        dict_out = {"iev": self.iev}
+        for ptype, particles in self._particles.items():
+            dict_out[ptype] = [p.to_dict() for p in particles]
+        return dict_out
+
+    def _build_particles(self, root_ev, ptype, pinfo):
         """
         Build particles of a specific type based on the information provided in the root event entry.
 
@@ -161,14 +170,28 @@ class Event:
         :param kwargs: Key-value pairs of attributes to filter by (e.g., wh=1, sc=2, st=3).
         :return: A list of filtered particles. If no particles are found, an empty list is returned.
         :raises ValueError: If invalid keys are provided for filtering.
+
+        Example
+        *******
+        .. code-block:: python
+
+            print("Amount of digis in the event:", len(event.digis))
+            print("Amount of digis in wheel 1:", len(event.filter_particles("digis", wh=1)))
+
+        Output
+        ######
+        .. code-block:: text
+
+            Amount of digis in the event: 134
+            Amount of digis in wheel 1: 1
         """
-        if particle_type not in self.particles:
+        if particle_type not in self._particles:
             warnings.warn(
-                f"Invalid particle type {particle_type} to apply filter. Valid types are: {list(self.particles.keys())}"
+                f"Invalid particle type {particle_type} to apply filter. Valid types are: {list(self._particles.keys())}"
             )
             return []
 
-        particles = self.particles.get(particle_type, [])
+        particles = self._particles.get(particle_type, [])
 
         if not particles:
             return []  # Return an empty list if there are no particles
@@ -186,6 +209,70 @@ class Event:
         return [particle for particle in particles if match(particle, kwargs)]
 
 
+class EventList:
+    """
+    A class to represent a list of events from a ROOT TTree.
+    """
+
+    __slots__ = ["_tree", "_preprocessor", "_length"]
+
+    def __init__(self, tree, preprocessor=None):
+        """
+        Initialize an EventList instance.
+
+        :param tree: The ROOT TTree containing the events information.
+        :type tree: ROOT.TTree
+        :param preprocessor: The method to preprocess the events (default is None, which is interpreted as a lambda function that returns the event as is).
+        :type preprocessor: function, optional
+        """
+        self._tree = tree
+        self._preprocessor = preprocessor if preprocessor else lambda ev: ev
+        self._length = tree.GetEntries()
+
+    def __len__(self):
+        """
+        Get the number of events in the EventList.
+        """
+        return self._length
+
+    def __getitem__(self, index):
+        """
+        Retrieve an event or a list of events by index.
+
+        :param index: The index or slice to retrieve the event(s). If an integer is provided, a single event is returned. If a slice is provided, a list of events is returned.
+        :type index: int or slice
+        :returns: Event or list of Event: The event(s) corresponding to the given index.
+        :rtype: Event or list of Event
+
+        :raises: IndexError: If the index is out of range.
+        :raises: TypeError: If the index type is invalid.
+        """
+        if isinstance(index, slice):
+            return [self[i] for i in range(*index.indices(self._length))]
+        elif isinstance(index, int):
+            if index < 0:
+                index += self._length
+            if index < 0 or index >= self._length:
+                raise IndexError("Event index out of range")
+
+            for iev, root_ev in enumerate(self._tree):
+                if iev == index:
+                    event = Event(root_ev, iev)
+                    return self._preprocessor(event)
+
+            raise IndexError("Event index out of range")
+        else:
+            raise TypeError("Invalid argument type")
+
+    def __iter__(self):
+        """
+        Iterate over the events in the EventList.
+        """
+        for iev, root_ev in enumerate(self._tree):
+            event = Event(root_ev, iev)
+            yield self._preprocessor(event)
+
+
 if __name__ == "__main__":
     """
     Example of how to use the Event class to build particles and analyze them.
@@ -193,12 +280,12 @@ if __name__ == "__main__":
     from ROOT import TFile
     from dtpr.particles.shower import Shower
 
-    _maxevents = 1
+    _maxevents = 10
     with TFile(
         os.path.abspath(
             os.path.join(
                 os.path.dirname(__file__),
-                "../utils/templates/DTDPGNtuple_12_4_2_Phase2Concentrator_Simulation_101.root",
+                "../utils/templates/DTDPGNtuple_12_4_2_Phase2Concentrator_Simulation_99.root",
             )
         ),
         "read",
@@ -206,6 +293,8 @@ if __name__ == "__main__":
         tree = ntuple["dtNtupleProducer/DTTREE;1"]
 
         for iev, ev in enumerate(tree):
+            if iev >= _maxevents:
+                break
             event = Event(ev, iev=iev)
             # Print the event summary
             print(event)
@@ -214,5 +303,9 @@ if __name__ == "__main__":
             )
             event.test_showers = [shower]
             print(event)
-            if iev + 1 == _maxevents:
-                break
+
+            print("Amount of digis in the event:", len(event.digis))
+            print(
+                "Amount of digis in wheel 1:",
+                len(event.filter_particles("digis", wh=1)),
+            )

@@ -1,7 +1,18 @@
 from dtpr.utils.functions import color_msg
 
+
 class SimHit(object):
-    __slots__ = ["index", "wh", "sc", "st", "sl", "l", "w", "process_type", "particle_type"] # add more attributes here
+    __slots__ = [
+        "index",
+        "wh",
+        "sc",
+        "st",
+        "sl",
+        "l",
+        "w",
+        "process_type",
+        "particle_type",
+    ]  # add more attributes here
 
     def __init__(
         self,
@@ -42,7 +53,7 @@ class SimHit(object):
         :type particle_type: int, optional
         """
         self.index = isimhit
-        if ev is not None: # constructor with root event entry info
+        if ev is not None:  # constructor with root event entry info
             self.wh = int(ev.simHit_wheel[isimhit])
             self.sc = int(ev.simHit_sector[isimhit])
             self.st = int(ev.simHit_station[isimhit])
@@ -51,7 +62,7 @@ class SimHit(object):
             self.w = int(ev.simHit_wire[isimhit])
             self.process_type = int(ev.simHit_processType[isimhit])
             self.particle_type = int(ev.simHit_particleType[isimhit])
-        else: # constructor with explicit info
+        else:  # constructor with explicit info
             self.wh = wh
             self.sc = sc
             self.st = st
@@ -104,7 +115,7 @@ class SimHit(object):
         return "\n".join(summary)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Test the class here
     particle_instance = SimHit(1)
 

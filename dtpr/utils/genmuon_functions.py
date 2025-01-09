@@ -1,6 +1,6 @@
 # functions to analyze generator level muons
 
-from dtpr.base.event import Event
+from dtpr.base import Event
 
 
 def analyze_genmuon_matches(ev: Event):

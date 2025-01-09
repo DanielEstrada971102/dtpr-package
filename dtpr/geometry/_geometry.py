@@ -88,6 +88,7 @@ class DTGeometry:
         )  # Bear in mind that the CMS local and global coordinates are different and depend of chamber and superlayer
         return (x, y, z)
 
+
 class DTFrame(object):
     """
     A parent class representing any possible DT frame object, such as a DT cell, a Layer, a SuperLayer, or the whole DT.

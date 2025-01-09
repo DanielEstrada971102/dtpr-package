@@ -22,7 +22,7 @@ class DriftCell(DTFrame):
     Attributes
     ----------
     driftTime : float
-        Drift time of the drift cell.    
+        Drift time of the drift cell.
     parent : Layer
         Parent layer of the drift cell.
 
@@ -44,7 +44,7 @@ class DriftCell(DTFrame):
         :param parent: Parent layer of the drift cell (default is None).
         :type parent: Layer, optional
         """
-        # Since it is initialized without rawId, no XML geometrical info will be used to initialize 
+        # Since it is initialized without rawId, no XML geometrical info will be used to initialize
         # the instance. Then, attributes is set manually...
         super().__init__()
         self.parent = parent

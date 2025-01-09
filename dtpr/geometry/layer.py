@@ -1,6 +1,7 @@
 from dtpr.geometry.drift_cell import DriftCell
 from dtpr.geometry import DTGEOMETRY, DTFrame
 
+
 class Layer(DTFrame):
     """
     Class representing a Layer.
@@ -11,7 +12,7 @@ class Layer(DTFrame):
         List of drift cells in the layer.
     parent : Station
         Parent station of the super layer.
-    
+
     Others inherit from ``dtpr.geometry.DTFrame``... (e.g. id, local_center, global_center, direction, etc.)
     """
 
@@ -162,12 +163,13 @@ class Layer(DTFrame):
                 z_local,
             )
             cell.global_center = (
-                (x_global  - _firs_wire_x_global) - i * cell.width,
+                (x_global - _firs_wire_x_global) - i * cell.width,
                 y_global,
                 z_global,
             )
 
             self._add_cell(cell)
+
 
 if __name__ == "__main__":
     layer = Layer(589603840)

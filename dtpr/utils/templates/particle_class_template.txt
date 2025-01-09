@@ -51,7 +51,7 @@ class {name}(object):
 
     def __str__(self, indentLevel=0):
         """
-        Generate a string representation of the Shower instance.
+        Generate a string representation of the {name} instance.
 
         :param indentLevel: The indentation level for the summary.
         :type indentLevel: int
@@ -60,7 +60,7 @@ class {name}(object):
         """
         summary = [
             color_msg(
-                f"------ Shower {self.index} info ------",
+                f"------ {name} {self.index} info ------",
                 color="yellow",
                 indentLevel=indentLevel,
                 return_str=True,

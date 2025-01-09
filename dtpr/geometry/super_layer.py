@@ -1,6 +1,7 @@
 from dtpr.geometry.layer import Layer
 from dtpr.geometry import DTGEOMETRY, DTFrame
 
+
 class SuperLayer(DTFrame):
     """
     Class representing a SuperLayer.
@@ -11,7 +12,7 @@ class SuperLayer(DTFrame):
         List of layers in the super layer.
     parent : Station
         Parent station of the super layer.
-    
+
     Others inherit from ``dtpr.geometry.DTFrame``... (e.g. id, local_center, global_center, direction, etc.)
     """
 
