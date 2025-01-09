@@ -9,8 +9,7 @@
 # various attributes. It inherits from the NTuple class (dtpr.base.ntuple) and contains a 'run' method 
 # for processing Event instances. The __init__ method calls super().__init__ to initialize the base class.
 
-from dtpr.base.event import Event
-from dtpr.base.ntuple import NTuple
+from dtpr.base import Event, EventList, import NTuple
 
 class {name}(NTuple):
     def __init__(self, inputFolder, selectors, maxfiles=-1):
@@ -26,20 +25,20 @@ class {name}(NTuple):
         """
         super().__init__(inputFolder, selectors, maxfiles) # add tree_name argument if needed, default is "/TTREE"
 
-    def run(self, ev: Event):
+    def event_preprocessor(self, ev: Event):
         """
-        Run the event analysis specific to {name}.
+        Preprocess the event. Specific to {name}.
 
-        :param ev: The event to analyze.
+        :param ev: The event to preprocess.
         :type ev: Event
-        :returns: The analyzed event if it passes the selection criteria, otherwise None.
+        :returns: The preprocessed event if it passes the selection criteria, otherwise None.
         :rtype: Event
         """
         # Implement specific analysis here before apply global selection
         # ...
 
         # Apply global selection
-        if not self.passes_event(ev):
+        if not self.select_event(ev):
             pass
         else:
             return ev
@@ -52,11 +51,21 @@ if __name__ == '__main__':
         # Example selector function that always returns True
         return True
 
-    input_folder = "Input/folder/path" # Add the path to the input folder
+    input_folder = "Input/folder/path" # <------- Add the path to the input folder
     selectors = [example_selector]
     max_files = 5
 
-    ntuple_instance = {name}(input_folder, selectors, maxfiles=max_files)
-    ev_iter = iter(ntuple_instance.events)
-    print(next(ev_iter))
+    {name}_instance = {name}(input_folder, selectors, maxfiles=max_files)
+    # you can access events by index such as a list
+    print({name}_instance.events[10])
+
+    # or loop over the events
+    for iev, ev in enumerate({name}_instance.events):
+        print(ev)
+        if iev == 2: break
+
+    # or simply use the root tree, which is a ROOT.TChain
+    for i, ev in enumerate({name}_instance.tree):
+        print(ev.event_orbitNumber)
+        if i == 0: break
 

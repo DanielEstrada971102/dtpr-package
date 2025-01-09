@@ -2,6 +2,7 @@ from dtpr.geometry import DTGEOMETRY, DTFrame
 from dtpr.geometry.super_layer import SuperLayer
 from pandas import DataFrame
 
+
 class Station(DTFrame):
     """
     Class representing a CMS Drift Tube Chamber.
@@ -35,7 +36,9 @@ class Station(DTFrame):
         :param dt_info: Drift time information for the station. Default is None.
         :type dt_info: dict, list, or pandas.DataFrame
         """
-        super().__init__(rawId=DTGEOMETRY.get("rawId", wh=wheel, sec=sector, st=station))
+        super().__init__(
+            rawId=DTGEOMETRY.get("rawId", wh=wheel, sec=sector, st=station)
+        )
         self.number = None
 
         # == Chamber related parameters
@@ -49,7 +52,7 @@ class Station(DTFrame):
 
         # == Set the drift times
         if dt_info is not None:
-            self.set_cell_times(dt_info) 
+            self.set_cell_times(dt_info)
 
     # == Getters
 
@@ -205,10 +208,10 @@ class Station(DTFrame):
 
     def set_cell_times(self, dt_info):
         """
-        Set the drift times for the cells in the station. 
+        Set the drift times for the cells in the station.
 
-        :param dt_info: Drift time information for the station. Can be a dictionary, a list of dictionaries, 
-                or a pandas DataFrame containing the drift time information identified by super layer, 
+        :param dt_info: Drift time information for the station. Can be a dictionary, a list of dictionaries,
+                or a pandas DataFrame containing the drift time information identified by super layer,
                 layer, and wire. e.g. [{"sl": 1, "l": 1, "w": 1, "time": 300}, ...]
         :type dt_info: dict, list, or pandas.DataFrame
         """
@@ -247,4 +250,3 @@ if __name__ == "__main__":
                 f"---Last Cell center:",
                 l.cells[-1].local_center if local else l.cells[-1].global_center,
             )
-

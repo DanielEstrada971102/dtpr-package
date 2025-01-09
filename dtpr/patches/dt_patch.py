@@ -4,7 +4,7 @@ from dtpr.geometry.station import Station
 from math import atan2, degrees
 
 
-class DTPatch():
+class DTPatch:
     """
     A class to visualize DT Station data.
 
@@ -12,11 +12,20 @@ class DTPatch():
     -----------
     bounds_collections : PatchCollection
         A collection of patches representing the bounds of the station and its superlayers.
-    
+
     cells_collection : PatchCollection
         A collection of patches representing each DT cell, with optional colormap based on time information.
     """
-    def __init__(self, station: Station, axes, local=True, faceview="phi", bounds_kwargs=None, cells_kwargs=None):
+
+    def __init__(
+        self,
+        station: Station,
+        axes,
+        local=True,
+        faceview="phi",
+        bounds_kwargs=None,
+        cells_kwargs=None,
+    ):
         """
         Initialize a DTPatch instance.
 
@@ -37,16 +46,22 @@ class DTPatch():
         self.current_DT = station
         self.axes = axes
         self.view = faceview
-        self.bounds_collections = PatchCollection([], **(bounds_kwargs or {"facecolor": "none", "edgecolor": "k"}))
-        self.cells_collection = PatchCollection([], **(cells_kwargs or {"facecolor":"none", "edgecolor": "k"}))
+        self.bounds_collections = PatchCollection(
+            [], **(bounds_kwargs or {"facecolor": "none", "edgecolor": "k"})
+        )
+        self.cells_collection = PatchCollection(
+            [], **(cells_kwargs or {"facecolor": "none", "edgecolor": "k"})
+        )
 
         self.local = local
 
         if not self.local:  # if global, compute the angle to rotate the patches
             nx, ny, _ = station.direction
-            self.angle = degrees(atan2(ny, nx)) + 90  # ang_incline = ang_normal_refx + 90
+            self.angle = (
+                degrees(atan2(ny, nx)) + 90
+            )  # ang_incline = ang_normal_refx + 90
 
-        #draw Sl bounds
+        # draw Sl bounds
         self._draw_bounds()
         # draw cells
         self._draw_cells()
@@ -126,7 +141,9 @@ class DTPatch():
         frame = Rectangle((x_min, y_min), width, height)
 
         if not self.local and self.view == "phi":
-            frame.rotation_point = (rotation_point[0], rotation_point[1]) if rotation_point else (x, y)
+            frame.rotation_point = (
+                (rotation_point[0], rotation_point[1]) if rotation_point else (x, y)
+            )
             frame.set_angle(self.angle)
 
         return frame
