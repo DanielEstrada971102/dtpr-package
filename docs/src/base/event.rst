@@ -31,16 +31,16 @@ configuration file under the ``particle_types`` section:
                 by: 'pt'
                 reverse: True
 
-The ``Event`` class will create **n** instances of the ``GenMuon`` class based on the value of the ``gen_nGenParts`` 
-branch. The ``conditioner`` and ``sorter`` are optional. The ``conditioner`` filters the root event's 
-entry information based on specified conditions, and the ``sorter`` orders the created particles. Ensure 
+The ``Event`` class will create **n** (determined for the value of the ``gen_nGenParts`` branch) instances of the ``GenMuon`` class.
+The ``conditioner`` and ``sorter`` are optional. The ``conditioner`` filters the root event's 
+entry based on specified conditions, and the ``sorter`` orders the created particles. Ensure 
 that the information required to build the particles is present in the root event's entry. The way to 
 create an event instance should be like this:
 
 .. code-block:: python
 
     from ROOT import TFile
-    from dtpr.base.event import Event
+    from dtpr.base import Event
     from dtpr.utils.config import EVENT_CONFIG
 
     # First, you need to change the configuration file path. If not, 
@@ -48,7 +48,7 @@ create an event instance should be like this:
     # You can also use the latter to define your own configuration file.
     EVENT_CONFIG.change_config(config_path="path/to/config.yaml")
 
-    with TFile("DTDPGNtuple_12_4_2_Phase2Concentrator_Simulation_101.root", "read") as ntuple:
+    with TFile("DTDPGNtuple_12_4_2_Phase2Concentrator_Simulation_99.root", "read") as ntuple:
         tree = ntuple["dtNtupleProducer/DTTREE;1"]
 
         for iev, ev in enumerate(tree):
@@ -94,7 +94,7 @@ objects to the event:
 
 .. code-block:: python
 
-    from dtpr.base.event import Event
+    from dtpr.base import Event
     from dtpr.particles.shower import Shower
 
     event = Event(iev=0)
@@ -114,7 +114,7 @@ objects to the event:
     >> ------ Shower 4 info ------ 
     + Wh: None, Sc: None, St: None, Bx: None, Ndigis: 0, Avg_pos: None, Avg_time: None, Eq2emulator: False 
 
-.. autoclass:: dtpr.base.event.Event
+.. autoclass:: dtpr.base.Event
     :members:
-    :undoc-members:
-    :special-members: __init__, __str__, __setter__, __getter__
+    :private-members: _build_particles
+    :special-members: __init__, __str__, __getter__,__setter__
