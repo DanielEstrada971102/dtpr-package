@@ -114,7 +114,7 @@ objects to the event:
     >> ------ Shower 4 info ------ 
     + Wh: None, Sc: None, St: None, Bx: None, Ndigis: 0, Avg_pos: None, Avg_time: None, Eq2emulator: False 
 
-.. autoclass:: dtpr.base.event.Event
+.. autoclass:: dtpr.base.Event
     :members:
     :private-members: _build_particles
     :special-members: __init__, __str__, __getter__,__setter__
