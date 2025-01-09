@@ -11,7 +11,7 @@ For instance, follow function will be pass all events:
 
 The ``NTuple`` class is designed to be generic and handle any type of root NTuple. It is intended to
 be used as a parent class. In practice, you should create a child class that inherits from ``NTuple``
-and implement the ``run`` method to perform any necessary preprocessing steps before creating and 
+and implement the ``event_preprocessor`` method to perform any necessary preprocessing steps before creating and 
 selecting ``Event`` instances.
 
 You can generate a skeleton of a child class using the dtpr command as follows:
@@ -24,8 +24,7 @@ This will create a new file called ``dt_ntuple.py`` in the specified output fold
 
 .. code-block:: python
 
-    from dtpr.base.event import Event
-    from dtpr.base.ntuple import NTuple
+    from dtpr.base import Event, NTuple
 
     class DtNtuple(NTuple):
         def __init__(self, inputFolder, selectors, maxfiles=-1):
@@ -41,20 +40,20 @@ This will create a new file called ``dt_ntuple.py`` in the specified output fold
             """
             super().__init__(inputFolder, selectors, maxfiles) # add tree_name argument if needed, default is "/TTREE"
 
-        def run(self, ev: Event):
+        def event_preprocessor(self, ev: Event):
             """
-            Run the event analysis specific to DtNtuple.
+            Preprocess the event. Specific to DtNtuple.
 
-            :param ev: The event to analyze.
+            :param ev: The event to preprocess.
             :type ev: Event
-            :returns: The analyzed event if it passes the selection criteria, otherwise None.
+            :returns: The preprocessed event if it passes the selection criteria, otherwise None.
             :rtype: Event
             """
-            # Implement specific analysis here before applying global selection
+            # Implement specific analysis here before apply global selection
             # ...
 
             # Apply global selection
-            if not self.passes_event(ev):
+            if not self.select_event(ev):
                 pass
             else:
                 return ev
@@ -64,62 +63,92 @@ the tree_name argument was set to `/dtNtupleProducer/DTTREE`` to agree with the 
 
 .. code-block:: python
 
-    from dtpr.base.event import Event
+    from dt_ntuple import DtNtuple
 
-    def example_selector(event: Event) -> bool:
+    """
+    Example of how to use the DtNtuple class to read DT Ntuples and analyze events.
+    """
+    def example_selector(event):
         # Example selector function that always returns True
         return True
 
-    input_folder = "DTDPGNtuple_12_4_2_Phase2Concentrator_Simulation_101.root"
+    input_folder = "./DTDPGNtuple_12_4_2_Phase2Concentrator_Simulation_99.root"
     selectors = [example_selector]
 
     dt_ntuple = DtNtuple(input_folder, selectors)
-    # you can iterate over the events built as Event instances
-    event = iter(dt_ntuple.events)
-    print(next(event))
+    # you can access events by index such as a list
+    print(dt_ntuple.events[10])
 
-    # or simply use the root tree which is a ROOT.TChain
-    for ev in dt_ntuple.tree:
-        print("Driectly from ROOT.TChain")
-        print(ev.gen_pt)
-        break
+    # or loop over the events
+    for iev, ev in enumerate(dt_ntuple.events):
+        print(ev)
+        if iev == 2: break
+
+    # or simply use the root tree, which is a ROOT.TChain
+    for i, ev in enumerate(dt_ntuple.tree):
+        print(ev.event_orbitNumber)
+        if i == 0: break
 
 .. rubric:: Output
 
 .. code-block:: text
 
-    + Opening input file DTDPGNtuple_12_4_2_Phase2Concentrator_Simulation_101.root 
-    >> ------ Event 0 info ------ 
+    + Opening input file /mnt_pool/c3_users/user/destrada/Public/DTPatternRecognition/src/ntuples/DTDPGNtuple_12_4_2_Phase2Concentrator_Simulation_99.root 
+    >> ------ Event 10 info ------ 
     + Digis 
-        * Number of digis: 95 
+        * Number of digis: 127 
     + Segments 
-        * Number of segments: 8 
-        * (iSeg, Phi, eta): ['(0.00, 0.65, -1.03)', '(1.00, -0.82, -1.02)', '(2.00, 0.93, 0.67)', '(3.00, -3.07, -0.00)', '(4.00, -2.78, -0.40)'] 
+        * Number of segments: 11 
+        * (iSeg, Phi, eta): ['(0.00, 1.70, -1.14)', '(1.00, 2.39, -1.01)', '(2.00, 2.39, -1.00)', '(3.00, -2.00, -0.35)', '(4.00, -1.08, 0.92)'] 
     + Tps 
-        * Number of tps: 15 
+        * Number of tps: 27 
     + Genmuons 
         * Number of genmuons: 1 
         * Muon 0 
         --> GenPart Idx: 0 
-        --> pT: 1953.97 GeV 
-        --> Eta: 1.39 
-        --> Phi: 0.35 
-        --> Matched segments indices: [] 
-        --> Matched segments location: [] 
-        --> Stations traversed: [] 
-        --> Not showered 
+        --> pT: 656.94 GeV 
+        --> Eta: -0.97 
+        --> Phi: -1.23 
+        --> Matched segments indices: [8] 
+        --> Matched segments location: [(2, 11, -2)] 
+        --> Stations traversed: [(2, 11, -2)] 
+        --> Showered 
     + Emushowers 
-        * Number of emushowers: 0 
-    { 1953.97f, 1947.34f }
+        * Number of emushowers: 1 
+    + Simhits 
+        * Number of simhits: 140 
+    >> ------ Event 0 info ------ 
+    + Digis 
+        * Number of digis: 340 
+    + Segments 
+        * Number of segments: 28 
+        * (iSeg, Phi, eta): ['(0.00, 0.09, -1.15)', '(1.00, 0.31, 0.99)', '(2.00, 0.31, 0.99)', '(3.00, 0.77, -1.02)', '(4.00, 1.30, 0.57)'] 
+    + Tps 
+        * Number of tps: 71 
+    + Genmuons 
+        * Number of genmuons: 1 
+        * Muon 0 
+        --> GenPart Idx: 0 
+        --> pT: 1601.72 GeV 
+        --> Eta: 1.00 
+        --> Phi: 0.31 
+        --> Matched segments indices: [1, 2, 21, 22] 
+        --> Matched segments location: [(1, 1, 2), (1, 1, 2), (2, 2, 2), (2, 2, 2)] 
+        --> Stations traversed: [(1, 1, 2), (1, 1, 2), (2, 2, 2), (2, 2, 2)] 
+        --> Showered 
+    + Emushowers 
+        * Number of emushowers: 2 
+    + Simhits 
+        * Number of simhits: 1031 
+    event orbit number:  -1
 
 .. important::
     
-    NTuple.events is a generator that yields Event instances. You can iterate over it to access the
-    events but you can't access the events by index. If you need to access the events by index, you
-    can convert the generator to a list but be aware that this will load all the events into memory.
+    The ``NTuple.events`` attribute is not a simple list, but an instance of the :doc:`event_list` class.
+    This design prevents loading all events into memory simultaneously. Instead, it allows iteration and access by index,
+    while internally iterating over the root tree entries to create the required event on the fly.
 
 
-.. autoclass:: dtpr.base.ntuple.NTuple
+.. autoclass:: dtpr.base.NTuple
     :members:
-    :undoc-members:
-    :special-members: __init__
+    :exclude-members: __weakref__, __dict__, __module__

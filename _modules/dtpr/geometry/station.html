@@ -77,6 +77,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">dtpr.geometry.super_layer</span><span class="w"> </span><span class="kn">import</span> <span class="n">SuperLayer</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataFrame</span>
 
+
 <div class="viewcode-block" id="Station">
 <a class="viewcode-back" href="../../../src/geometry/station.html#dtpr.geometry.station.Station">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Station</span><span class="p">(</span><span class="n">DTFrame</span><span class="p">):</span>
@@ -114,7 +115,9 @@
 <span class="sd">        :param dt_info: Drift time information for the station. Default is None.</span>
 <span class="sd">        :type dt_info: dict, list, or pandas.DataFrame</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">rawId</span><span class="o">=</span><span class="n">DTGEOMETRY</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;rawId&quot;</span><span class="p">,</span> <span class="n">wh</span><span class="o">=</span><span class="n">wheel</span><span class="p">,</span> <span class="n">sec</span><span class="o">=</span><span class="n">sector</span><span class="p">,</span> <span class="n">st</span><span class="o">=</span><span class="n">station</span><span class="p">))</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">rawId</span><span class="o">=</span><span class="n">DTGEOMETRY</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;rawId&quot;</span><span class="p">,</span> <span class="n">wh</span><span class="o">=</span><span class="n">wheel</span><span class="p">,</span> <span class="n">sec</span><span class="o">=</span><span class="n">sector</span><span class="p">,</span> <span class="n">st</span><span class="o">=</span><span class="n">station</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">number</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="c1"># == Chamber related parameters</span>
@@ -128,7 +131,7 @@
 
         <span class="c1"># == Set the drift times</span>
         <span class="k">if</span> <span class="n">dt_info</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">set_cell_times</span><span class="p">(</span><span class="n">dt_info</span><span class="p">)</span> </div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_cell_times</span><span class="p">(</span><span class="n">dt_info</span><span class="p">)</span></div>
 
 
     <span class="c1"># == Getters</span>
@@ -293,10 +296,10 @@
 <a class="viewcode-back" href="../../../src/geometry/station.html#dtpr.geometry.station.Station.set_cell_times">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_cell_times</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt_info</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set the drift times for the cells in the station. </span>
+<span class="sd">        Set the drift times for the cells in the station.</span>
 
-<span class="sd">        :param dt_info: Drift time information for the station. Can be a dictionary, a list of dictionaries, </span>
-<span class="sd">                or a pandas DataFrame containing the drift time information identified by super layer, </span>
+<span class="sd">        :param dt_info: Drift time information for the station. Can be a dictionary, a list of dictionaries,</span>
+<span class="sd">                or a pandas DataFrame containing the drift time information identified by super layer,</span>
 <span class="sd">                layer, and wire. e.g. [{&quot;sl&quot;: 1, &quot;l&quot;: 1, &quot;w&quot;: 1, &quot;time&quot;: 300}, ...]</span>
 <span class="sd">        :type dt_info: dict, list, or pandas.DataFrame</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -337,7 +340,6 @@
                 <span class="sa">f</span><span class="s2">&quot;---Last Cell center:&quot;</span><span class="p">,</span>
                 <span class="n">l</span><span class="o">.</span><span class="n">cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">local_center</span> <span class="k">if</span> <span class="n">local</span> <span class="k">else</span> <span class="n">l</span><span class="o">.</span><span class="n">cells</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">global_center</span><span class="p">,</span>
             <span class="p">)</span>
-
 </pre></div>
 
            </div>

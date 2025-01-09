@@ -20,7 +20,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="particles" href="../particles/main.html" />
+    <link rel="next" title="EventList" href="event_list.html" />
     <link rel="prev" title="Event" href="event.html" /> 
 </head>
 
@@ -48,6 +48,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="main.html">base</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="event.html">Event</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">NTuple</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_list.html">EventList</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../particles/main.html">particles</a></li>
@@ -90,15 +91,14 @@ instances according to the <strong>selectors</strong> passed.</p>
 For instance, follow function will be pass all events:</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">NTuple</span></code> class is designed to be generic and handle any type of root NTuple. It is intended to
 be used as a parent class. In practice, you should create a child class that inherits from <code class="docutils literal notranslate"><span class="pre">NTuple</span></code>
-and implement the <code class="docutils literal notranslate"><span class="pre">run</span></code> method to perform any necessary preprocessing steps before creating and
+and implement the <code class="docutils literal notranslate"><span class="pre">event_preprocessor</span></code> method to perform any necessary preprocessing steps before creating and
 selecting <code class="docutils literal notranslate"><span class="pre">Event</span></code> instances.</p>
 <p>You can generate a skeleton of a child class using the dtpr command as follows:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dtpr<span class="w"> </span>create<span class="w"> </span>ntuple<span class="w"> </span>--name<span class="w"> </span>DtNtuple<span class="w"> </span>-o<span class="w"> </span><span class="o">[</span>output_folder<span class="o">]</span>
 </pre></div>
 </div>
 <p>This will create a new file called <code class="docutils literal notranslate"><span class="pre">dt_ntuple.py</span></code> in the specified output folder with the following content:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dtpr.base.event</span><span class="w"> </span><span class="kn">import</span> <span class="n">Event</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">dtpr.base.ntuple</span><span class="w"> </span><span class="kn">import</span> <span class="n">NTuple</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dtpr.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Event</span><span class="p">,</span> <span class="n">NTuple</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">DtNtuple</span><span class="p">(</span><span class="n">NTuple</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputFolder</span><span class="p">,</span> <span class="n">selectors</span><span class="p">,</span> <span class="n">maxfiles</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
@@ -114,20 +114,20 @@ selecting <code class="docutils literal notranslate"><span class="pre">Event</sp
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">inputFolder</span><span class="p">,</span> <span class="n">selectors</span><span class="p">,</span> <span class="n">maxfiles</span><span class="p">)</span> <span class="c1"># add tree_name argument if needed, default is &quot;/TTREE&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">:</span> <span class="n">Event</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">event_preprocessor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ev</span><span class="p">:</span> <span class="n">Event</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Run the event analysis specific to DtNtuple.</span>
+<span class="sd">        Preprocess the event. Specific to DtNtuple.</span>
 
-<span class="sd">        :param ev: The event to analyze.</span>
+<span class="sd">        :param ev: The event to preprocess.</span>
 <span class="sd">        :type ev: Event</span>
-<span class="sd">        :returns: The analyzed event if it passes the selection criteria, otherwise None.</span>
+<span class="sd">        :returns: The preprocessed event if it passes the selection criteria, otherwise None.</span>
 <span class="sd">        :rtype: Event</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Implement specific analysis here before applying global selection</span>
+        <span class="c1"># Implement specific analysis here before apply global selection</span>
         <span class="c1"># ...</span>
 
         <span class="c1"># Apply global selection</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">passes_event</span><span class="p">(</span><span class="n">ev</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_event</span><span class="p">(</span><span class="n">ev</span><span class="p">):</span>
             <span class="k">pass</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">ev</span>
@@ -135,58 +135,89 @@ selecting <code class="docutils literal notranslate"><span class="pre">Event</sp
 </div>
 <p>and then, you can implement the specific analysis for your NTuple (from the previous skeleton,
 the tree_name argument was set to <cite>/dtNtupleProducer/DTTREE`</cite> to agree with the inputs).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dtpr.base.event</span><span class="w"> </span><span class="kn">import</span> <span class="n">Event</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dt_ntuple</span><span class="w"> </span><span class="kn">import</span> <span class="n">DtNtuple</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">example_selector</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="n">Event</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Example of how to use the DtNtuple class to read DT Ntuples and analyze events.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">example_selector</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
     <span class="c1"># Example selector function that always returns True</span>
     <span class="k">return</span> <span class="kc">True</span>
 
-<span class="n">input_folder</span> <span class="o">=</span> <span class="s2">&quot;DTDPGNtuple_12_4_2_Phase2Concentrator_Simulation_101.root&quot;</span>
+<span class="n">input_folder</span> <span class="o">=</span> <span class="s2">&quot;./DTDPGNtuple_12_4_2_Phase2Concentrator_Simulation_99.root&quot;</span>
 <span class="n">selectors</span> <span class="o">=</span> <span class="p">[</span><span class="n">example_selector</span><span class="p">]</span>
 
 <span class="n">dt_ntuple</span> <span class="o">=</span> <span class="n">DtNtuple</span><span class="p">(</span><span class="n">input_folder</span><span class="p">,</span> <span class="n">selectors</span><span class="p">)</span>
-<span class="c1"># you can iterate over the events built as Event instances</span>
-<span class="n">event</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">dt_ntuple</span><span class="o">.</span><span class="n">events</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">event</span><span class="p">))</span>
+<span class="c1"># you can access events by index such as a list</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dt_ntuple</span><span class="o">.</span><span class="n">events</span><span class="p">[</span><span class="mi">10</span><span class="p">])</span>
 
-<span class="c1"># or simply use the root tree which is a ROOT.TChain</span>
-<span class="k">for</span> <span class="n">ev</span> <span class="ow">in</span> <span class="n">dt_ntuple</span><span class="o">.</span><span class="n">tree</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Driectly from ROOT.TChain&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">gen_pt</span><span class="p">)</span>
-    <span class="k">break</span>
+<span class="c1"># or loop over the events</span>
+<span class="k">for</span> <span class="n">iev</span><span class="p">,</span> <span class="n">ev</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dt_ntuple</span><span class="o">.</span><span class="n">events</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">ev</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">iev</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span> <span class="k">break</span>
+
+<span class="c1"># or simply use the root tree, which is a ROOT.TChain</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ev</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dt_ntuple</span><span class="o">.</span><span class="n">tree</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">event_orbitNumber</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">break</span>
 </pre></div>
 </div>
 <p class="rubric">Output</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>+ Opening input file DTDPGNtuple_12_4_2_Phase2Concentrator_Simulation_101.root
-&gt;&gt; ------ Event 0 info ------
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>+ Opening input file /mnt_pool/c3_users/user/destrada/Public/DTPatternRecognition/src/ntuples/DTDPGNtuple_12_4_2_Phase2Concentrator_Simulation_99.root
+&gt;&gt; ------ Event 10 info ------
 + Digis
-    * Number of digis: 95
+    * Number of digis: 127
 + Segments
-    * Number of segments: 8
-    * (iSeg, Phi, eta): [&#39;(0.00, 0.65, -1.03)&#39;, &#39;(1.00, -0.82, -1.02)&#39;, &#39;(2.00, 0.93, 0.67)&#39;, &#39;(3.00, -3.07, -0.00)&#39;, &#39;(4.00, -2.78, -0.40)&#39;]
+    * Number of segments: 11
+    * (iSeg, Phi, eta): [&#39;(0.00, 1.70, -1.14)&#39;, &#39;(1.00, 2.39, -1.01)&#39;, &#39;(2.00, 2.39, -1.00)&#39;, &#39;(3.00, -2.00, -0.35)&#39;, &#39;(4.00, -1.08, 0.92)&#39;]
 + Tps
-    * Number of tps: 15
+    * Number of tps: 27
 + Genmuons
     * Number of genmuons: 1
     * Muon 0
     --&gt; GenPart Idx: 0
-    --&gt; pT: 1953.97 GeV
-    --&gt; Eta: 1.39
-    --&gt; Phi: 0.35
-    --&gt; Matched segments indices: []
-    --&gt; Matched segments location: []
-    --&gt; Stations traversed: []
-    --&gt; Not showered
+    --&gt; pT: 656.94 GeV
+    --&gt; Eta: -0.97
+    --&gt; Phi: -1.23
+    --&gt; Matched segments indices: [8]
+    --&gt; Matched segments location: [(2, 11, -2)]
+    --&gt; Stations traversed: [(2, 11, -2)]
+    --&gt; Showered
 + Emushowers
-    * Number of emushowers: 0
-{ 1953.97f, 1947.34f }
+    * Number of emushowers: 1
++ Simhits
+    * Number of simhits: 140
+&gt;&gt; ------ Event 0 info ------
++ Digis
+    * Number of digis: 340
++ Segments
+    * Number of segments: 28
+    * (iSeg, Phi, eta): [&#39;(0.00, 0.09, -1.15)&#39;, &#39;(1.00, 0.31, 0.99)&#39;, &#39;(2.00, 0.31, 0.99)&#39;, &#39;(3.00, 0.77, -1.02)&#39;, &#39;(4.00, 1.30, 0.57)&#39;]
++ Tps
+    * Number of tps: 71
++ Genmuons
+    * Number of genmuons: 1
+    * Muon 0
+    --&gt; GenPart Idx: 0
+    --&gt; pT: 1601.72 GeV
+    --&gt; Eta: 1.00
+    --&gt; Phi: 0.31
+    --&gt; Matched segments indices: [1, 2, 21, 22]
+    --&gt; Matched segments location: [(1, 1, 2), (1, 1, 2), (2, 2, 2), (2, 2, 2)]
+    --&gt; Stations traversed: [(1, 1, 2), (1, 1, 2), (2, 2, 2), (2, 2, 2)]
+    --&gt; Showered
++ Emushowers
+    * Number of emushowers: 2
++ Simhits
+    * Number of simhits: 1031
+event orbit number:  -1
 </pre></div>
 </div>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>NTuple.events is a generator that yields Event instances. You can iterate over it to access the
-events but you can’t access the events by index. If you need to access the events by index, you
-can convert the generator to a list but be aware that this will load all the events into memory.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">NTuple.events</span></code> attribute is not a simple list, but an instance of the <a class="reference internal" href="event_list.html"><span class="doc">EventList</span></a> class.
+This design prevents loading all events into memory simultaneously. Instead, it allows iteration and access by index,
+while internally iterating over the root tree entries to create the required event on the fly.</p>
 </div>
 </section>
 
@@ -195,7 +226,7 @@ can convert the generator to a list but be aware that this will load all the eve
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="event.html" class="btn btn-neutral float-left" title="Event" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../particles/main.html" class="btn btn-neutral float-right" title="particles" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="event_list.html" class="btn btn-neutral float-right" title="EventList" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
