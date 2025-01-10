@@ -79,7 +79,7 @@ class NTuple(object):
             nFiles = (
                 len(allFiles)
                 if self._maxfiles == -1
-                else min(len(allFiles), self.maxfiles)
+                else min(len(allFiles), self._maxfiles)
             )
             self._maxfiles = nFiles
 
