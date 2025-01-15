@@ -49,6 +49,8 @@ class DTPatch:
         self.bounds_collections = PatchCollection(
             [], **(bounds_kwargs or {"facecolor": "none", "edgecolor": "k"})
         )
+        self.bounds_collections.set_picker(True)
+        self.bounds_collections.station = station
         self.cells_collection = PatchCollection(
             [], **(cells_kwargs or {"facecolor": "none", "edgecolor": "k"})
         )
