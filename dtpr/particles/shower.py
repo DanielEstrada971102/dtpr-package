@@ -14,6 +14,7 @@ class Shower(object):
         "avg_time",
         "eq2Emulator",
         "true_shower",
+        "true_shower_type",
     ]
 
     def __init__(
@@ -27,6 +28,7 @@ class Shower(object):
         nDigis=0,
         avg_pos=None,
         avg_time=None,
+        true_shower_type=None,
     ):
         """
         Initialize a Shower instance.
@@ -62,6 +64,7 @@ class Shower(object):
             self.avg_time = ev.ph2Shower_avg_time[iShower]
             self.eq2Emulator = None
             self.true_shower = False
+            self.true_shower_type = true_shower_type
         else:  # constructor with explicit info
             self.wh = wh
             self.sc = sc
@@ -72,6 +75,7 @@ class Shower(object):
             self.avg_time = avg_time
             self.eq2Emulator = False
             self.true_shower = False
+            self.true_shower_type = true_shower_type
         return
 
     def to_dict(self):

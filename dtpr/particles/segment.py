@@ -14,6 +14,8 @@ class Segment(object):
         "nHits_z",
         "t0_phi",
         "matches",
+        "pos_locx_sl1",
+        "pos_locx_sl3",
     ]
 
     def __init__(
@@ -28,6 +30,8 @@ class Segment(object):
         nHits_phi=None,
         nHits_z=None,
         t0_phi=None,
+        pos_locx_sl1=0,
+        pos_locx_sl3=0,
     ):
         """
         Initialize a Segment instance.
@@ -64,6 +68,8 @@ class Segment(object):
             self.nHits_phi = ev.seg_phi_nHits[iseg]
             self.nHits_z = ev.seg_z_nHits[iseg]
             self.t0_phi = ev.seg_phi_t0[iseg]
+            self.pos_locx_sl1 = ev.seg_posLoc_x_SL1[iseg]
+            self.pos_locx_sl3 = ev.seg_posLoc_x_SL3[iseg]
         else:
             self.wh = wh
             self.sc = sc
@@ -73,6 +79,8 @@ class Segment(object):
             self.nHits_phi = nHits_phi
             self.nHits_z = nHits_z
             self.t0_phi = t0_phi
+            self.pos_locx_sl1 = pos_locx_sl1
+            self.pos_locx_sl3 = pos_locx_sl3
 
         self.matches = []
 
