@@ -2,6 +2,7 @@ import ROOT as r
 import os
 from dtpr.base import Event, EventList
 from dtpr.utils.functions import color_msg
+from natsort import natsorted
 
 
 class NTuple(object):
@@ -75,7 +76,7 @@ class NTuple(object):
             self._maxfiles = 1
         else:
             color_msg(f"Opening input files from {inpath}", "blue", 1)
-            allFiles = os.listdir(inpath)
+            allFiles = natsorted(os.listdir(inpath))
             nFiles = (
                 len(allFiles)
                 if self._maxfiles == -1
@@ -88,3 +89,4 @@ class NTuple(object):
                     continue
                 color_msg(f"File {allFiles[iF]} added", indentLevel=2)
                 self.tree.Add(os.path.join(inpath, allFiles[iF]) + self._tree_name)
+

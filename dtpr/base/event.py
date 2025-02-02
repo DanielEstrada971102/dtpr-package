@@ -208,12 +208,7 @@ class Event:
 
         return [particle for particle in particles if match(particle, kwargs)]
 
-
 class EventList:
-    """
-    A class to represent a list of events from a ROOT TTree.
-    """
-
     __slots__ = ["_tree", "_preprocessor", "_length"]
 
     def __init__(self, tree, preprocessor=None):
