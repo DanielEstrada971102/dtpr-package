@@ -1,18 +1,25 @@
 NTuple
 ========
 
-The ``NTuple`` class serves as a simple gateway to access information from single or multiple root 
-Ntuples located in the specified input path. It provides an interface to build ``Event`` instances
+The ``NTuple`` class serves as a simple gateway to access information from single or multiple `.root` 
+Ntuples (flat) located in the specified input path. It represents an interface to build ``Event`` instances
 directly from the root event entries. This class is capable of filtering and building ``Event`` 
 instances according to the **selectors** passed.
 
 A selector should be a function that returns a boolean based on the information of an ``Event`` instance.
 For instance, follow function will be pass all events:
 
-The ``NTuple`` class is designed to be generic and handle any type of root NTuple. It is intended to
+.. code-block:: python
+
+    def example_selector(event):
+        # Example selector function that always returns True
+        return True
+
+The ``NTuple`` class is designed to be generic and handle any type of root flat NTuple. It is intended to
 be used as a parent class. In practice, you should create a child class that inherits from ``NTuple``
 and implement the ``event_preprocessor`` method to perform any necessary preprocessing steps before creating and 
-selecting ``Event`` instances.
+selecting ``Event`` instances. This was implemented in that way to allow create selector based on properties that by default
+does not come direclty from the root input, but cab be computed with extra funcions steps before apply the selection.
 
 You can generate a skeleton of a child class using the dtpr command as follows:
 
@@ -58,8 +65,10 @@ This will create a new file called ``dt_ntuple.py`` in the specified output fold
             else:
                 return ev
 
-and then, you can implement the specific analysis for your NTuple (from the previous skeleton,
-the tree_name argument was set to `/dtNtupleProducer/DTTREE`` to agree with the inputs).
+and then, you can implement the specific analysis for your NTuple as follow.
+
+.. important::
+    In the exemple below, the tree_name argument in the ``super.__init__`` call was set to ``/dtNtupleProducer/DTTREE`` to agree with the inputs used
 
 .. code-block:: python
 
@@ -76,8 +85,9 @@ the tree_name argument was set to `/dtNtupleProducer/DTTREE`` to agree with the 
     selectors = [example_selector]
 
     dt_ntuple = DtNtuple(input_folder, selectors)
-    # you can access events by index such as a list
+    # you can access events by index or slice such as a list
     print(dt_ntuple.events[10])
+    print(dt_ntuple.events[3:5])
 
     # or loop over the events
     for iev, ev in enumerate(dt_ntuple.events):
@@ -117,6 +127,7 @@ the tree_name argument was set to `/dtNtupleProducer/DTTREE`` to agree with the 
         * Number of emushowers: 1 
     + Simhits 
         * Number of simhits: 140 
+    [<dtpr.base.event.Event object at 0x7fc6f4ecfb20>, <dtpr.base.event.Event object at 0x7fc6f4ce4b80>]
     >> ------ Event 0 info ------ 
     + Digis 
         * Number of digis: 340 
@@ -145,7 +156,7 @@ the tree_name argument was set to `/dtNtupleProducer/DTTREE`` to agree with the 
 .. important::
     
     The ``NTuple.events`` attribute is not a simple list, but an instance of the :doc:`event_list` class.
-    This design prevents loading all events into memory simultaneously. Instead, it allows iteration and access by index,
+    This design prevents loading all events into memory simultaneously. Instead, it allows iteration and access by index and slice,
     while internally iterating over the root tree entries to create the required event on the fly.
 
 

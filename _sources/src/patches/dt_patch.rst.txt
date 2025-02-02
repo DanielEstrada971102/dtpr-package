@@ -1,7 +1,7 @@
 DTPatch
 =======
 The ``DTPatch`` class provides visualization capabilities for DT Station data. It can draw super layer
-boundary boxes and DT cells, and allows for the definition of colormap cell colors based on time information.
+boundary boxes and DT cells, and allows for the definition of colormap cell colors based on time information (Or any other information that you label as "time" when pass it. XD).
 The class supports plotting in both local and global CMS coordinate views using CMS geometry information.
 In local mode, it is possible to draw the chamber in either the :math:`\phi` or :math:`\eta` orientation, displaying
 the cells of SL1 and SL3 or the cells of SL2, respectively.
@@ -15,6 +15,11 @@ The ``DTPatch`` class adds two collections to the provided matplotlib axes:
 - ``cells_collection``: A collection of patches representing each DT cell, with optional colormap based on time information.
 
 These collections can be accessed as attributes of the ``DTPatch`` instance.
+
+.. tip::
+
+    ``bounds_collections`` has the matplotlib property ``set_picker`` enabled, and the ``Station`` instance stored as the ``station`` attribute.
+    This allows for the creation of interactive plots with the matplotlib ``pick_event``. 
 
 .. rubric:: Examples
 

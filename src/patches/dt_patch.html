@@ -88,7 +88,7 @@
   <section id="dtpatch">
 <h1>DTPatch<a class="headerlink" href="#dtpatch" title="Link to this heading"></a></h1>
 <p>The <code class="docutils literal notranslate"><span class="pre">DTPatch</span></code> class provides visualization capabilities for DT Station data. It can draw super layer
-boundary boxes and DT cells, and allows for the definition of colormap cell colors based on time information.
+boundary boxes and DT cells, and allows for the definition of colormap cell colors based on time information (Or any other information that you label as “time” when pass it. XD).
 The class supports plotting in both local and global CMS coordinate views using CMS geometry information.
 In local mode, it is possible to draw the chamber in either the <span class="math notranslate nohighlight">\(\phi\)</span> or <span class="math notranslate nohighlight">\(\eta\)</span> orientation, displaying
 the cells of SL1 and SL3 or the cells of SL2, respectively.</p>
@@ -100,6 +100,11 @@ the geometrical information of the entire DT chambers.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">cells_collection</span></code>: A collection of patches representing each DT cell, with optional colormap based on time information.</p></li>
 </ul>
 <p>These collections can be accessed as attributes of the <code class="docutils literal notranslate"><span class="pre">DTPatch</span></code> instance.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><code class="docutils literal notranslate"><span class="pre">bounds_collections</span></code> has the matplotlib property <code class="docutils literal notranslate"><span class="pre">set_picker</span></code> enabled, and the <code class="docutils literal notranslate"><span class="pre">Station</span></code> instance stored as the <code class="docutils literal notranslate"><span class="pre">station</span></code> attribute.
+This allows for the creation of interactive plots with the matplotlib <code class="docutils literal notranslate"><span class="pre">pick_event</span></code>.</p>
+</div>
 <p class="rubric">Examples</p>
 <p>The following example shows how to create <code class="docutils literal notranslate"><span class="pre">DTPatch</span></code> objects and plot the cells of a DT chamber in the local view.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dtpr.geometry.station</span><span class="w"> </span><span class="kn">import</span> <span class="n">Station</span>

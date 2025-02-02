@@ -1,8 +1,8 @@
 Event
 =====
 
-The ``Event`` class is designed to represent an event entry from a root Ntuple, facilitating access
-to information by abstracting info into instances of Python objects (**particles**). There are a set 
+The ``Event`` class is designed to represent an event entry from a flat root Ntuple, facilitating access
+to information by abstracting info into instances of Python objects ( :doc:`../particles/main` ). There are a set 
 of already defined particles in the ``dtpr.particles`` module. Each instance of the ``Event`` 
 class provides specific methods to comfortably access those objects such as offline segments, 
 generation-level muons, simulation digis, showers, and more.
