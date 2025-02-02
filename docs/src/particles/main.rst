@@ -84,7 +84,7 @@ content:
 
 To have your particle type generated on the fly when an Event instance is created,
 you need to add the necessary information into an event configuration `YAML` file as described in 
-the Event section. You can also generate a skeleton of an event configuration file using the ``dtpr`` 
+the :doc:`../base/event` section. You can also generate a skeleton of an event configuration file using the ``dtpr`` 
 bash command as follows:
 
 .. code-block:: bash
