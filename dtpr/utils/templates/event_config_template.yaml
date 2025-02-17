@@ -1,7 +1,16 @@
 # List of particle types
-# Add or delete the particle types as needed
 
 particle_types:
+# particles to be built into an event from .root files
+  # follow the format:
+  #   particle_name:
+  #     class: 'path.to.particle.Particle'
+  #     n_branch_name:  ROOT.TBranch (int) that could define how many particles to build
+  #     conditioner: condition to filter the particles that want to be built
+  #     sorter: how to sort the particles
+  #       by: 'property' to sort by
+  #       reverse: True/False to sort in reverse order
+  # comment/uncomment/add as needed...
   digis:
     class: 'dtpr.particles.digi.Digi'
     n_branch_name: 'digi_nDigis'

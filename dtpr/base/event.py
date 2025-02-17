@@ -18,7 +18,6 @@ class Event:
         :param root_ev: The Ntuple root entry containing event data.
         :param iev: The event index.
         """
-
         self.iev = iev
         self._particles = {}  # Initialize an empty dictionary for particles
 
@@ -33,14 +32,14 @@ class Event:
 
     def __getattr__(self, name):
         """
-        Override __getattr__ to return particles from the particles dictionary.
+        Override `__getattr__` to return particles from the particles dictionary.
+        Note: Usual python object attributes are accessed direclty with `object.__getattribute__`
 
         :param name: The name of the attribute.
         :return: The list of particles if the name matches a particle type, or the attribute value.
         :raises AttributeError: If the attribute is not found and not a particle type.
         """
-        if name in self.__slots__:
-            return super().__getattr__(name)
+
         if name in self._particles:
             return self._particles[name]
         raise AttributeError(f"'Event' object has no attribute '{name}'")
@@ -52,8 +51,8 @@ class Event:
         :param name: The name of the attribute.
         :param value: The value to set.
         """
-        if name in self.__slots__ or name == "particles":
-            super().__setattr__(name, value)
+        if name in self.__slots__ or name == "_particles":
+            object.__setattr__(self, name, value)
         else:
             self._particles[name] = value
 
@@ -243,7 +242,7 @@ class EventList:
         :raises: TypeError: If the index type is invalid.
         """
         if isinstance(index, slice):
-            return [self[i] for i in range(*index.indices(self._length))]
+            return (self[i] for i in range(*index.indices(self._length)))  # Return an iterator
         elif isinstance(index, int):
             if index < 0:
                 index += self._length
@@ -267,6 +266,11 @@ class EventList:
             event = Event(root_ev, iev)
             yield self._preprocessor(event)
 
+    def __repr__(self):
+        """
+        Return a string representation of the EventList.
+        """
+        return f"<EventList with {self._length} events>"
 
 if __name__ == "__main__":
     """
@@ -292,15 +296,17 @@ if __name__ == "__main__":
                 break
             event = Event(ev, iev=iev)
             # Print the event summary
-            print(event)
+            # print(event)
             shower = Shower(
-                iShower=0, wh=1, sc=1, st=1, BX=0, nDigis=2, avg_pos=12.3, avg_time=0.5
+                iShower=iev, wh=1, sc=1, st=1, BX=0, nDigis=2, avg_pos=12.3, avg_time=0.5
             )
-            event.test_showers = [shower]
-            print(event)
+            shower.true_showered = True
+            print(shower)
+            # event.test_showers = [shower]
+            # print(event)
 
-            print("Amount of digis in the event:", len(event.digis))
-            print(
-                "Amount of digis in wheel 1:",
-                len(event.filter_particles("digis", wh=1)),
-            )
+            # print("Amount of digis in the event:", len(event.digis))
+            # print(
+            #     "Amount of digis in wheel 1:",
+            #     len(event.filter_particles("digis", wh=1)),
+            # )

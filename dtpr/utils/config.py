@@ -26,15 +26,18 @@ class Config:
         config_dict = self._load_config(self.path)
         for key in config_dict.keys():
             setattr(self, key, config_dict[key])
-            # Evaluate types of common_opt_args
-            if key == "common_opt_args":
-                for subkey in self.common_opt_args.keys():
-                    self.common_opt_args[subkey]["type"] = eval(
-                        self.common_opt_args[subkey]["type"]
-                    )
+            # Evaluate types of opt_args
+            if key == "opt_args":
+                for subkey in self.opt_args.keys():
+                    try:
+                        self.opt_args[subkey]["type"] = eval(
+                            self.opt_args[subkey]["type"]
+                        )
+                    except KeyError:
+                        continue
 
     def change_config_file(
-        self, outfolder=".", config_path=".workspace/event_config.yaml"
+        self, config_path=".workspace/event_config.yaml"
     ):
         """
         Changes the configuration file to a new path.
@@ -44,7 +47,7 @@ class Config:
             config_path (str): The relative path to the new config file. Default is ".workspace/run_config.yaml".
         """
         try:
-            self.path = os.path.join(outfolder, config_path)
+            self.path = config_path
             self._setup()
         except Exception as e:
             warnings.warn(

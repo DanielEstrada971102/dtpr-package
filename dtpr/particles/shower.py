@@ -1,4 +1,3 @@
-import math
 from dtpr.utils.functions import color_msg
 
 
@@ -12,23 +11,20 @@ class Shower(object):
         "nDigis",
         "avg_pos",
         "avg_time",
-        "eq2Emulator",
-        "true_shower",
-        "true_shower_type",
+        "_others",
     ]
 
     def __init__(
         self,
         iShower,
         ev=None,
-        wh=None,
-        sc=None,
-        st=None,
-        BX=None,
+        wh=-2,
+        sc=1,
+        st=1,
+        BX=0,
         nDigis=0,
-        avg_pos=None,
-        avg_time=None,
-        true_shower_type=None,
+        avg_pos=0,
+        avg_time=0,
     ):
         """
         Initialize a Shower instance.
@@ -54,6 +50,7 @@ class Shower(object):
         :type avg_time: float, optional
         """
         self.index = iShower
+        self._others = {}
         if ev is not None:  # constructor with root_event info
             self.wh = ev.ph2Shower_wheel[iShower]
             self.sc = ev.ph2Shower_sector[iShower]
@@ -62,9 +59,7 @@ class Shower(object):
             self.nDigis = ev.ph2Shower_ndigis[iShower]
             self.avg_pos = ev.ph2Shower_avg_pos[iShower]
             self.avg_time = ev.ph2Shower_avg_time[iShower]
-            self.eq2Emulator = None
-            self.true_shower = False
-            self.true_shower_type = true_shower_type
+
         else:  # constructor with explicit info
             self.wh = wh
             self.sc = sc
@@ -73,10 +68,7 @@ class Shower(object):
             self.nDigis = nDigis
             self.avg_pos = avg_pos
             self.avg_time = avg_time
-            self.eq2Emulator = False
-            self.true_shower = False
-            self.true_shower_type = true_shower_type
-        return
+
 
     def to_dict(self):
         """
@@ -85,7 +77,8 @@ class Shower(object):
         :return: A dictionary representation of the Shower instance.
         :rtype: dict
         """
-        return {attr: getattr(self, attr) for attr in self.__slots__}
+        _dict = {attr: getattr(self, attr) for attr in self.__slots__} 
+        return {**_dict, **self._others}
 
     def __str__(self, indentLevel=0):
         """
@@ -119,3 +112,29 @@ class Shower(object):
             )
         )
         return "\n".join(summary)
+    
+    def __getattr__(self, name):
+        """
+        Override __getattr__ to return attributes from the _others dictionary.
+
+        :param name: The name of the attribute.
+        :return: The attribute value.
+        :raises AttributeError: If the attribute is not found.
+        """
+        if name in self.__slots__:
+            return object.__getattribute__(self, name)
+        if name in self._others:
+            return self._others[name]
+        raise AttributeError(f"'Shower' object has no attribute '{name}'")
+
+    def __setattr__(self, name, value):
+        """
+        Override __setattr__ to store aditional attributes in the _others dictionary.
+
+        :param name: The name of the attribute.
+        :param value: The value to set.
+        """
+        if name in self.__slots__:
+            object.__setattr__(self, name, value)
+        else:
+            self._others[name] = value
