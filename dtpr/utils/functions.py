@@ -17,7 +17,7 @@ superlayers = range(1, 4)
 _noDelete = {"lines": []}
 
 
-def color_msg(msg, color="none", indentLevel=-1, return_str=False):
+def color_msg(msg, color="none", indentLevel=-1, return_str=False, bold=False, underline=False, bkg_color="none"):
     """
     Prints a message with ANSI coding so it can be printed with colors.
 
@@ -26,18 +26,30 @@ def color_msg(msg, color="none", indentLevel=-1, return_str=False):
         color (str): The color to use for the message. Default is "none".
         indentLevel (int): The level of indentation. Default is -1.
         return_str (bool): If True, returns the formatted message as a string. Default is False.
+        bold (bool): If True, makes the text bold. Default is False.
+        underline (bool): If True, underlines the text. Default is False.
 
     Returns:
         str: The formatted message if return_str is True.
     """
-    codes = {
-        "none": "0m",
-        "green": "1;32m",
-        "red": "1;31m",
-        "blue": "1;34m",
-        "yellow": "1;33m",
-        "purple": "1;35m",
-    }
+    style_digit = "0"
+    if bold and underline:
+        style_digit = "1;4"
+    elif bold:
+        style_digit = "1"
+    elif underline:
+        style_digit = "4"
+
+    colors = ["black", "red", "green", "yellow", "blue", "purple", "cyan", "white"]
+    font_colors = {color: f";{30 + i}" for i, color in enumerate(colors)}
+    background_colors = {color: f";{40 + i}" for i, color in enumerate(colors)}
+    font_colors["none"] = ""
+    background_colors["none"] = ""
+
+    try:
+        ansi_code = f"{style_digit}{font_colors[color]}{background_colors[bkg_color]}m"
+    except KeyError:
+        ansi_code = f"{style_digit}{font_colors['none']}{background_colors['none']}m"
 
     indentStr = ""
     if indentLevel == 0:
@@ -51,18 +63,11 @@ def color_msg(msg, color="none", indentLevel=-1, return_str=False):
     if indentLevel >= 4:
         indentStr = "-"
 
-    try:
-        formatted_msg = "\033[%s%s %s \033[0m" % (
-            codes[color],
-            "  " * indentLevel + indentStr,
-            msg,
-        )
-    except KeyError:
-        formatted_msg = "\033[%s%s %s \033[0m" % (
-            codes["none"],
-            "  " * indentLevel + indentStr,
-            msg,
-        )
+    formatted_msg = "\033[%s%s %s \033[0m" % (
+        ansi_code,
+        "  " * indentLevel + indentStr,
+        msg,
+    )
 
     if return_str:
         return formatted_msg
