@@ -95,26 +95,26 @@ class SuperLayer(DTFrame):
         if SL == 2:
             CMS -> x: right, y: up, z: forward, SuperLayer -> x: backward, y: right, z: down
         
-            That is, a rotation matrix of -90 degrees around the z-axis, then a rotation of -90 
+            That is, a rotation matrix of 90 degrees around the z-axis, then a rotation of -90 
             degrees around the x-axis.
 
             .. math::
 
-                R_x(-\\pi/2) R_z(-\\pi/2) = 
+                R_x(-\\pi/2) R_z(\\pi/2) = 
                     \\begin{bmatrix} 
                         1 & 0 & 0 \\\\
                         0 & 0 & 1 \\\\
                         0 & -1 & 0
                     \\end{bmatrix} \\cdot
                     \\begin{bmatrix} 
-                        0 & 1 & 0 \\\\
-                        -1 & 0 & 0 \\\\
+                        0 & -1 & 0 \\\\
+                        1 & 0 & 0 \\\\
                         0 & 0 & 1
                     \\end{bmatrix}
                     = \\begin{bmatrix} 
-                        0 & 1 & 0 \\\\
+                        0 & -1 & 0 \\\\
                         0 & 0 & 1 \\\\
-                        1 & 0 & 0
+                        -1 & 0 & 0
                     \\end{bmatrix}
 
         :param x: x-coordinate.
@@ -129,7 +129,7 @@ class SuperLayer(DTFrame):
         if self.number == 1 or self.number == 3:
             return x, z, -1 * y
         else:
-            return y, z, x
+            return -1 * y, z, -1 * x
 
     def _build_super_layer(self):
         """
