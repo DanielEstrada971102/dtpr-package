@@ -17,7 +17,6 @@
       <script src="../../_static/documentation_options.js?v=01f34227"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -125,7 +124,7 @@ The following image shows the composition of a CMS DT chamber and indicates how 
 <span id="id1"></span><h3>DTGeometry<a class="headerlink" href="#dtgeometry" title="Link to this heading"></a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="dtpr.geometry.DTGeometry">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dtpr.geometry.</span></span><span class="sig-name descname"><span class="pre">DTGeometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xml_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/geometry/_geometry.html#DTGeometry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.geometry.DTGeometry" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dtpr.geometry.</span></span><span class="sig-name descname"><span class="pre">DTGeometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xml_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/geometry/_geometry.html#DTGeometry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.geometry.DTGeometry" title="Link to this definition"></a></dt>
 <dd><p>A class to represent the CMS DT Geometry from an XML file.</p>
 <section id="attributes">
 <h4>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h4>
@@ -211,7 +210,7 @@ the only advantage of using DTGeometry is that it provides a more intuitive way 
 <span id="id2"></span><h3>DTFrame<a class="headerlink" href="#dtframe" title="Link to this heading"></a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="dtpr.geometry.DTFrame">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dtpr.geometry.</span></span><span class="sig-name descname"><span class="pre">DTFrame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rawId</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/geometry/_geometry.html#DTFrame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.geometry.DTFrame" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dtpr.geometry.</span></span><span class="sig-name descname"><span class="pre">DTFrame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rawId</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/geometry/_geometry.html#DTFrame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.geometry.DTFrame" title="Link to this definition"></a></dt>
 <dd><p>A parent class representing any possible DT frame object, such as a DT cell, a Layer, a SuperLayer, or the whole DT.
 This class is designed to manage common attributes, getters, setters, etc.</p>
 <dl class="py method">
@@ -248,7 +247,7 @@ This class is designed to manage common attributes, getters, setters, etc.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="dtpr.geometry.DTFrame.bounds">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bounds</span></span><a class="headerlink" href="#dtpr.geometry.DTFrame.bounds" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bounds</span></span><a class="headerlink" href="#dtpr.geometry.DTFrame.bounds" title="Link to this definition"></a></dt>
 <dd><p>Space dimensions of the Object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -262,7 +261,7 @@ This class is designed to manage common attributes, getters, setters, etc.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="dtpr.geometry.DTFrame.global_center">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">global_center</span></span><a class="headerlink" href="#dtpr.geometry.DTFrame.global_center" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">global_center</span></span><a class="headerlink" href="#dtpr.geometry.DTFrame.global_center" title="Link to this definition"></a></dt>
 <dd><p>Global center coordinates of the Object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -276,7 +275,7 @@ This class is designed to manage common attributes, getters, setters, etc.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="dtpr.geometry.DTFrame.global_position_at_min">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">global_position_at_min</span></span><a class="headerlink" href="#dtpr.geometry.DTFrame.global_position_at_min" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">global_position_at_min</span></span><a class="headerlink" href="#dtpr.geometry.DTFrame.global_position_at_min" title="Link to this definition"></a></dt>
 <dd><p>Global position at the minimum coordinates of the Object. It means the lower left corner of the object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -290,7 +289,7 @@ This class is designed to manage common attributes, getters, setters, etc.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="dtpr.geometry.DTFrame.height">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">height</span></span><a class="headerlink" href="#dtpr.geometry.DTFrame.height" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">height</span></span><a class="headerlink" href="#dtpr.geometry.DTFrame.height" title="Link to this definition"></a></dt>
 <dd><p>Height of the Object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -304,7 +303,7 @@ This class is designed to manage common attributes, getters, setters, etc.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="dtpr.geometry.DTFrame.id">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#dtpr.geometry.DTFrame.id" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#dtpr.geometry.DTFrame.id" title="Link to this definition"></a></dt>
 <dd><p>Identifier of the Object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -318,7 +317,7 @@ This class is designed to manage common attributes, getters, setters, etc.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="dtpr.geometry.DTFrame.length">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">length</span></span><a class="headerlink" href="#dtpr.geometry.DTFrame.length" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">length</span></span><a class="headerlink" href="#dtpr.geometry.DTFrame.length" title="Link to this definition"></a></dt>
 <dd><p>Length of the Object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -332,7 +331,7 @@ This class is designed to manage common attributes, getters, setters, etc.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="dtpr.geometry.DTFrame.local_center">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">local_center</span></span><a class="headerlink" href="#dtpr.geometry.DTFrame.local_center" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">local_center</span></span><a class="headerlink" href="#dtpr.geometry.DTFrame.local_center" title="Link to this definition"></a></dt>
 <dd><p>Local center coordinates of the Object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -346,7 +345,7 @@ This class is designed to manage common attributes, getters, setters, etc.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="dtpr.geometry.DTFrame.local_position_at_min">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">local_position_at_min</span></span><a class="headerlink" href="#dtpr.geometry.DTFrame.local_position_at_min" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">local_position_at_min</span></span><a class="headerlink" href="#dtpr.geometry.DTFrame.local_position_at_min" title="Link to this definition"></a></dt>
 <dd><p>Local position at the minimum coordinates of the Object. It means the lower left corner of the object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -360,7 +359,7 @@ This class is designed to manage common attributes, getters, setters, etc.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="dtpr.geometry.DTFrame.number">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">number</span></span><a class="headerlink" href="#dtpr.geometry.DTFrame.number" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">number</span></span><a class="headerlink" href="#dtpr.geometry.DTFrame.number" title="Link to this definition"></a></dt>
 <dd><p>Number of the Object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -374,7 +373,7 @@ This class is designed to manage common attributes, getters, setters, etc.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="dtpr.geometry.DTFrame.width">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">width</span></span><a class="headerlink" href="#dtpr.geometry.DTFrame.width" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">width</span></span><a class="headerlink" href="#dtpr.geometry.DTFrame.width" title="Link to this definition"></a></dt>
 <dd><p>Width of the Object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>

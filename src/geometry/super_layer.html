@@ -98,7 +98,7 @@
 <h1>SuperLayer<a class="headerlink" href="#superlayer" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="dtpr.geometry.super_layer.SuperLayer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dtpr.geometry.super_layer.</span></span><span class="sig-name descname"><span class="pre">SuperLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rawId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/geometry/super_layer.html#SuperLayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.geometry.super_layer.SuperLayer" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dtpr.geometry.super_layer.</span></span><span class="sig-name descname"><span class="pre">SuperLayer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rawId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/dtpr/geometry/super_layer.html#SuperLayer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dtpr.geometry.super_layer.SuperLayer" title="Link to this definition"></a></dt>
 <dd><p>Class representing a SuperLayer.</p>
 <section id="attributes">
 <h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading"></a></h2>
@@ -139,24 +139,24 @@ That is, a rotation matrix of -90 degrees around the x-axis.</p>
                 \end{bmatrix}\end{split}\]</div>
 </dd>
 <dt>if SL == 2:</dt><dd><p>CMS -&gt; x: right, y: up, z: forward, SuperLayer -&gt; x: backward, y: right, z: down</p>
-<p>That is, a rotation matrix of -90 degrees around the z-axis, then a rotation of -90 
+<p>That is, a rotation matrix of 90 degrees around the z-axis, then a rotation of -90 
 degrees around the x-axis.</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}R_x(-\pi/2) R_z(-\pi/2) = 
+\[\begin{split}R_x(-\pi/2) R_z(\pi/2) = 
     \begin{bmatrix} 
         1 &amp; 0 &amp; 0 \\
         0 &amp; 0 &amp; 1 \\
         0 &amp; -1 &amp; 0
     \end{bmatrix} \cdot
     \begin{bmatrix} 
-        0 &amp; 1 &amp; 0 \\
-        -1 &amp; 0 &amp; 0 \\
+        0 &amp; -1 &amp; 0 \\
+        1 &amp; 0 &amp; 0 \\
         0 &amp; 0 &amp; 1
     \end{bmatrix}
     = \begin{bmatrix} 
-        0 &amp; 1 &amp; 0 \\
+        0 &amp; -1 &amp; 0 \\
         0 &amp; 0 &amp; 1 \\
-        1 &amp; 0 &amp; 0
+        -1 &amp; 0 &amp; 0
     \end{bmatrix}\end{split}\]</div>
 </dd>
 </dl>
@@ -196,7 +196,7 @@ degrees around the x-axis.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="dtpr.geometry.super_layer.SuperLayer.layers">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">layers</span></span><a class="headerlink" href="#dtpr.geometry.super_layer.SuperLayer.layers" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">layers</span></span><a class="headerlink" href="#dtpr.geometry.super_layer.SuperLayer.layers" title="Link to this definition"></a></dt>
 <dd><p>Get all the layers in the super layer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -210,7 +210,7 @@ degrees around the x-axis.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="dtpr.geometry.super_layer.SuperLayer.number">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">number</span></span><a class="headerlink" href="#dtpr.geometry.super_layer.SuperLayer.number" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">number</span></span><a class="headerlink" href="#dtpr.geometry.super_layer.SuperLayer.number" title="Link to this definition"></a></dt>
 <dd><p>Number of the Object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
